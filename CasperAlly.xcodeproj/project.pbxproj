@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		046F248B1E4CD5E3005013E5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 046F24891E4CD5E3005013E5 /* Main.storyboard */; };
 		046F248D1E4CD5E3005013E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F248C1E4CD5E3005013E5 /* Assets.xcassets */; };
 		046F24901E4CD5E3005013E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 046F248E1E4CD5E3005013E5 /* LaunchScreen.storyboard */; };
+		FBE48F6FB3B4682FC76A9C2E /* Pods_CasperAlly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,9 @@
 		046F248C1E4CD5E3005013E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		046F248F1E4CD5E3005013E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		046F24911E4CD5E3005013E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CasperAlly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperAlly.release.xcconfig"; path = "Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly.release.xcconfig"; sourceTree = "<group>"; };
+		92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperAlly.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBE48F6FB3B4682FC76A9C2E /* Pods_CasperAlly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +45,8 @@
 			children = (
 				046F24841E4CD5E3005013E5 /* CasperAlly */,
 				046F24831E4CD5E3005013E5 /* Products */,
+				403FFEACDA8BF646C796C514 /* Pods */,
+				D71E237782C99D604C837456 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +71,23 @@
 			path = CasperAlly;
 			sourceTree = "<group>";
 		};
+		403FFEACDA8BF646C796C514 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */,
+				64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D71E237782C99D604C837456 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 046F24941E4CD5E3005013E5 /* Build configuration list for PBXNativeTarget "CasperAlly" */;
 			buildPhases = (
+				5E0D3970C768138F1F8CBB44 /* [CP] Check Pods Manifest.lock */,
 				046F247E1E4CD5E3005013E5 /* Sources */,
 				046F247F1E4CD5E3005013E5 /* Frameworks */,
 				046F24801E4CD5E3005013E5 /* Resources */,
+				A89876DD0577F8CD21C1C957 /* [CP] Embed Pods Frameworks */,
+				30F5486CC69359A331BBF3B6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -96,13 +123,12 @@
 				TargetAttributes = {
 					046F24811E4CD5E3005013E5 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L3CMP2L959;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = 046F247D1E4CD5E3005013E5 /* Build configuration list for PBXProject "CasperAlly" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -131,6 +157,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		30F5486CC69359A331BBF3B6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5E0D3970C768138F1F8CBB44 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A89876DD0577F8CD21C1C957 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		046F247E1E4CD5E3005013E5 /* Sources */ = {
@@ -259,6 +333,7 @@
 		};
 		046F24951E4CD5E3005013E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L3CMP2L959;
@@ -272,6 +347,7 @@
 		};
 		046F24961E4CD5E3005013E5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L3CMP2L959;
