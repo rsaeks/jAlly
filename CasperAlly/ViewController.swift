@@ -8,10 +8,21 @@
 
 import UIKit
 
+class savedSettings {
+    static var sharedInstance = savedSettings()
+    private init() {}
+    var jssURL: String!
+    var exclusionGID: Int!
+    var jssUsername: String!
+}
+
+
 class ViewController: UIViewController {
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 
