@@ -14,6 +14,7 @@ class savedSettings {
     var jssURL: String!
     var exclusionGID: String!
     var jssUsername: String!
+    var jssPassword: String!
 }
 
 class JSSSettingsViewController: UIViewController {
@@ -21,6 +22,8 @@ class JSSSettingsViewController: UIViewController {
     @IBOutlet weak var JSSURL: UITextField!
     @IBOutlet weak var jssExclusionGroupID: UITextField!
     @IBOutlet weak var jssUsername: UITextField!
+    @IBOutlet weak var jssPassword: UITextField!
+    @IBOutlet weak var savePasswordEnabled: UISwitch!
     
     let defaults = UserDefaults.standard
     
@@ -29,6 +32,8 @@ class JSSSettingsViewController: UIViewController {
         defaults.set(JSSURL.text, forKey: "savedJSSURL")
         defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
         defaults.set(jssUsername.text, forKey: "savedJSSUsername")
+        keychain.set(jssPassword.text!, forKey: "savedJSSPassword")
+        
     }
     
     @IBAction func returnToMainPressed(_ sender: Any) {
@@ -41,6 +46,8 @@ class JSSSettingsViewController: UIViewController {
         let testURL = defaults.string(forKey: "savedJSSURL")
         let testExclusionGID = defaults.string(forKey: "savedExclusionGID")
         let testJSSUsername = defaults.string(forKey: "savedJSSUsername")
+        let testJSSPassword = keychain.get("savedJSSPassword")
+
         
         // Test to make sure JSS URL is populated
         if testURL != nil {
@@ -57,7 +64,13 @@ class JSSSettingsViewController: UIViewController {
         // Test to make sure JSS Username is populated
         if testJSSUsername != nil {
             jssUsername.text = testJSSUsername
-            savedSettings.sharedInstance.exclusionGID = jssUsername.text
+            savedSettings.sharedInstance.jssUsername = jssUsername.text
+        }
+        
+        // Test to make sure JSS Password is populated
+        if testJSSPassword != nil {
+            jssPassword.text = testJSSPassword
+            savedSettings.sharedInstance.jssPassword = jssPassword.text
         }
         
     }
