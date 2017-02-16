@@ -8,6 +8,7 @@
 
 import UIKit
 import KeychainSwift
+import Alamofire
 
 class JSSConfig {
     var jssURL: String
@@ -32,6 +33,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var jssGIDLabel: UILabel!
     @IBOutlet weak var jssUsernameLabel: UILabel!
     @IBOutlet weak var jssPasswordLabel: UILabel!
+    @IBOutlet weak var connectionStatus: UIActivityIndicatorView!
+    
+    @IBOutlet weak var responseBack: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +46,26 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         print("Main View Controller Appeared")
         updateUI()
+        connectionStatus.stopAnimating()
     }
 
+    @IBAction func testConnectionPressed(_ sender: Any) {
+        print("Test Connection Button Pressed")
+        connectionStatus.startAnimating()
+        self.responseBack.isHidden = true
+        Alamofire.request("\(workingjss.jssURL)").response { response in
+            if response.response == nil {
+                print("Blank Response Back")
+            }
+            else {
+                print("Received some data back")
+                self.responseBack.isHidden = false
+            }
+            print(response.data ?? "Default Data")     // server data
+            }
+    }
+    
+    
 func updateUI() {
     print("Update UI Function")
     let testURL = defaultsVC.string(forKey: "savedJSSURL")
@@ -80,4 +102,3 @@ func updateUI() {
 }
 
 }
-
