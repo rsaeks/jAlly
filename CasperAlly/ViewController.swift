@@ -53,13 +53,14 @@ class ViewController: UIViewController {
         print("Test Connection Button Pressed")
         connectionStatus.startAnimating()
         self.responseBack.isHidden = true
-        Alamofire.request("\(workingjss.jssURL)").response { response in
+        Alamofire.request(workingjss.jssURL).response { response in
             if response.response == nil {
                 print("Blank Response Back")
             }
             else {
                 print("Received some data back")
                 self.responseBack.isHidden = false
+                self.connectionStatus.stopAnimating()
             }
             print(response.data ?? "Default Data")     // server data
             }

@@ -13,6 +13,7 @@
 		046F248D1E4CD5E3005013E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 046F248C1E4CD5E3005013E5 /* Assets.xcassets */; };
 		046F24901E4CD5E3005013E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 046F248E1E4CD5E3005013E5 /* LaunchScreen.storyboard */; };
 		04CC36631E4CFA71006E0989 /* JSSSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CC36621E4CFA71006E0989 /* JSSSettingsViewController.swift */; };
+		D5D616651E55ED470051A818 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D616641E55ED470051A818 /* Constants.swift */; };
 		FBE48F6FB3B4682FC76A9C2E /* Pods_CasperAlly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CasperAlly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperAlly.release.xcconfig"; path = "Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly.release.xcconfig"; sourceTree = "<group>"; };
 		92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperAlly.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly.debug.xcconfig"; sourceTree = "<group>"; };
+		D5D616641E55ED470051A818 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				046F248E1E4CD5E3005013E5 /* LaunchScreen.storyboard */,
 				046F24911E4CD5E3005013E5 /* Info.plist */,
 				04CC36621E4CFA71006E0989 /* JSSSettingsViewController.swift */,
+				D5D616641E55ED470051A818 /* Constants.swift */,
 			);
 			path = CasperAlly;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				046F24881E4CD5E3005013E5 /* ViewController.swift in Sources */,
 				046F24861E4CD5E3005013E5 /* AppDelegate.swift in Sources */,
 				04CC36631E4CFA71006E0989 /* JSSSettingsViewController.swift in Sources */,
+				D5D616651E55ED470051A818 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
