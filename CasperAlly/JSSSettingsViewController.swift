@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class savedSettings {
     static var sharedInstance = savedSettings()
@@ -23,9 +24,51 @@ class JSSSettingsViewController: UIViewController {
     @IBOutlet weak var jssExclusionGroupID: UITextField!
     @IBOutlet weak var jssUsername: UITextField!
     @IBOutlet weak var jssPassword: UITextField!
-    @IBOutlet weak var savePasswordEnabled: UISwitch!
+    @IBOutlet weak var checkURLLabel: UILabel!
+    @IBOutlet weak var checkUPLabel: UILabel!
+
     
     let defaults = UserDefaults.standard
+    
+    
+    @IBAction func checkURLButtonPressed(_ sender: Any) {
+        Alamofire.request(savedSettings.sharedInstance.jssURL).response { response in
+            let statusCode = response.response?.statusCode
+            if statusCode == nil {
+                self.checkURLLabel.text = "No response"
+            }
+            else if statusCode == 401 {
+                self.checkURLLabel.text = "Auth Required"
+            }
+            else if statusCode == 404 {
+                self.checkURLLabel.text = "URL not found"
+            }
+            else {
+                self.checkURLLabel.text = "Other Error"
+            }
+        }
+    }
+    
+    @IBAction func checkUPPressed(_ sender: Any) {
+        //let builtURL: String = savedSettings.sharedInstance.jssURL + userPath + savedSettings.sharedInstance.jssUsername
+        //print(builtURL)
+        Alamofire.request(savedSettings.sharedInstance.jssURL + userPath + savedSettings.sharedInstance.jssUsername).authenticate(user: savedSettings.sharedInstance.jssUsername, password: savedSettings.sharedInstance.jssPassword).response { response in
+            let userStatusCode = response.response?.statusCode
+            if userStatusCode == nil {
+                self.checkUPLabel.text = "No Response"
+            }
+            else if userStatusCode == 200 {
+                self.checkUPLabel.text = "Valid combo"
+            }
+            else if userStatusCode == 401 {
+                self.checkUPLabel.text = "Invalid combo"
+            }
+            else {
+                self.checkUPLabel.text = "Other Error"
+            }
+        }
+
+    }
     
     @IBAction func jssSaveSettings(_ sender: Any) {
         print("Save Settings Button Pressed")
@@ -33,12 +76,10 @@ class JSSSettingsViewController: UIViewController {
         defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
         defaults.set(jssUsername.text, forKey: "savedJSSUsername")
         keychain.set(jssPassword.text!, forKey: "savedJSSPassword")
-        
     }
     
     @IBAction func returnToMainPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {

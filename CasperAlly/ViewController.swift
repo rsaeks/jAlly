@@ -49,22 +49,22 @@ class ViewController: UIViewController {
         connectionStatus.stopAnimating()
     }
 
-    @IBAction func testConnectionPressed(_ sender: Any) {
-        print("Test Connection Button Pressed")
-        connectionStatus.startAnimating()
-        self.responseBack.isHidden = true
-        Alamofire.request(workingjss.jssURL).response { response in
-            if response.response == nil {
-                print("Blank Response Back")
-            }
-            else {
-                print("Received some data back")
-                self.responseBack.isHidden = false
-                self.connectionStatus.stopAnimating()
-            }
-            print(response.data ?? "Default Data")     // server data
-            }
-    }
+//    @IBAction func testConnectionPressed(_ sender: Any) {
+//        print("Test Connection Button Pressed")
+//        connectionStatus.startAnimating()
+//        self.responseBack.isHidden = true
+//        Alamofire.request(workingjss.jssURL).response { response in
+//            if response.response == nil {
+//                print("Blank Response Back")
+//            }
+//            else {
+//                print("Received some data back")
+//                self.responseBack.isHidden = false
+//                self.connectionStatus.stopAnimating()
+//            }
+//            print(response.data ?? "Default Data")     // server data
+//            }
+//    }
     
     
 func updateUI() {
@@ -98,7 +98,7 @@ func updateUI() {
     // Test to make sure JSS Username is populated
     if testJSSPassword != nil {
         workingjss.jssPassword = testJSSPassword!
-        jssPasswordLabel.text = workingjss.jssPassword
+        //jssPasswordLabel.text = workingjss.jssPassword
     }
 }
 
