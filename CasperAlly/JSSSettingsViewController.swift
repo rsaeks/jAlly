@@ -9,14 +9,7 @@
 import UIKit
 import Alamofire
 
-class savedSettings {
-    static var sharedInstance = savedSettings()
-    private init() {}
-    var jssURL: String!
-    var exclusionGID: String!
-    var jssUsername: String!
-    var jssPassword: String!
-}
+
 
 class JSSSettingsViewController: UIViewController {
 

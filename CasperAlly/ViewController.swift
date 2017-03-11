@@ -10,22 +10,10 @@ import UIKit
 import KeychainSwift
 import Alamofire
 
-class JSSConfig {
-    var jssURL: String
-    var exclusinGID: String
-    var jssUsername: String
-    var jssPassword: String
-    init() {
-        jssURL = ""
-        exclusinGID = ""
-        jssUsername = ""
-        jssPassword = ""
-    }
-}
-
 let workingjss = JSSConfig()
 let defaultsVC = UserDefaults()
 let keychain = KeychainSwift()
+let workingData = JSSData()
 
 class ViewController: UIViewController {
 
@@ -33,9 +21,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var jssGIDLabel: UILabel!
     @IBOutlet weak var jssUsernameLabel: UILabel!
     @IBOutlet weak var jssPasswordLabel: UILabel!
-    @IBOutlet weak var connectionStatus: UIActivityIndicatorView!
-    
-    @IBOutlet weak var responseBack: UIImageView!
+    @IBOutlet weak var userToCheck: UITextField!
+    @IBOutlet weak var snToCheck: UITextField!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,37 +32,53 @@ class ViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        print("Main View Controller Appeared")
+        //print("Main View Controller Appeared")
         updateUI()
-        connectionStatus.stopAnimating()
     }
 
-//    @IBAction func testConnectionPressed(_ sender: Any) {
-//        print("Test Connection Button Pressed")
-//        connectionStatus.startAnimating()
-//        self.responseBack.isHidden = true
-//        Alamofire.request(workingjss.jssURL).response { response in
-//            if response.response == nil {
-//                print("Blank Response Back")
-//            }
-//            else {
-//                print("Received some data back")
-//                self.responseBack.isHidden = false
-//                self.connectionStatus.stopAnimating()
-//            }
-//            print(response.data ?? "Default Data")     // server data
-//            }
-//    }
+    @IBAction func userToCheckPressed(_ sender: Any) {
+        if (userToCheck.text == "") {
+            print("Need to provide a username")
+        }
+        else {
+            workingData.user = userToCheck.text!
+            print("Provided Username is:")
+            print(workingData.user)
+            getUserInfo()
+            print("Returned Data is:")
+            print(workingData.responseData)
+        }
+    }
     
+    @IBAction func snToCheckPressed(_ sender: Any) {
+    }
+    
+// Add Function here to get user data
+    
+func getUserInfo() {
+        // Add Headers
+        let headers = [
+            "Accept":"application/json",
+            ]
+        
+        // Fetch Request
+        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
+                //print(response.result.value ?? "Default")
+                workingData.responseData = response.result.value!
+            }
+    }
+    
+
     
 func updateUI() {
     print("Update UI Function")
     let testURL = defaultsVC.string(forKey: "savedJSSURL")
-    print("\(testURL ?? "DEFAULT URL")")
+    //print("\(testURL ?? "DEFAULT URL")")
     let testExclusionGID = defaultsVC.string(forKey: "savedExclusionGID")
-    print("\(testExclusionGID ?? "DEFAULT GID")")
+    //print("\(testExclusionGID ?? "DEFAULT GID")")
     let testJSSUsername = defaultsVC.string(forKey: "savedJSSUsername")
-    print("\(testJSSUsername ?? "DEFAULT GID")")
+    //print("\(testJSSUsername ?? "DEFAULT GID")")
     let testJSSPassword = keychain.get("savedJSSPassword")
     
     // Test to make sure JSS URL is populated
