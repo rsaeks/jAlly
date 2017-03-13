@@ -38,13 +38,13 @@ class ViewController: UIViewController {
 
     @IBAction func userToCheckPressed(_ sender: Any) {
         if (userToCheck.text == "") {
-            print("Need to provide a username")
+            //print("Need to provide a username")
         }
         else {
             workingData.user = userToCheck.text!
             print("Provided Username is:")
             print(workingData.user)
-            getUserInfo()
+            getUserInfo
             print("Returned Data is:")
             print(workingData.responseData)
         }
@@ -63,16 +63,21 @@ func getUserInfo() {
         
         // Fetch Request
         Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
-            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                 //print(response.result.value ?? "Default")
-                workingData.responseData = response.result.value!
+                //workingData.responseData = response.result.value!
+                if (response.result.isSuccess) {
+                   // print(response.result.isSuccess)
+                    //print(response.result.value!)
+                    workingData.responseData = (response.result.value as? [String:Any])!
+                }
             }
     }
     
 
     
 func updateUI() {
-    print("Update UI Function")
+    //print("Update UI Function")
     let testURL = defaultsVC.string(forKey: "savedJSSURL")
     //print("\(testURL ?? "DEFAULT URL")")
     let testExclusionGID = defaultsVC.string(forKey: "savedExclusionGID")
