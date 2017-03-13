@@ -36,10 +36,12 @@ class JSSData {
     var deviceSN: String
     var deviceMAC: String
     var responseData: [String:Any]
+    var responseDataString: String
     init () {
         user = "defaultUser"
         deviceSN = "0"
         deviceMAC = "00:"
         responseData = ["defaultKey":"defaultValue"]
+        responseDataString = ""
     }
 }

@@ -123,10 +123,22 @@
                                             </stackView>
                                         </subviews>
                                     </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="15" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOq-Eu-9jY">
+                                        <rect key="frame" x="10" y="232" width="300" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="Fth-xi-DK3"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.68056427171052569" green="0.78049651015228427" blue="0.6900595632832377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
+                                    <constraint firstItem="dOq-Eu-9jY" firstAttribute="top" secondItem="Ecr-Wb-fhb" secondAttribute="bottom" constant="25" id="5wj-32-fKt"/>
+                                    <constraint firstAttribute="trailing" secondItem="dOq-Eu-9jY" secondAttribute="trailing" constant="10" id="603-qz-O7p"/>
                                     <constraint firstAttribute="trailing" secondItem="Ecr-Wb-fhb" secondAttribute="trailing" constant="10" id="Q5g-ko-aE8"/>
+                                    <constraint firstItem="dOq-Eu-9jY" firstAttribute="leading" secondItem="fdc-I5-hGf" secondAttribute="leading" constant="10" id="TOa-ln-9aY"/>
                                     <constraint firstItem="Ecr-Wb-fhb" firstAttribute="centerX" secondItem="fdc-I5-hGf" secondAttribute="centerX" id="gSG-ra-POL"/>
                                     <constraint firstItem="Apn-aT-NUv" firstAttribute="leading" secondItem="fdc-I5-hGf" secondAttribute="leading" constant="18" id="iQG-UW-vol"/>
                                     <constraint firstAttribute="bottom" secondItem="Ecr-Wb-fhb" secondAttribute="bottom" constant="282" id="jwu-Ra-Vz7"/>
@@ -164,6 +176,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="debugData" destination="dOq-Eu-9jY" id="Pl8-WZ-8oK"/>
                         <outlet property="jssGIDLabel" destination="uLy-05-jzP" id="RjV-N4-k4V"/>
                         <outlet property="jssPasswordLabel" destination="55V-vk-Gr4" id="8LX-uL-Sit"/>
                         <outlet property="jssURLLabel" destination="4ar-wo-Gd7" id="jYC-op-tcL"/>

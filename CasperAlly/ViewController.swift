@@ -23,6 +23,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var jssPasswordLabel: UILabel!
     @IBOutlet weak var userToCheck: UITextField!
     @IBOutlet weak var snToCheck: UITextField!
+    @IBOutlet weak var debugData: UILabel!
 
     
     override func viewDidLoad() {
@@ -44,9 +45,15 @@ class ViewController: UIViewController {
             workingData.user = userToCheck.text!
             print("Provided Username is:")
             print(workingData.user)
-            getUserInfo
-            print("Returned Data is:")
-            print(workingData.responseData)
+            getUserInfo()
+            let delay = DispatchTime.now() + 2
+            DispatchQueue.main.asyncAfter(deadline: delay) {
+                print("Returned Data is:")
+                print(workingData.responseData)
+                print(workingData.responseDataString)
+                self.debugData.text = workingData.responseDataString
+            }
+
         }
     }
     
@@ -71,8 +78,18 @@ func getUserInfo() {
                     //print(response.result.value!)
                     workingData.responseData = (response.result.value as? [String:Any])!
                 }
+        }
+        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
+                //print(response.result.value ?? "Default")
+                //workingData.responseData = response.result.value!
+                if (response.result.isSuccess) {
+                    // print(response.result.isSuccess)
+                    //print(response.result.value!)
+                    workingData.responseDataString = response.result.value!
+                }
             }
-    }
+        }
     
 
     
