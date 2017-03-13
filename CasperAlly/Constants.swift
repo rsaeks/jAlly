@@ -23,3 +23,7 @@ let devAPISNPath = "\(API_BASE)\(MOBILE_DEV_PATH)serialnumber/"
 let devAPIUpdateInventoryPath = "\(API_BASE)\(MOBILE_DEV_CMD)UpdateInventory/id/"
 let devAPIBlankPushPath = "\(API_BASE)\(MOBILE_DEV_CMD)BlankPush/id/"
 let userPath = "\(API_BASE)\(USER_PATH)"
+
+let headers = [
+    "Accept":"application/json",
+]

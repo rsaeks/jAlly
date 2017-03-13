@@ -14,6 +14,7 @@ let workingjss = JSSConfig()
 let defaultsVC = UserDefaults()
 let keychain = KeychainSwift()
 let workingData = JSSData()
+let JSSQueue = DispatchGroup()
 
 class ViewController: UIViewController {
 
@@ -43,16 +44,26 @@ class ViewController: UIViewController {
         }
         else {
             workingData.user = userToCheck.text!
-            print("Provided Username is:")
-            print(workingData.user)
+            print("Provided Username is: \(workingData.user)")
             getUserInfo()
-            let delay = DispatchTime.now() + 2
-            DispatchQueue.main.asyncAfter(deadline: delay) {
-                print("Returned Data is:")
-                print(workingData.responseData)
-                print(workingData.responseDataString)
-                self.debugData.text = workingData.responseDataString
-            }
+            JSSQueue.notify(queue: DispatchQueue.main, execute: {
+                print("Dispatch Queue Returned JSON Data is: \(workingData.responseData)")
+                print("Dispatch Queue Returned String Data is: \(workingData.responseDataString)")
+                //self.debugData.text = workingData.responseDataString
+                self.displayData()
+            } )
+            
+            
+//            print("===== About to call delay =====")
+//            print("Pre-delay JSON Data is: \(workingData.responseData)")
+//            print("Pre-delay  String Data is: \(workingData.responseDataString)")
+//            let delay = DispatchTime.now() + 0.1
+//            DispatchQueue.main.asyncAfter(deadline: delay) {
+//                print("===== Delay called =====")
+//                print("Delay Returned JSON Data is: \(workingData.responseData)")
+//                print("Delay Returned String Data is: \(workingData.responseDataString)")
+//                self.debugData.text = workingData.responseDataString
+//            }
 
         }
     }
@@ -63,12 +74,10 @@ class ViewController: UIViewController {
 // Add Function here to get user data
     
 func getUserInfo() {
-        // Add Headers
-        let headers = [
-            "Accept":"application/json",
-            ]
-        
-        // Fetch Request
+        // Add two queue tasks to disparch queue
+        JSSQueue.enter()
+        JSSQueue.enter()
+        // Fetch Request in JSON Format
         Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
             .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                 //print(response.result.value ?? "Default")
@@ -77,8 +86,11 @@ func getUserInfo() {
                    // print(response.result.isSuccess)
                     //print(response.result.value!)
                     workingData.responseData = (response.result.value as? [String:Any])!
+                    JSSQueue.leave()
                 }
         }
+    
+        // Fetch Request in String Format
         Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
             .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
                 //print(response.result.value ?? "Default")
@@ -87,10 +99,14 @@ func getUserInfo() {
                     // print(response.result.isSuccess)
                     //print(response.result.value!)
                     workingData.responseDataString = response.result.value!
+                    JSSQueue.leave()
                 }
             }
-        }
+    }
     
+    func displayData() {
+        self.debugData.text = workingData.responseDataString
+    }
 
     
 func updateUI() {
