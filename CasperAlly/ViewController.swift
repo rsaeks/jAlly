@@ -27,6 +27,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var userToCheck: UITextField!
     @IBOutlet weak var snToCheck: UITextField!
     @IBOutlet weak var debugData: UILabel!
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var fullNameLabel: UILabel!
+    @IBOutlet weak var deviceIDLabel: UILabel!
+    @IBOutlet weak var deviceSNLabel: UILabel!
+    @IBOutlet weak var deviceMACLabel: UILabel!
 
     
     override func viewDidLoad() {
@@ -86,9 +91,9 @@ func getUserInfo() {
                 //workingData.responseData = response.result.value!
                 if (response.result.isSuccess) {
                    // print(response.result.isSuccess)
-                    print("JSON we are going to store is this --------------")
-                    print(response.result.value!)
-                    print("End of JSON we are going to store ---------------")
+                    //print("JSON we are going to store is this --------------")
+                    //print(response.result.value!)
+                    //print("End of JSON we are going to store ---------------")
                     //workingData.responseDataJSON = (response.result.value as? [String:Any])!
                     workingData.responseDataJSON = response.result.value as! [String : Any]
                     
@@ -137,15 +142,19 @@ func getUserInfo() {
     }
     
     func displayData() {
-        self.debugData.text = workingData.responseDataString
-        parseData()
+        deviceIDLabel.text = String(workingData.deviceID)
+        deviceSNLabel.text = workingData.deviceSN
+        deviceMACLabel.text = workingData.deviceMAC
+        usernameLabel.text = workingData.user
+        fullNameLabel.text = workingData.realName
+        
     }
     
     func parseData() {
-        print("=================================")
-        print("Data we will be parsing: \(workingData.responseDataJSON)")
-        print("Number of items: \(workingData.responseDataJSON.count)")
-        print("=================================")
+        //print("=================================")
+        //print("Data we will be parsing: \(workingData.responseDataJSON)")
+        //print("Number of items: \(workingData.responseDataJSON.count)")
+        //print("=================================")
 
     }
 
