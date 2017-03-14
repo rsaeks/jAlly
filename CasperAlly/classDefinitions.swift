@@ -40,6 +40,8 @@ class JSSData {
     var deviceName: String
     var deviceID: Int
     var realName: String
+    var deviceIPAddress: String
+    var lastInventory: String
     init () {
         user = "defaultUser"
         deviceSN = "0"
@@ -49,5 +51,7 @@ class JSSData {
         deviceName = "Default Device Name"
         deviceID = 0
         realName = "RSMB"
+        deviceIPAddress = "0.0.0.0"
+        lastInventory = "October 28"
     }
 }

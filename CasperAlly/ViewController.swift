@@ -32,7 +32,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var deviceIDLabel: UILabel!
     @IBOutlet weak var deviceSNLabel: UILabel!
     @IBOutlet weak var deviceMACLabel: UILabel!
-
+    @IBOutlet weak var deviceIPLabel: UILabel!
+    @IBOutlet weak var deviceInventorylabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,7 @@ class ViewController: UIViewController {
             //print("Need to provide a username")
         }
         else {
+            view.endEditing(true)
             workingData.user = userToCheck.text!
             //print("Provided Username is: \(workingData.user)")
             getUserInfo()
@@ -57,6 +59,7 @@ class ViewController: UIViewController {
                 //print("Dispatch Queue Returned JSON Data is: \(workingData.responseDataJSON)")
                 //print("Dispatch Queue Returned String Data is: \(workingData.responseDataString)")
                 //self.debugData.text = workingData.responseDataString
+                //self.getDeviceInfo()
                 self.displayData()
             } )
             
@@ -99,6 +102,8 @@ func getUserInfo() {
                     
                     if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
                         if let mobileDevice = outerDict["mobile_devices"] as? [Dictionary<String,AnyObject>] {
+                            let numberOfDevices = mobileDevice.count
+                            print("Number of items in array is: \(numberOfDevices)")
                             if let deviceName = mobileDevice[0]["name"] as? String {
                                 print("The name of the device is: \(deviceName)")
                                 workingData.deviceName = deviceName
@@ -121,9 +126,8 @@ func getUserInfo() {
                             }
                         }
                     }
+                    self.getDeviceInfo()
                     
-                    
-                    JSSQueue.leave()
                 }
         }
     
@@ -141,14 +145,46 @@ func getUserInfo() {
             }
     }
     
+    func getDeviceInfo() {
+        Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(workingData.deviceID), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+            if (response.result.isSuccess) {
+                //print("Response data for device is --------------")
+                //print(response.result.value!)
+                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+                    if let mobileDeviceData = outerDict["mobile_device"] as? Dictionary <String,AnyObject> {
+                        if let generalData = mobileDeviceData["general"] as? Dictionary <String, AnyObject> {
+                            if let ip_address = generalData["ip_address"] as? String {
+                                //print(ip_address)
+                                workingData.deviceIPAddress = ip_address
+                            }
+                            if let inventoryTime = generalData["last_inventory_update"] as? String {
+                                workingData.lastInventory = inventoryTime
+                            }
+                            
+                        }
+                    }
+                }
+                //print("End of data for device -------------------")
+                JSSQueue.leave()
+            }
+        
+        
+        
+        }
+        //print("Built URL to get info on device is: \(workingjss.jssURL)\(devAPIMatchPathID)\(String(workingData.deviceID))")
+        
+    }
+    
     func displayData() {
         deviceIDLabel.text = String(workingData.deviceID)
         deviceSNLabel.text = workingData.deviceSN
         deviceMACLabel.text = workingData.deviceMAC
         usernameLabel.text = workingData.user
         fullNameLabel.text = workingData.realName
-        
-    }
+        snToCheck.text = workingData.deviceSN
+        deviceIPLabel.text = workingData.deviceIPAddress
+        deviceInventorylabel.text = workingData.lastInventory
+        }
     
     func parseData() {
         //print("=================================")
