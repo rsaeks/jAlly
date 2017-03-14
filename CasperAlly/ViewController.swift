@@ -9,12 +9,14 @@
 import UIKit
 import KeychainSwift
 import Alamofire
+import SwiftyJSON
 
 let workingjss = JSSConfig()
 let defaultsVC = UserDefaults()
 let keychain = KeychainSwift()
 let workingData = JSSData()
 let JSSQueue = DispatchGroup()
+
 
 class ViewController: UIViewController {
 
@@ -44,11 +46,11 @@ class ViewController: UIViewController {
         }
         else {
             workingData.user = userToCheck.text!
-            print("Provided Username is: \(workingData.user)")
+            //print("Provided Username is: \(workingData.user)")
             getUserInfo()
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
-                print("Dispatch Queue Returned JSON Data is: \(workingData.responseData)")
-                print("Dispatch Queue Returned String Data is: \(workingData.responseDataString)")
+                //print("Dispatch Queue Returned JSON Data is: \(workingData.responseDataJSON)")
+                //print("Dispatch Queue Returned String Data is: \(workingData.responseDataString)")
                 //self.debugData.text = workingData.responseDataString
                 self.displayData()
             } )
@@ -84,8 +86,38 @@ func getUserInfo() {
                 //workingData.responseData = response.result.value!
                 if (response.result.isSuccess) {
                    // print(response.result.isSuccess)
-                    //print(response.result.value!)
-                    workingData.responseData = (response.result.value as? [String:Any])!
+                    print("JSON we are going to store is this --------------")
+                    print(response.result.value!)
+                    print("End of JSON we are going to store ---------------")
+                    //workingData.responseDataJSON = (response.result.value as? [String:Any])!
+                    workingData.responseDataJSON = response.result.value as! [String : Any]
+                    
+                    if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+                        if let mobileDevice = outerDict["mobile_devices"] as? [Dictionary<String,AnyObject>] {
+                            if let deviceName = mobileDevice[0]["name"] as? String {
+                                print("The name of the device is: \(deviceName)")
+                                workingData.deviceName = deviceName
+                                }
+                            if let deviceSN = mobileDevice[0]["serial_number"] as? String {
+                                print("The device Serial NUmber is: \(deviceSN)")
+                                workingData.deviceSN = deviceSN
+                            }
+                            if let deviceMAC = mobileDevice[0]["mac_address"] as? String {
+                                print("The deivce MAC Address is: \(deviceMAC)")
+                                workingData.deviceMAC = deviceMAC
+                            }
+                            if let deviceID = mobileDevice[0]["id"] as? Int {
+                                print("The devie ID is: \(deviceID)")
+                                workingData.deviceID = deviceID
+                            }
+                            if let userName = mobileDevice[0]["realname"] as? String {
+                                print("The device owner name is: \(userName)")
+                                workingData.realName = userName
+                            }
+                        }
+                    }
+                    
+                    
                     JSSQueue.leave()
                 }
         }
@@ -106,6 +138,15 @@ func getUserInfo() {
     
     func displayData() {
         self.debugData.text = workingData.responseDataString
+        parseData()
+    }
+    
+    func parseData() {
+        print("=================================")
+        print("Data we will be parsing: \(workingData.responseDataJSON)")
+        print("Number of items: \(workingData.responseDataJSON.count)")
+        print("=================================")
+
     }
 
     
