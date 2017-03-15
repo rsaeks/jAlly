@@ -220,6 +220,43 @@
                                             </label>
                                         </subviews>
                                     </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="2TD-bx-akU">
+                                        <rect key="frame" x="15" y="368" width="124" height="120"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUx-4f-8MA">
+                                                <rect key="frame" x="0.0" y="0.0" width="101" height="30"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                                <state key="normal" title="Update Inventory"/>
+                                                <connections>
+                                                    <action selector="updateInventoryPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ppt-0n-IOS"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2u-jG-CZ0">
+                                                <rect key="frame" x="0.0" y="30" width="96" height="30"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                                <state key="normal" title="Send Blank Push"/>
+                                                <connections>
+                                                    <action selector="sendBlankPushPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1aG-Ub-7br"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g0d-9b-1Er">
+                                                <rect key="frame" x="0.0" y="60" width="118" height="30"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                                <state key="normal" title="Remove Restrictions"/>
+                                                <connections>
+                                                    <action selector="removeRestrictionsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gSF-4M-pG4"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="449-FK-xc8">
+                                                <rect key="frame" x="0.0" y="90" width="124" height="30"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="13"/>
+                                                <state key="normal" title="Re-Apply Restrictions"/>
+                                                <connections>
+                                                    <action selector="reapplyRestrictionsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Nzw-AN-qzU"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="0.19416202910958905" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -229,12 +266,14 @@
                                     <constraint firstItem="bQC-G4-PHa" firstAttribute="leading" secondItem="fdc-I5-hGf" secondAttribute="leading" constant="20" id="a5V-91-bOf"/>
                                     <constraint firstItem="Ecr-Wb-fhb" firstAttribute="top" secondItem="Apn-aT-NUv" secondAttribute="bottom" constant="25" id="cN1-xH-QjW"/>
                                     <constraint firstItem="Ecr-Wb-fhb" firstAttribute="leading" secondItem="fdc-I5-hGf" secondAttribute="leading" constant="10" id="edp-af-GED"/>
+                                    <constraint firstItem="2TD-bx-akU" firstAttribute="leading" secondItem="fdc-I5-hGf" secondAttribute="leading" constant="15" id="iPo-Ap-DE9"/>
                                     <constraint firstAttribute="trailing" secondItem="Ecr-Wb-fhb" secondAttribute="trailing" constant="10" id="lIa-sI-JJS"/>
                                     <constraint firstItem="bQC-G4-PHa" firstAttribute="bottom" secondItem="r28-ni-1u3" secondAttribute="bottom" id="rHf-d1-nn5"/>
                                     <constraint firstItem="bQC-G4-PHa" firstAttribute="top" secondItem="Ecr-Wb-fhb" secondAttribute="bottom" constant="25" id="rRT-ZD-12u"/>
                                     <constraint firstItem="bQC-G4-PHa" firstAttribute="top" secondItem="r28-ni-1u3" secondAttribute="top" id="rqI-oO-RHz"/>
                                     <constraint firstItem="r28-ni-1u3" firstAttribute="leading" secondItem="bQC-G4-PHa" secondAttribute="trailing" constant="5" id="u4K-wZ-Ddx"/>
                                     <constraint firstAttribute="bottom" secondItem="bQC-G4-PHa" secondAttribute="bottom" constant="159" id="vOH-GD-zGe"/>
+                                    <constraint firstItem="2TD-bx-akU" firstAttribute="top" secondItem="r28-ni-1u3" secondAttribute="bottom" constant="20" id="zyx-bs-R1x"/>
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJF-XE-jwB">
@@ -276,7 +315,11 @@
                         <outlet property="jssPasswordLabel" destination="55V-vk-Gr4" id="8LX-uL-Sit"/>
                         <outlet property="jssURLLabel" destination="4ar-wo-Gd7" id="jYC-op-tcL"/>
                         <outlet property="jssUsernameLabel" destination="Bpk-Xt-MjI" id="eMA-0H-fzd"/>
+                        <outlet property="reapplyRestrictionsButton" destination="449-FK-xc8" id="TJM-XJ-5Z5"/>
+                        <outlet property="removeRestritionsButton" destination="g0d-9b-1Er" id="Qdh-s8-JSx"/>
+                        <outlet property="sendBlankPushButton" destination="v2u-jG-CZ0" id="91c-ON-btr"/>
                         <outlet property="snToCheck" destination="9Tv-8I-fOd" id="RAa-2V-ce9"/>
+                        <outlet property="updateInventoryButton" destination="rUx-4f-8MA" id="J9r-Qm-foJ"/>
                         <outlet property="userToCheck" destination="8Qg-ys-3iP" id="mqX-rp-8J9"/>
                         <outlet property="usernameLabel" destination="anU-UI-vvn" id="awV-WB-Tfg"/>
                     </connections>
