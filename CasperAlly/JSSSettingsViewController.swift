@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 
 
-
 class JSSSettingsViewController: UIViewController {
 
     @IBOutlet weak var JSSURL: UITextField!
@@ -25,7 +24,7 @@ class JSSSettingsViewController: UIViewController {
     
     
     @IBAction func checkURLButtonPressed(_ sender: Any) {
-        Alamofire.request(savedSettings.sharedInstance.jssURL).response { response in
+        Alamofire.request(savedSettings.sharedInstance.jssURL).responseString { response in
             let statusCode = response.response?.statusCode
             if statusCode == nil {
                 self.checkURLLabel.text = "No response"
@@ -45,22 +44,29 @@ class JSSSettingsViewController: UIViewController {
     @IBAction func checkUPPressed(_ sender: Any) {
         //let builtURL: String = savedSettings.sharedInstance.jssURL + userPath + savedSettings.sharedInstance.jssUsername
         //print(builtURL)
-        Alamofire.request(savedSettings.sharedInstance.jssURL + userPath + savedSettings.sharedInstance.jssUsername).authenticate(user: savedSettings.sharedInstance.jssUsername, password: savedSettings.sharedInstance.jssPassword).response { response in
+        Alamofire.request(savedSettings.sharedInstance.jssURL + userPath + savedSettings.sharedInstance.jssUsername).authenticate(user: savedSettings.sharedInstance.jssUsername, password: savedSettings.sharedInstance.jssPassword).responseString { response in
             let userStatusCode = response.response?.statusCode
+            //print(response.response?.statusCode)
+            // 401 = invalid password
+            // 200 = valid
+            // 404 = no assigned device to user?
+            
             if userStatusCode == nil {
                 self.checkUPLabel.text = "No Response"
             }
-            else if userStatusCode == 200 {
+            else if userStatusCode == 204 {
                 self.checkUPLabel.text = "Valid combo"
             }
             else if userStatusCode == 401 {
                 self.checkUPLabel.text = "Invalid combo"
             }
+            else if userStatusCode == 404 {
+                self.checkUPLabel.text = "Valid Combo"
+            }
             else {
                 self.checkUPLabel.text = "Other Error"
             }
         }
-
     }
     
     @IBAction func jssSaveSettings(_ sender: Any) {

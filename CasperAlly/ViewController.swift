@@ -6,11 +6,13 @@
 //  Copyright © 2017 Randy Saeks. All rights reserved.
 //
 
+// Import frameworks
 import UIKit
 import KeychainSwift
 import Alamofire
 import SwiftyJSON
 
+// Create instances
 let workingjss = JSSConfig()
 let defaultsVC = UserDefaults()
 let keychain = KeychainSwift()
@@ -20,13 +22,13 @@ let JSSQueue = DispatchGroup()
 
 class ViewController: UIViewController {
 
+    //Setup our connections to UI
     @IBOutlet weak var jssURLLabel: UILabel!
     @IBOutlet weak var jssGIDLabel: UILabel!
     @IBOutlet weak var jssUsernameLabel: UILabel!
     @IBOutlet weak var jssPasswordLabel: UILabel!
     @IBOutlet weak var userToCheck: UITextField!
     @IBOutlet weak var snToCheck: UITextField!
-    @IBOutlet weak var debugData: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var fullNameLabel: UILabel!
     @IBOutlet weak var deviceIDLabel: UILabel!
@@ -43,61 +45,60 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         updateUI()
+        setupButtons()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         //print("Main View Controller Appeared")
         updateUI()
+
     }
 
+    // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: Any) {
         if (userToCheck.text == "") {
-            //print("Need to provide a username")
         }
         else {
+            // Dismiss the keyboard with the following line
             view.endEditing(true)
             workingData.user = userToCheck.text!
-            //print("Provided Username is: \(workingData.user)")
             getUserInfo()
-            JSSQueue.notify(queue: DispatchQueue.main, execute: {
-                //print("Dispatch Queue Returned JSON Data is: \(workingData.responseDataJSON)")
-                //print("Dispatch Queue Returned String Data is: \(workingData.responseDataString)")
-                //self.debugData.text = workingData.responseDataString
-                //self.getDeviceInfo()
-                self.displayData()
-            } )
-            
-            
-//            print("===== About to call delay =====")
-//            print("Pre-delay JSON Data is: \(workingData.responseData)")
-//            print("Pre-delay  String Data is: \(workingData.responseDataString)")
-//            let delay = DispatchTime.now() + 0.1
-//            DispatchQueue.main.asyncAfter(deadline: delay) {
-//                print("===== Delay called =====")
-//                print("Delay Returned JSON Data is: \(workingData.responseData)")
-//                print("Delay Returned String Data is: \(workingData.responseDataString)")
-//                self.debugData.text = workingData.responseDataString
-//            }
-
-        }
+            JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
+            }
     }
     
+    // Run this function when the "Lookup SN" Button is pressed
     @IBAction func snToCheckPressed(_ sender: Any) {
+        
+        //
+        //
+        // TO DO: Write this code
+        //
+        //
+        //
     }
     
+    // Run this function when the "Update Inventor Button" is pressed
     @IBAction func updateInventoryPressed(_ sender: Any) {
-        print("Pressed Update Inventory")
-        //https://mdm.glencoeschools.org:8443/JSSResource/mobiledevicecommands/command/UpdateInventory/id/13 POST
-        print(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID))
+        //print("Pressed Update Inventory")
+        //print(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID))
         Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
-            print("Respons back from the JSS")
-            print(response.result)
+            //print("Respons back from the JSS")
+            //print(response.result)
             if (response.result.isSuccess) {
-                print("Sent update inventory command")
+                //print("Sent update inventory command")
+                //
+                // TO DO: Add UI element to show successful operation
+                //
+                
             }
             else {
-                print("Did not work")
-                print(response.result.error ?? "Did not get back error code")
+                //print("Did not work")
+                //print(response.result.error ?? "Did not get back error code")
+                //
+                // TO DO: Add UI element to show operation was not successful
+                //
+                
             }
         }
     }
@@ -296,6 +297,20 @@ func getUserInfo() {
 
     }
 
+    func setupButtons() {
+        updateInventoryButton.layer.borderColor = UIColor.lightGray.cgColor
+        updateInventoryButton.layer.borderWidth = 1
+        updateInventoryButton.layer.cornerRadius = 5
+        sendBlankPushButton.layer.borderColor = UIColor.lightGray.cgColor
+        sendBlankPushButton.layer.borderWidth = 1
+        sendBlankPushButton.layer.cornerRadius = 5
+        removeRestritionsButton.layer.borderColor = UIColor.lightGray.cgColor
+        removeRestritionsButton.layer.borderWidth = 1
+        removeRestritionsButton.layer.cornerRadius = 5
+        reapplyRestrictionsButton.layer.borderColor = UIColor.lightGray.cgColor
+        reapplyRestrictionsButton.layer.borderWidth = 1
+        reapplyRestrictionsButton.layer.cornerRadius = 5
+    }
     
 func updateUI() {
     //print("Update UI Function")
@@ -331,5 +346,4 @@ func updateUI() {
         //jssPasswordLabel.text = workingjss.jssPassword
     }
 }
-
 }
