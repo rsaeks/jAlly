@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12117" systemVersion="16E191a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12117" systemVersion="16E192b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -103,6 +103,9 @@
                                                         </connections>
                                                     </button>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="pia-Xg-Fjh" secondAttribute="trailing" id="xDL-Dk-g4u"/>
+                                                </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="GVf-NM-lrF" userLabel="SN SV">
                                                 <rect key="frame" x="0.0" y="36" width="302" height="30"/>
@@ -116,7 +119,7 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
-                                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbM-j1-JJX">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbM-j1-JJX">
                                                         <rect key="frame" x="220" y="0.0" width="82" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <state key="normal" title="Lookup SN"/>
@@ -129,8 +132,6 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="GVf-NM-lrF" firstAttribute="leading" secondItem="Ecr-Wb-fhb" secondAttribute="leading" id="Ecy-28-9st"/>
-                                            <constraint firstAttribute="trailing" secondItem="FVy-te-he1" secondAttribute="trailing" id="ILX-Ir-ZMC"/>
-                                            <constraint firstAttribute="trailing" secondItem="GVf-NM-lrF" secondAttribute="trailing" id="LiT-Yv-CYG"/>
                                             <constraint firstItem="FVy-te-he1" firstAttribute="leading" secondItem="Ecr-Wb-fhb" secondAttribute="leading" id="i2a-Rf-PSa"/>
                                         </constraints>
                                     </stackView>
@@ -238,8 +239,8 @@
                                             <constraint firstAttribute="bottom" secondItem="oET-ys-f07" secondAttribute="bottom" constant="16" id="X5b-Z6-Sk0"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="mgd-Lw-nuK">
-                                        <rect key="frame" x="10" y="366" width="125" height="69"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="mgd-Lw-nuK">
+                                        <rect key="frame" x="10" y="366" width="125" height="74"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUx-4f-8MA">
                                                 <rect key="frame" x="0.0" y="0.0" width="125" height="32"/>
@@ -251,7 +252,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2u-jG-CZ0">
-                                                <rect key="frame" x="0.0" y="37" width="125" height="32"/>
+                                                <rect key="frame" x="0.0" y="42" width="125" height="32"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                 <state key="normal" title="  Send Blank Push  "/>
                                                 <connections>
@@ -260,8 +261,8 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="793-9t-a7K">
-                                        <rect key="frame" x="163" y="366" width="149" height="69"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="793-9t-a7K">
+                                        <rect key="frame" x="163" y="366" width="149" height="74"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g0d-9b-1Er">
                                                 <rect key="frame" x="0.0" y="0.0" width="149" height="32"/>
@@ -272,7 +273,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="449-FK-xc8">
-                                                <rect key="frame" x="0.0" y="37" width="149" height="32"/>
+                                                <rect key="frame" x="0.0" y="42" width="149" height="32"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                 <state key="normal" title="  Re-Apply Restrictions  "/>
                                                 <connections>
@@ -292,12 +293,12 @@
                                     <constraint firstItem="793-9t-a7K" firstAttribute="top" secondItem="mgd-Lw-nuK" secondAttribute="top" id="LDm-fh-Nop"/>
                                     <constraint firstItem="r28-ni-1u3" firstAttribute="leading" secondItem="bQC-G4-PHa" secondAttribute="trailing" constant="5" id="Y2W-f1-xdF"/>
                                     <constraint firstItem="mgd-Lw-nuK" firstAttribute="top" secondItem="r28-ni-1u3" secondAttribute="bottom" constant="20" id="YDu-Bu-lcZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="793-9t-a7K" secondAttribute="trailing" constant="10" id="YvI-sy-yLZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="793-9t-a7K" secondAttribute="trailing" constant="20" id="YvI-sy-yLZ"/>
                                     <constraint firstItem="bQC-G4-PHa" firstAttribute="top" secondItem="r28-ni-1u3" secondAttribute="top" id="ah0-ND-JBF"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ecr-Wb-fhb" secondAttribute="trailing" constant="10" id="c7w-oj-G8S"/>
                                     <constraint firstItem="Apn-aT-NUv" firstAttribute="top" secondItem="fdc-I5-hGf" secondAttribute="top" constant="22" id="cqB-0s-DZI"/>
                                     <constraint firstItem="Ecr-Wb-fhb" firstAttribute="leading" secondItem="fdc-I5-hGf" secondAttribute="leading" constant="10" id="hap-VD-1qr"/>
                                     <constraint firstItem="mgd-Lw-nuK" firstAttribute="leading" secondItem="fdc-I5-hGf" secondAttribute="leading" constant="10" id="rN3-7F-pbq"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ecr-Wb-fhb" secondAttribute="trailing" constant="20" id="vvU-Dd-DfV"/>
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJF-XE-jwB">

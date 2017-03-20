@@ -26,6 +26,7 @@ class JSSSettingsViewController: UIViewController {
     @IBAction func checkURLButtonPressed(_ sender: Any) {
         Alamofire.request(savedSettings.sharedInstance.jssURL).responseString { response in
             let statusCode = response.response?.statusCode
+            print(statusCode ?? 999)
             if statusCode == nil {
                 self.checkURLLabel.text = "No response"
             }
@@ -50,11 +51,11 @@ class JSSSettingsViewController: UIViewController {
             // 401 = invalid password
             // 200 = valid
             // 404 = no assigned device to user?
-            
+            print(userStatusCode ?? 999)
             if userStatusCode == nil {
                 self.checkUPLabel.text = "No Response"
             }
-            else if userStatusCode == 204 {
+            else if userStatusCode == 200 {
                 self.checkUPLabel.text = "Valid combo"
             }
             else if userStatusCode == 401 {

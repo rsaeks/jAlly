@@ -45,7 +45,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         updateUI()
-        setupButtons()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -69,6 +68,15 @@ class ViewController: UIViewController {
     
     // Run this function when the "Lookup SN" Button is pressed
     @IBAction func snToCheckPressed(_ sender: Any) {
+        if (snToCheck.text == "" ){
+            
+        }
+        else {
+            view.endEditing(true)
+            workingData.deviceSN = snToCheck.text!
+            lookupSN()
+            JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
+        }
         
         //
         //
@@ -181,6 +189,48 @@ class ViewController: UIViewController {
     }
     
     
+    func lookupSN() {
+        JSSQueue.enter()
+        // https://mdm.glencoeschools.org:8443/JSSResource/mobiledevices/serialnumber/THESN
+        Alamofire.request(workingjss.jssURL + devAPISNPath + workingData.deviceSN, method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+            print(response.result.value ?? "Default")
+            let tempData = response.result.value!
+            if (response.result.isSuccess) {
+                print("Got data back ==============")
+                print(tempData)
+                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+                    if let mobileDeviceData = outerDict["mobile_device"] as? Dictionary <String,AnyObject> {
+                        if let generalData = mobileDeviceData["general"] as? Dictionary <String, AnyObject> {
+                            if let ip_address = generalData["ip_address"] as? String {
+                                //print(ip_address)
+                                workingData.deviceIPAddress = ip_address
+                            }
+                            if let inventoryTime = generalData["last_inventory_update"] as? String {
+                                workingData.lastInventory = inventoryTime
+                            }
+                            if let macAddress = generalData["wifi_mac_address"] as? String {
+                                workingData.deviceMAC = macAddress
+                            }
+                            if let deviceID = generalData["id"] as? Int {
+                                workingData.deviceID = deviceID
+                            }
+                        }
+                        if let location = mobileDeviceData["location"] as? Dictionary <String, AnyObject> {
+                            if let username = location["username"] as? String {
+                                workingData.user = username
+                                self.userToCheck.text = workingData.user
+                            }
+                            if let fullName = location["realname"] as? String {
+                                workingData.realName = fullName
+                            }
+                        }
+                    }
+                }
+                //print("End of data for device -------------------")
+                JSSQueue.leave()
+            }
+        }
+    }
     
 // Add Function here to get user data
     
@@ -287,6 +337,7 @@ func getUserInfo() {
         sendBlankPushButton.isEnabled = true
         removeRestritionsButton.isEnabled = true
         reapplyRestrictionsButton.isEnabled = true
+        setupButtons()
     }
     
     func parseData() {
