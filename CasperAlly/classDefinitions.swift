@@ -23,11 +23,37 @@ class JSSConfig {
     var exclusinGID: String
     var jssUsername: String
     var jssPassword: String
+    var mobileDeviceKey: String
+    var mobileDevicesKey: String
+    var generalKey: String
+    var ipAddressKey: String
+    var inventoryTimeKey: String
+    var wifiMACKey: String
+    var idKey: String
+    var locationKey: String
+    var usernameKey: String
+    var realNameKey: String
+    var deviceNameKey: String
+    var serialNumberKey: String
+    var MACAddressKey: String
     init() {
         jssURL = ""
         exclusinGID = ""
         jssUsername = ""
         jssPassword = ""
+        mobileDeviceKey = "mobile_device"
+        mobileDevicesKey = "mobile_devices"
+        generalKey = "general"
+        ipAddressKey = "ip_address"
+        inventoryTimeKey = "last_inventory_update"
+        wifiMACKey = "wifi_mac_address"
+        idKey = "id"
+        locationKey = "location"
+        usernameKey = "username"
+        realNameKey = "realname"
+        deviceNameKey = "name"
+        serialNumberKey = "serial_number"
+        MACAddressKey = "mac_address"
     }
 }
 
@@ -35,8 +61,8 @@ class JSSData {
     var user: String
     var deviceSN: String
     var deviceMAC: String
-    var responseDataJSON: [String:Any]
-    var responseDataString: String
+    var responseDataJSON: [String:Any] // Look to phase out
+    var responseDataString: String // Look tp phase out
     var deviceName: String
     var deviceID: Int
     var realName: String

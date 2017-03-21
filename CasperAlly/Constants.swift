@@ -25,10 +25,16 @@ let devAPIUpdateInventoryPath = "\(API_BASE)\(MOBILE_DEV_CMD)UpdateInventory/id/
 let devAPIBlankPushPath = "\(API_BASE)\(MOBILE_DEV_CMD)BlankPush/id/"
 let userPath = "\(API_BASE)\(USER_PATH)"
 
+// Header options
 let headers = [
     "Accept":"application/json",
 ]
-
 let xmlHeaders = [
     "Content-Type":"text/xml",
 ]
+
+// XML strings
+let devGroupAdditionLeft = "<mobile_device_group><mobile_device_additions><mobile_device><id>"
+let devGroupAdditionRight = "</id></mobile_device></mobile_device_additions></mobile_device_group>"
+let devGroupDeletionLeft = "<mobile_device_group><mobile_device_deletions><mobile_device><id>"
+let devGroupDeletionRight = "</id></mobile_device></mobile_device_deletions></mobile_device_group>"
