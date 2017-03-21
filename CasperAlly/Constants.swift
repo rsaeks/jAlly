@@ -28,3 +28,7 @@ let userPath = "\(API_BASE)\(USER_PATH)"
 let headers = [
     "Accept":"application/json",
 ]
+
+let xmlHeaders = [
+    "Content-Type":"text/xml",
+]

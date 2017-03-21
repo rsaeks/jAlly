@@ -50,50 +50,39 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         //print("Main View Controller Appeared")
         updateUI()
-
     }
 
     // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: Any) {
-        if (userToCheck.text == "") {
-        }
-        else {
-            // Dismiss the keyboard with the following line
+        if (userToCheck.text != "") {
+             //Dismiss the keyboard with the following line
             view.endEditing(true)
             workingData.user = userToCheck.text!
             getUserInfo()
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
-            }
+        }
     }
     
     // Run this function when the "Lookup SN" Button is pressed
     @IBAction func snToCheckPressed(_ sender: Any) {
-        if (snToCheck.text == "" ){
-            
-        }
-        else {
+        if (snToCheck.text != "") {
             view.endEditing(true)
             workingData.deviceSN = snToCheck.text!
             lookupSN()
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
         }
-        
-        //
-        //
-        // TO DO: Write this code
-        //
-        //
-        //
     }
     
     // Run this function when the "Update Inventor Button" is pressed
     @IBAction func updateInventoryPressed(_ sender: Any) {
+        setupButtons()
         //print("Pressed Update Inventory")
         //print(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID))
         Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             //print("Respons back from the JSS")
             //print(response.result)
             if (response.result.isSuccess) {
+                self.updateInventoryButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
                 //print("Sent update inventory command")
                 //
                 // TO DO: Add UI element to show successful operation
@@ -101,6 +90,7 @@ class ViewController: UIViewController {
                 
             }
             else {
+                self.updateInventoryButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
                 //print("Did not work")
                 //print(response.result.error ?? "Did not get back error code")
                 //
@@ -113,6 +103,7 @@ class ViewController: UIViewController {
     
     
     @IBAction func sendBlankPushPressed(_ sender: Any) {
+        setupButtons()
         print("Send blank push pressed")
         print(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID))
         Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
@@ -120,8 +111,10 @@ class ViewController: UIViewController {
             print(response.result)
             if(response.result.isSuccess) {
                 print("Sent blank push")
+                self.sendBlankPushButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
             }
             else {
+                self.sendBlankPushButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
                 print("Did not work")
                 print(response.result.error ?? "Did not get back error code")
             }
@@ -129,11 +122,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func removeRestrictionsPressed(_ sender: Any) {
+        setupButtons()
         print("Remove Restrictions Pressed")
-        // Add Headers
-        let removeHeaders = [
-            "Content-Type":"text/xml",
-            ]
         
         // Custom Body Encoding
         struct RawDataEncoding: ParameterEncoding {
@@ -146,24 +136,23 @@ class ViewController: UIViewController {
         }
         // Fetch Request
         print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
-        Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: removeHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
+        Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
+                    self.removeRestritionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
                     print("Added to troubleshooting group")
                     debugPrint("HTTP Response Body: \(response.data!)")
                 }
                 else {
+                    self.removeRestritionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
                     debugPrint("HTTP Request failed: \(response.result.error!)")
                 }
         }
     }
     
     @IBAction func reapplyRestrictionsPressed(_ sender: Any) {
+        setupButtons()
         print("Reapply Restrictions Pressed")
-        // Add Headers
-        let reapplyHeaders = [
-            "Content-Type":"text/xml",
-            ]
         
         // Custom Body Encoding
         struct RawDataEncoding: ParameterEncoding {
@@ -176,13 +165,16 @@ class ViewController: UIViewController {
         }
         // Fetch Request
         print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
-        Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: reapplyHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
+        Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
+                    self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
                     print("Removed from troubleshooting group")
                     debugPrint("HTTP Response Body: \(response.data!)")
                 }
                 else {
+                    self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+
                     debugPrint("HTTP Request failed: \(response.result.error!)")
                 }
         }
@@ -338,14 +330,6 @@ func getUserInfo() {
         removeRestritionsButton.isEnabled = true
         reapplyRestrictionsButton.isEnabled = true
         setupButtons()
-    }
-    
-    func parseData() {
-        //print("=================================")
-        //print("Data we will be parsing: \(workingData.responseDataJSON)")
-        //print("Number of items: \(workingData.responseDataJSON.count)")
-        //print("=================================")
-
     }
 
     func setupButtons() {
