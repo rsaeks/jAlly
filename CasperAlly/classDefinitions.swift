@@ -28,7 +28,6 @@ class JSSConfig {
     var generalKey: String
     var ipAddressKey: String
     var inventoryTimeKey: String
-    var wifiMACKey: String
     var idKey: String
     var locationKey: String
     var usernameKey: String
@@ -46,7 +45,6 @@ class JSSConfig {
         generalKey = "general"
         ipAddressKey = "ip_address"
         inventoryTimeKey = "last_inventory_update"
-        wifiMACKey = "wifi_mac_address"
         idKey = "id"
         locationKey = "location"
         usernameKey = "username"
