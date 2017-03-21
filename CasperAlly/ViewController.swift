@@ -48,14 +48,12 @@ class ViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        //print("Main View Controller Appeared")
         updateUI()
     }
 
     // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: Any) {
         if (userToCheck.text != "") {
-             //Dismiss the keyboard with the following line
             view.endEditing(true)
             workingData.user = userToCheck.text!
             getUserInfo()
@@ -76,56 +74,31 @@ class ViewController: UIViewController {
     // Run this function when the "Update Inventor Button" is pressed
     @IBAction func updateInventoryPressed(_ sender: Any) {
         setupButtons()
-        //print("Pressed Update Inventory")
-        //print(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID))
-        Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
-            //print("Respons back from the JSS")
-            //print(response.result)
+            Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if (response.result.isSuccess) {
                 self.updateInventoryButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
-                //print("Sent update inventory command")
-                //
-                // TO DO: Add UI element to show successful operation
-                //
-                
             }
             else {
                 self.updateInventoryButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
-                //print("Did not work")
-                //print(response.result.error ?? "Did not get back error code")
-                //
-                // TO DO: Add UI element to show operation was not successful
-                //
-                
-            }
+                }
         }
     }
     
     
     @IBAction func sendBlankPushPressed(_ sender: Any) {
         setupButtons()
-        print("Send blank push pressed")
-        print(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID))
         Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
-            print("Resposne back from the JSS")
-            print(response.result)
             if(response.result.isSuccess) {
-                print("Sent blank push")
                 self.sendBlankPushButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
             }
             else {
                 self.sendBlankPushButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
-                print("Did not work")
-                print(response.result.error ?? "Did not get back error code")
             }
         }
     }
     
     @IBAction func removeRestrictionsPressed(_ sender: Any) {
         setupButtons()
-        print("Remove Restrictions Pressed")
-        
-        // Custom Body Encoding
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
             public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
@@ -134,27 +107,24 @@ class ViewController: UIViewController {
                 return request
             }
         }
-        // Fetch Request
-        print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
+        //print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
                     self.removeRestritionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
-                    print("Added to troubleshooting group")
-                    debugPrint("HTTP Response Body: \(response.data!)")
+                    //print("Added to troubleshooting group")
+                    //debugPrint("HTTP Response Body: \(response.data!)")
                 }
                 else {
                     self.removeRestritionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
-                    debugPrint("HTTP Request failed: \(response.result.error!)")
+                    //debugPrint("HTTP Request failed: \(response.result.error!)")
                 }
         }
     }
     
     @IBAction func reapplyRestrictionsPressed(_ sender: Any) {
         setupButtons()
-        print("Reapply Restrictions Pressed")
-        
-        // Custom Body Encoding
+        //print("Reapply Restrictions Pressed")
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
             public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
@@ -169,13 +139,13 @@ class ViewController: UIViewController {
             .responseString { response in
                 if (response.result.isSuccess) {
                     self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
-                    print("Removed from troubleshooting group")
-                    debugPrint("HTTP Response Body: \(response.data!)")
+                    //print("Removed from troubleshooting group")
+                    //debugPrint("HTTP Response Body: \(response.data!)")
                 }
                 else {
                     self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
 
-                    debugPrint("HTTP Request failed: \(response.result.error!)")
+                    //debugPrint("HTTP Request failed: \(response.result.error!)")
                 }
         }
     }
@@ -183,13 +153,16 @@ class ViewController: UIViewController {
     
     func lookupSN() {
         JSSQueue.enter()
-        // https://mdm.glencoeschools.org:8443/JSSResource/mobiledevices/serialnumber/THESN
         Alamofire.request(workingjss.jssURL + devAPISNPath + workingData.deviceSN, method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
-            print(response.result.value ?? "Default")
-            let tempData = response.result.value!
-            if (response.result.isSuccess) {
-                print("Got data back ==============")
-                print(tempData)
+            if (response.response?.statusCode == 404) {
+                let noSNFound = UIAlertController(title: "No device found", message: "Could not find a device with serial number \(workingData.deviceSN).", preferredStyle: UIAlertControllerStyle.alert)
+                noSNFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(noSNFound, animated: true)
+            }
+            //let tempData = response.result.value!
+            else if (response.result.isSuccess) {
+                //print("Got data back ==============")
+                //print(tempData)
                 if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
                     if let mobileDeviceData = outerDict["mobile_device"] as? Dictionary <String,AnyObject> {
                         if let generalData = mobileDeviceData["general"] as? Dictionary <String, AnyObject> {
@@ -218,13 +191,11 @@ class ViewController: UIViewController {
                         }
                     }
                 }
+            }
                 //print("End of data for device -------------------")
                 JSSQueue.leave()
-            }
         }
     }
-    
-// Add Function here to get user data
     
 func getUserInfo() {
         // Add two queue tasks to disparch queue
@@ -241,36 +212,42 @@ func getUserInfo() {
                     //print(response.result.value!)
                     //print("End of JSON we are going to store ---------------")
                     //workingData.responseDataJSON = (response.result.value as? [String:Any])!
-                    workingData.responseDataJSON = response.result.value as! [String : Any]
+                    //workingData.responseDataJSON = response.result.value as! [String : Any]
                     
                     if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
                         if let mobileDevice = outerDict["mobile_devices"] as? [Dictionary<String,AnyObject>] {
-                            let numberOfDevices = mobileDevice.count
-                            print("Number of items in array is: \(numberOfDevices)")
-                            if let deviceName = mobileDevice[0]["name"] as? String {
-                                print("The name of the device is: \(deviceName)")
-                                workingData.deviceName = deviceName
+                            if mobileDevice.count > 0 {
+                                print("Number of items in array is: \(mobileDevice.count)")
+                                if let deviceName = mobileDevice[0]["name"] as? String {
+                                    print("The name of the device is: \(deviceName)")
+                                    workingData.deviceName = deviceName
+                                    }
+                                if let deviceSN = mobileDevice[0]["serial_number"] as? String {
+                                    print("The device Serial NUmber is: \(deviceSN)")
+                                    workingData.deviceSN = deviceSN
                                 }
-                            if let deviceSN = mobileDevice[0]["serial_number"] as? String {
-                                print("The device Serial NUmber is: \(deviceSN)")
-                                workingData.deviceSN = deviceSN
+                                if let deviceMAC = mobileDevice[0]["mac_address"] as? String {
+                                    print("The deivce MAC Address is: \(deviceMAC)")
+                                    workingData.deviceMAC = deviceMAC
+                                }
+                                if let deviceID = mobileDevice[0]["id"] as? Int {
+                                    print("The devie ID is: \(deviceID)")
+                                    workingData.deviceID = deviceID
+                                }
+                                if let userName = mobileDevice[0]["realname"] as? String {
+                                    print("The device owner name is: \(userName)")
+                                    workingData.realName = userName
+                                }
                             }
-                            if let deviceMAC = mobileDevice[0]["mac_address"] as? String {
-                                print("The deivce MAC Address is: \(deviceMAC)")
-                                workingData.deviceMAC = deviceMAC
-                            }
-                            if let deviceID = mobileDevice[0]["id"] as? Int {
-                                print("The devie ID is: \(deviceID)")
-                                workingData.deviceID = deviceID
-                            }
-                            if let userName = mobileDevice[0]["realname"] as? String {
-                                print("The device owner name is: \(userName)")
-                                workingData.realName = userName
+                            else {
+                                let noUserFound = UIAlertController(title: "No User Found", message: "Could not find a device assigned to user \(workingData.user).", preferredStyle: UIAlertControllerStyle.alert)
+                                noUserFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                                self.present(noUserFound, animated: true)
                             }
                         }
                     }
-                    self.getDeviceInfo()
                 }
+                self.getDeviceInfo()
         }
     
         // Fetch Request in String Format
@@ -281,7 +258,7 @@ func getUserInfo() {
                 if (response.result.isSuccess) {
                     // print(response.result.isSuccess)
                     //print(response.result.value!)
-                    workingData.responseDataString = response.result.value!
+                    //workingData.responseDataString = response.result.value!
                     JSSQueue.leave()
                 }
             }
@@ -347,38 +324,38 @@ func getUserInfo() {
         reapplyRestrictionsButton.layer.cornerRadius = 5
     }
     
-func updateUI() {
-    //print("Update UI Function")
-    let testURL = defaultsVC.string(forKey: "savedJSSURL")
-    //print("\(testURL ?? "DEFAULT URL")")
-    let testExclusionGID = defaultsVC.string(forKey: "savedExclusionGID")
-    //print("\(testExclusionGID ?? "DEFAULT GID")")
-    let testJSSUsername = defaultsVC.string(forKey: "savedJSSUsername")
-    //print("\(testJSSUsername ?? "DEFAULT GID")")
-    let testJSSPassword = keychain.get("savedJSSPassword")
-    
-    // Test to make sure JSS URL is populated
-    if testURL != nil {
-        workingjss.jssURL = testURL!
-        jssURLLabel.text = workingjss.jssURL
+    func updateUI() {
+        //print("Update UI Function")
+        let testURL = defaultsVC.string(forKey: "savedJSSURL")
+        //print("\(testURL ?? "DEFAULT URL")")
+        let testExclusionGID = defaultsVC.string(forKey: "savedExclusionGID")
+        //print("\(testExclusionGID ?? "DEFAULT GID")")
+        let testJSSUsername = defaultsVC.string(forKey: "savedJSSUsername")
+        //print("\(testJSSUsername ?? "DEFAULT GID")")
+        let testJSSPassword = keychain.get("savedJSSPassword")
+        
+        // Test to make sure JSS URL is populated
+        if testURL != nil {
+            workingjss.jssURL = testURL!
+            jssURLLabel.text = workingjss.jssURL
+        }
+     
+        // Test to make sure JSS exclusion GID is populated
+        if testExclusionGID != nil {
+            workingjss.exclusinGID = testExclusionGID!
+            jssGIDLabel.text = workingjss.exclusinGID
+        }
+        
+        // Test to make sure JSS Username is populated
+        if testJSSUsername != nil {
+            workingjss.jssUsername = testJSSUsername!
+            jssUsernameLabel.text = workingjss.jssUsername
+        }
+        
+        // Test to make sure JSS Username is populated
+        if testJSSPassword != nil {
+            workingjss.jssPassword = testJSSPassword!
+            //jssPasswordLabel.text = workingjss.jssPassword
+        }
     }
- 
-    // Test to make sure JSS exclusion GID is populated
-    if testExclusionGID != nil {
-        workingjss.exclusinGID = testExclusionGID!
-        jssGIDLabel.text = workingjss.exclusinGID
-    }
-    
-    // Test to make sure JSS Username is populated
-    if testJSSUsername != nil {
-        workingjss.jssUsername = testJSSUsername!
-        jssUsernameLabel.text = workingjss.jssUsername
-    }
-    
-    // Test to make sure JSS Username is populated
-    if testJSSPassword != nil {
-        workingjss.jssPassword = testJSSPassword!
-        //jssPasswordLabel.text = workingjss.jssPassword
-    }
-}
 }
