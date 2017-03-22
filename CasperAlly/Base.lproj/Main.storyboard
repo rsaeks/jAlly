@@ -145,6 +145,9 @@
                                                         <rect key="frame" x="200" y="0.0" width="102" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <state key="normal" title="Lookup Inv#"/>
+                                                        <connections>
+                                                            <action selector="lookupInventoryNumber:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SBu-62-80Q"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -375,6 +378,7 @@
                         <outlet property="jssUsernameLabel" destination="Bpk-Xt-MjI" id="eMA-0H-fzd"/>
                         <outlet property="reapplyRestrictionsButton" destination="449-FK-xc8" id="TJM-XJ-5Z5"/>
                         <outlet property="removeRestritionsButton" destination="g0d-9b-1Er" id="Qdh-s8-JSx"/>
+                        <outlet property="scanBarcodeButton" destination="6jc-b7-lfK" id="2vQ-Eu-Umh"/>
                         <outlet property="sendBlankPushButton" destination="v2u-jG-CZ0" id="91c-ON-btr"/>
                         <outlet property="snToCheck" destination="9Tv-8I-fOd" id="RAa-2V-ce9"/>
                         <outlet property="updateInventoryButton" destination="rUx-4f-8MA" id="J9r-Qm-foJ"/>

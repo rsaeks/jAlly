@@ -35,6 +35,7 @@ class JSSConfig {
     var deviceNameKey: String
     var serialNumberKey: String
     var MACAddressKey: String
+    var inventoryKey: String
     init() {
         jssURL = ""
         exclusinGID = ""
@@ -52,6 +53,7 @@ class JSSConfig {
         deviceNameKey = "name"
         serialNumberKey = "serial_number"
         MACAddressKey = "mac_address"
+        inventoryKey = "asset_tag"
     }
 }
 

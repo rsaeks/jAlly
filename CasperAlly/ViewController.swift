@@ -43,6 +43,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var sendBlankPushButton: UIButton!
     @IBOutlet weak var removeRestritionsButton: UIButton!
     @IBOutlet weak var reapplyRestrictionsButton: UIButton!
+    @IBOutlet weak var scanBarcodeButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +53,9 @@ class ViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         updateUI()
+        scanBarcodeButton.layer.borderColor = UIColor.lightGray.cgColor
+        scanBarcodeButton.layer.borderWidth = 2
+        scanBarcodeButton.layer.cornerRadius = 5
     }
 
     // Run this function when the "Lookup User" Button is pressed
@@ -74,6 +78,13 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func lookupInventoryNumber(_ sender: Any) {
+        if (invNumToCheck.text != "") {
+            view.endEditing(true)
+            lookupInventory()
+            JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
+        }
+    }
     // Run this function when the "Update Inventor Button" is pressed
     @IBAction func updateInventoryPressed(_ sender: Any) {
         setupButtons()
@@ -174,6 +185,55 @@ class ViewController: UIViewController {
     //End Barcode scanner additions
     //
     //
+    
+    func lookupInventory () {
+        JSSQueue.enter()
+        JSSQueue.enter()
+        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.deviceInventoryNumber, method: .get, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+                if (response.result.isSuccess) {
+                    if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+                        if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
+                            if mobileDevice.count > 0 {
+                                if let deviceName = mobileDevice[0][workingjss.deviceNameKey] as? String {
+                                    workingData.deviceName = deviceName
+                                }
+                                if let deviceSN = mobileDevice[0][workingjss.serialNumberKey] as? String {
+                                    workingData.deviceSN = deviceSN
+                                }
+                                if let deviceMAC = mobileDevice[0][workingjss.MACAddressKey] as? String {
+                                    workingData.deviceMAC = deviceMAC
+                                }
+                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+                                    workingData.deviceID = deviceID
+                                }
+                                if let userName = mobileDevice[0][workingjss.realNameKey] as? String {
+                                    workingData.realName = userName
+                                }
+                                if let userShortName = mobileDevice[0][workingjss.usernameKey] as? String {
+                                    workingData.user = userShortName
+                                }
+                            }
+                            else {
+                                let noUserFound = UIAlertController(title: "Unable to locate asset tag", message: "Could not find a device with asset tag  \(workingData.deviceInventoryNumber).", preferredStyle: UIAlertControllerStyle.alert)
+                                noUserFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                                self.present(noUserFound, animated: true)
+                                JSSQueue.leave()
+                            }
+                        }
+                    }
+                }
+                self.getDeviceInfo()
+        }
+        
+        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+                if (response.result.isSuccess) {
+                    JSSQueue.leave()
+                }
+        }
+
+            }
     
     
     func lookupSN() {
@@ -290,6 +350,7 @@ func getUserInfo() {
         usernameLabel.text = workingData.user
         fullNameLabel.text = workingData.realName
         snToCheck.text = workingData.deviceSN
+        userToCheck.text = workingData.user
         deviceIPLabel.text = workingData.deviceIPAddress
         deviceInventorylabel.text = workingData.lastInventory
         enableButtons()
@@ -297,7 +358,6 @@ func getUserInfo() {
     
     func displayInvNumber() {
         invNumToCheck.text = workingData.deviceInventoryNumber
-    
     }
 
     func enableButtons() {
@@ -321,7 +381,7 @@ func getUserInfo() {
         reapplyRestrictionsButton.layer.borderColor = UIColor.lightGray.cgColor
         reapplyRestrictionsButton.layer.borderWidth = 2
         reapplyRestrictionsButton.layer.cornerRadius = 5
-    }
+        }
     
     func updateUI() {
         let testURL = defaultsVC.string(forKey: "savedJSSURL")
