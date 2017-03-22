@@ -11,6 +11,7 @@ import UIKit
 import KeychainSwift
 import Alamofire
 import SwiftyJSON
+import BarcodeScanner
 
 // Create instances
 let workingjss = JSSConfig()
@@ -18,6 +19,7 @@ let defaultsVC = UserDefaults()
 let keychain = KeychainSwift()
 let workingData = JSSData()
 let JSSQueue = DispatchGroup()
+let controller = BarcodeScannerController()
 
 
 class ViewController: UIViewController {
@@ -29,6 +31,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var jssPasswordLabel: UILabel!
     @IBOutlet weak var userToCheck: UITextField!
     @IBOutlet weak var snToCheck: UITextField!
+    @IBOutlet weak var invNumToCheck: UITextField!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var fullNameLabel: UILabel!
     @IBOutlet weak var deviceIDLabel: UILabel!
@@ -145,6 +148,32 @@ class ViewController: UIViewController {
                 }
         }
     }
+    
+    
+    // BARCODE SCANNING ADDITIONS
+    //
+    //
+    
+    @IBAction func scanBarCodePressed(_ sender: Any) {
+        controller.reset()
+        controller.codeDelegate = self
+        controller.errorDelegate = self
+        controller.dismissalDelegate = self
+        print("Presenting the UI")
+        present(controller, animated: true, completion: nil)
+        //print("Function Called and returned this ----> \(workingData.deviceInventoryNumber)")
+        //if (workingData.deviceInventoryNumber != "ToScan") {
+         //   print("Inventory number passed check")
+         //   invNumToCheck.text = workingData.deviceInventoryNumber
+        //}
+        //else {
+        //    print("Inventory Number did not pass check")
+        //}
+    }
+    
+    //End Barcode scanner additions
+    //
+    //
     
     
     func lookupSN() {
@@ -265,6 +294,11 @@ func getUserInfo() {
         deviceInventorylabel.text = workingData.lastInventory
         enableButtons()
         }
+    
+    func displayInvNumber() {
+        invNumToCheck.text = workingData.deviceInventoryNumber
+    
+    }
 
     func enableButtons() {
         updateInventoryButton.isEnabled = true
@@ -318,5 +352,32 @@ func getUserInfo() {
             workingjss.jssPassword = testJSSPassword!
             //jssPasswordLabel.text = workingjss.jssPassword
         }
+    }
+}
+
+// Barcode Scanning Addition
+//
+extension ViewController: BarcodeScannerCodeDelegate {
+    
+    func barcodeScanner(_ controller: BarcodeScannerController, didCaptureCode code: String, type: String) {
+        //print(code)
+        workingData.deviceInventoryNumber = code
+        print("Set inventory info as follows: \(workingData.deviceInventoryNumber)")
+        self.invNumToCheck.text = workingData.deviceInventoryNumber
+        controller.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension ViewController: BarcodeScannerErrorDelegate {
+    
+    func barcodeScanner(_ controller: BarcodeScannerController, didReceiveError error: Error) {
+        print(error)
+    }
+}
+
+extension ViewController: BarcodeScannerDismissalDelegate {
+    
+    func barcodeScannerDidDismiss(_ controller: BarcodeScannerController) {
+        controller.dismiss(animated: true, completion: nil)
     }
 }

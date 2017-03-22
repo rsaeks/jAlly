@@ -9,6 +9,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>BarcodeScanner-BarcodeScanner.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>BarcodeScanner.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>KeychainSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,12 +37,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>21F6CDD95162993A169BB3FAB56025DE</key>
+		<key>1CA9F57A85DA591F2851859FF941BE71</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>35680B9A155AF86D8A1266067AA9533A</key>
+		<key>2D0E1FF1272770259C68078F549263EB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -42,7 +52,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>4763FA09B6D3E9FA163156F72024D256</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EFAAB8230EA40F1F8FE61671783A5DEF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

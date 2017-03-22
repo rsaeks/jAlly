@@ -110,7 +110,6 @@
 				046F24801E4CD5E3005013E5 /* Resources */,
 				A89876DD0577F8CD21C1C957 /* [CP] Embed Pods Frameworks */,
 				30F5486CC69359A331BBF3B6 /* [CP] Copy Pods Resources */,
-				D5D472461E818C0300AC40CD /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -213,19 +212,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		D5D472461E818C0300AC40CD /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# based on http://tgoode.com/2014/06/05/sensible-way-increment-bundle-version-cfbundleversion-xcode\nif git rev-parse --is-inside-work-tree 2> /dev/null > /dev/null; then\necho \"Setting CFBundleVersion to Git rev-list --count\"\nbuild_number=$(git rev-list HEAD --count)\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $build_number\" \"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}\"\nelse\necho \"Not in a Git repo, not setting CFBundleVersion\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
