@@ -28,7 +28,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var jssURLLabel: UILabel!
     @IBOutlet weak var jssGIDLabel: UILabel!
     @IBOutlet weak var jssUsernameLabel: UILabel!
-    @IBOutlet weak var jssPasswordLabel: UILabel!
     @IBOutlet weak var userToCheck: UITextField!
     @IBOutlet weak var snToCheck: UITextField!
     @IBOutlet weak var invNumToCheck: UITextField!
@@ -88,7 +87,7 @@ class ViewController: UIViewController {
     // Run this function when the "Update Inventor Button" is pressed
     @IBAction func updateInventoryPressed(_ sender: Any) {
         setupButtons()
-            Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+            Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if (response.result.isSuccess) {
                 self.updateInventoryButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
             }
@@ -101,7 +100,7 @@ class ViewController: UIViewController {
     
     @IBAction func sendBlankPushPressed(_ sender: Any) {
         setupButtons()
-        Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+        Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
                 self.sendBlankPushButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
             }
@@ -123,7 +122,7 @@ class ViewController: UIViewController {
         }
         //print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
-            .responseJSON { response in
+            .responseString { response in
                 if (response.result.isSuccess) {
                     self.removeRestritionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
                     //print("Added to troubleshooting group")
@@ -150,7 +149,7 @@ class ViewController: UIViewController {
         // Fetch Request
         print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
-            .responseJSON { response in
+            .responseString { response in
                 if (response.result.isSuccess) {
                     self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
                 }
