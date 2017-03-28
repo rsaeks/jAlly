@@ -42,6 +42,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var sendBlankPushButton: UIButton!
     @IBOutlet weak var removeRestritionsButton: UIButton!
     @IBOutlet weak var reapplyRestrictionsButton: UIButton!
+    @IBOutlet weak var restartDeviceButton: UIButton!
+    @IBOutlet weak var shutdownDeviceButton: UIButton!
     @IBOutlet weak var scanBarcodeButton: UIButton!
     
     override func viewDidLoad() {
@@ -53,7 +55,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         updateUI()
         scanBarcodeButton.layer.borderColor = UIColor.lightGray.cgColor
-        scanBarcodeButton.layer.borderWidth = 2
+        scanBarcodeButton.layer.borderWidth = 1
         scanBarcodeButton.layer.cornerRadius = 5
     }
 
@@ -159,6 +161,34 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func restartDevicePressed(_ sender: Any) {
+        setupButtons()
+        Alamofire.request(workingjss.jssURL + devRestartPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
+            if(response.result.isSuccess) {
+                self.restartDeviceButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+            }
+            else {
+                self.restartDeviceButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+            }
+        }
+    }
+    
+    
+    
+    @IBAction func shutdownDevicePressed(_ sender: Any) {
+        setupButtons()
+        Alamofire.request(workingjss.jssURL + devShutdownPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
+            if(response.result.isSuccess) {
+                self.shutdownDeviceButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+            }
+            else {
+                self.shutdownDeviceButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+            }
+        }
+
+    }
+    
+    
     
     // BARCODE SCANNING ADDITIONS
     //
@@ -260,6 +290,14 @@ class ViewController: UIViewController {
                             if let deviceID = generalData[workingjss.idKey] as? Int {
                                 workingData.deviceID = deviceID
                             }
+                            if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
+                                workingData.lastInventoryEpoc = epochTime/1000
+                                let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
+                                let dateFormat = DateFormatter()
+                                dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
+                                dateFormat.timeZone = TimeZone.current
+                                workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
+                            }
                         }
                         if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> {
                             if let username = location[workingjss.usernameKey] as? String {
@@ -334,6 +372,19 @@ func getUserInfo() {
                             if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
                                 workingData.lastInventory = inventoryTime
                             }
+                            if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
+                                workingData.lastInventoryEpoc = epochTime/1000
+                                let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
+                                let dateFormat = DateFormatter()
+                                dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
+                                dateFormat.timeZone = TimeZone.current
+                                workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
+                            }
+
+                            if let asset_tag = generalData[workingjss.inventoryKey] as? String {
+                                workingData.deviceInventoryNumber = asset_tag
+                                self.invNumToCheck.text = workingData.deviceInventoryNumber
+                            }
                         }
                     }
                 }
@@ -351,7 +402,8 @@ func getUserInfo() {
         snToCheck.text = workingData.deviceSN
         userToCheck.text = workingData.user
         deviceIPLabel.text = workingData.deviceIPAddress
-        deviceInventorylabel.text = workingData.lastInventory
+        //deviceInventorylabel.text = workingData.lastInventory
+        deviceInventorylabel.text = workingData.lastInventoryEpocFormatted
         enableButtons()
         }
     
@@ -364,6 +416,8 @@ func getUserInfo() {
         sendBlankPushButton.isEnabled = true
         removeRestritionsButton.isEnabled = true
         reapplyRestrictionsButton.isEnabled = true
+        restartDeviceButton.isEnabled = true
+        shutdownDeviceButton.isEnabled = true
         setupButtons()
     }
 
@@ -380,6 +434,13 @@ func getUserInfo() {
         reapplyRestrictionsButton.layer.borderColor = UIColor.lightGray.cgColor
         reapplyRestrictionsButton.layer.borderWidth = 2
         reapplyRestrictionsButton.layer.cornerRadius = 5
+        restartDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
+        restartDeviceButton.layer.borderWidth = 2
+        restartDeviceButton.layer.cornerRadius = 5
+        shutdownDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
+        shutdownDeviceButton.layer.borderWidth = 2
+        shutdownDeviceButton.layer.cornerRadius = 5
+        
         }
     
     func updateUI() {

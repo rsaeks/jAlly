@@ -25,6 +25,8 @@ let devInvPath = "\(API_BASE)\(MOBILE_DEV_PATH)asset_tag/"
 let devAPIUpdateInventoryPath = "\(API_BASE)\(MOBILE_DEV_CMD)UpdateInventory/id/"
 let devAPIBlankPushPath = "\(API_BASE)\(MOBILE_DEV_CMD)BlankPush/id/"
 let userPath = "\(API_BASE)\(USER_PATH)"
+let devRestartPath = "\(API_BASE)\(MOBILE_DEV_CMD)RestartDevice/id/"
+let devShutdownPath = "\(API_BASE)\(MOBILE_DEV_CMD)ShutdownDevice/id/"
 
 // Header options
 let headers = [

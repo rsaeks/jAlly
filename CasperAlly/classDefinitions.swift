@@ -36,6 +36,7 @@ class JSSConfig {
     var serialNumberKey: String
     var MACAddressKey: String
     var inventoryKey: String
+    var epochInventroryTimekey: String
     init() {
         jssURL = ""
         exclusinGID = ""
@@ -54,6 +55,7 @@ class JSSConfig {
         serialNumberKey = "serial_number"
         MACAddressKey = "mac_address"
         inventoryKey = "asset_tag"
+        epochInventroryTimekey = "last_inventory_update_epoch"
     }
 }
 
@@ -69,6 +71,8 @@ class JSSData {
     var deviceIPAddress: String
     var lastInventory: String
     var deviceInventoryNumber: String
+    var lastInventoryEpoc: Double
+    var lastInventoryEpocFormatted: String
     init () {
         user = "defaultUser"
         deviceSN = "0"
@@ -81,5 +85,7 @@ class JSSData {
         deviceIPAddress = "0.0.0.0"
         lastInventory = "October 28"
         deviceInventoryNumber = "ToScan"
+        lastInventoryEpoc = 0.0
+        lastInventoryEpocFormatted = "To Set"
     }
 }
