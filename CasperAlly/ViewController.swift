@@ -21,6 +21,10 @@ let workingData = JSSData()
 let JSSQueue = DispatchGroup()
 let controller = BarcodeScannerController()
 
+// Setup button border colors:
+//let successColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+// let failColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+
 
 class ViewController: UIViewController {
 
@@ -116,10 +120,12 @@ class ViewController: UIViewController {
         setupButtons()
             Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if (response.result.isSuccess) {
-                self.updateInventoryButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                //self.updateInventoryButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                self.updateInventoryButton.layer.borderColor = successColor
             }
             else {
-                self.updateInventoryButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                //self.updateInventoryButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                self.updateInventoryButton.layer.borderColor = failColor
                 }
         }
     }
@@ -129,10 +135,12 @@ class ViewController: UIViewController {
         setupButtons()
         Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                self.sendBlankPushButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                //self.sendBlankPushButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                self.sendBlankPushButton.layer.borderColor = successColor
             }
             else {
-                self.sendBlankPushButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                //self.sendBlankPushButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                self.sendBlankPushButton.layer.borderColor = failColor
             }
         }
     }
@@ -150,12 +158,14 @@ class ViewController: UIViewController {
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
-                    self.removeRestritionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                    //self.removeRestritionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                    self.removeRestritionsButton.layer.borderColor = successColor
                     //print("Added to troubleshooting group")
                     //debugPrint("HTTP Response Body: \(response.data!)")
                 }
                 else {
                     self.removeRestritionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                    self.removeRestritionsButton.layer.borderColor = failColor
                     //debugPrint("HTTP Request failed: \(response.result.error!)")
                 }
         }
@@ -174,10 +184,12 @@ class ViewController: UIViewController {
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
-                    self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                    //self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                    self.reapplyRestrictionsButton.layer.borderColor = successColor
                 }
                 else {
-                    self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                    //self.reapplyRestrictionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                    self.reapplyRestrictionsButton.layer.borderColor = failColor
                 }
         }
     }
@@ -186,10 +198,12 @@ class ViewController: UIViewController {
         setupButtons()
         Alamofire.request(workingjss.jssURL + devRestartPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                self.restartDeviceButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                //self.restartDeviceButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                self.restartDeviceButton.layer.borderColor = successColor
             }
             else {
-                self.restartDeviceButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                //self.restartDeviceButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                self.restartDeviceButton.layer.borderColor = failColor
             }
         }
     }
@@ -200,10 +214,12 @@ class ViewController: UIViewController {
         setupButtons()
         Alamofire.request(workingjss.jssURL + devShutdownPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                self.shutdownDeviceButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                //self.shutdownDeviceButton.layer.borderColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+                self.shutdownDeviceButton.layer.borderColor = successColor
             }
             else {
-                self.shutdownDeviceButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                //self.shutdownDeviceButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                self.shutdownDeviceButton.layer.borderColor = failColor
             }
         }
 
@@ -227,7 +243,7 @@ class ViewController: UIViewController {
         controller.codeDelegate = self
         controller.errorDelegate = self
         controller.dismissalDelegate = self
-        print("Presenting the UI")
+        //print("Presenting the UI")
         present(controller, animated: true, completion: nil)
     }
     
@@ -521,7 +537,7 @@ func getUserInfo() {
     
     func lookupData (parameterToCheck: String, passedItem: String) {
         //JSSQueue.enter()
-        print("We are looking up the following item: \(parameterToCheck) and it is the type \(passedItem)")
+        //print("We are looking up the following item: \(parameterToCheck) and it is the type \(passedItem)")
         Alamofire.request(workingjss.jssURL + matchPath + parameterToCheck, method: .get, headers: headers)
             .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                 if (response.result.isSuccess) {
@@ -560,9 +576,9 @@ func getUserInfo() {
     func getDetails() {
         Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(workingData.deviceID), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
             if (response.result.isSuccess) {
-                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
-                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> {
-                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> {
+                if let outerDict = response.result.value as? Dictionary <String, AnyObject> { // Begin response JSON dict
+                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> { // Begin mobile_device JSON dict
+                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> { // Begin general JSON dict
                             if let ip_address = generalData[workingjss.ipAddressKey] as? String {
                                 workingData.deviceIPAddress = ip_address
                             }
@@ -598,7 +614,7 @@ func getUserInfo() {
                             //    workingData.realName = userName
                             //}
                         } // Close our general JSON dict
-                        if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> {
+                        if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> { // Begin location JSON dict
                             if let username = location[workingjss.usernameKey] as? String {
                                 workingData.user = username
                                 self.userToCheck.text = workingData.user
@@ -628,8 +644,8 @@ func getUserInfo() {
         case "assettag":
             message = inventoryNumNotFound
         default:
-            print("Other uncaught error occured")
-            JSSQueue.leave()
+            message = "Other uncaught error occured"
+            //JSSQueue.leave()
         }
         let notFoundDialog = UIAlertController(title: "Not Found", message: "\(notFoundItem)\(message) ", preferredStyle: UIAlertControllerStyle.alert)
         notFoundDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
@@ -663,23 +679,19 @@ func getUserInfo() {
 extension ViewController: BarcodeScannerCodeDelegate {
     
     func barcodeScanner(_ controller: BarcodeScannerController, didCaptureCode code: String, type: String) {
-        //print(code)
         workingData.deviceInventoryNumber = code
-        print("Set inventory info as follows: \(workingData.deviceInventoryNumber)")
         self.invNumToCheck.text = workingData.deviceInventoryNumber
         controller.dismiss(animated: true, completion: nil)
     }
 }
 
 extension ViewController: BarcodeScannerErrorDelegate {
-    
     func barcodeScanner(_ controller: BarcodeScannerController, didReceiveError error: Error) {
         print(error)
     }
 }
 
 extension ViewController: BarcodeScannerDismissalDelegate {
-    
     func barcodeScannerDidDismiss(_ controller: BarcodeScannerController) {
         controller.dismiss(animated: true, completion: nil)
     }
