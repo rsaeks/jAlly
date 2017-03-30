@@ -21,10 +21,6 @@ let workingData = JSSData()
 let JSSQueue = DispatchGroup()
 let controller = BarcodeScannerController()
 
-// Setup button border colors:
-//let successColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
-// let failColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
-
 
 class ViewController: UIViewController {
 
@@ -50,22 +46,22 @@ class ViewController: UIViewController {
     @IBOutlet weak var shutdownDeviceButton: UIButton!
     @IBOutlet weak var scanBarcodeButton: UIButton!
     
-   override func viewDidLoad() {
-        super.viewDidLoad()
-        //Do any additional setup after loading the view, typically from a nib.
-        updateUI()
-    }
+   //override func viewDidLoad() {
+   //     super.viewDidLoad()
+   //     //Do any additional setup after loading the view, typically from a nib.
+   //     updateUI()
+   // }
 
     override func viewDidAppear(_ animated: Bool) {
         updateUI()
         alwaysOnButtons()
     }
     
-    //
+    //// ------------------------------------
     //
     // --- CODE TO PROCESS INPUTS BEGIN ---
     //
-    //
+    //// ------------------------------------
         
     // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: Any) {
@@ -102,18 +98,18 @@ class ViewController: UIViewController {
         }
     }
     
-    //
+    //// ------------------------------------
     //
     // --- CODE TO PROCESS INPUTS END ---
     //
-    //
+    //// ------------------------------------
     
     
-    //
+    //// ------------------------------------
     //
     // --- CODE TO PERFORM ACTIONS BEGINS ---
     //
-    //
+    //// ------------------------------------
     
     // Run this function when the "Update Inventory Button" is pressed
     @IBAction func updateInventoryPressed(_ sender: Any) {
@@ -164,7 +160,7 @@ class ViewController: UIViewController {
                     //debugPrint("HTTP Response Body: \(response.data!)")
                 }
                 else {
-                    self.removeRestritionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
+                    //self.removeRestritionsButton.layer.borderColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
                     self.removeRestritionsButton.layer.borderColor = failColor
                     //debugPrint("HTTP Request failed: \(response.result.error!)")
                 }
@@ -225,18 +221,18 @@ class ViewController: UIViewController {
 
     }
     
-    //
+    //// ------------------------------------
     //
     // --- CODE TO PERFORM ACTIONS ENDS ---
     //
-    //
+    //// ------------------------------------
     
     
-    //
+    //// ------------------------------------
     //
     // --- BARCODE SCANNING BEGIN ---
     //
-    //
+    //// ------------------------------------
     
     @IBAction func scanBarCodePressed(_ sender: Any) {
         controller.reset()
@@ -247,199 +243,214 @@ class ViewController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
-    //
+    //// ------------------------------------
     //
     // --- BARCODE SCANNING END ---
+    //// ------------------------------------
     //
+    
+    //// ------------------------------------
     //
-    
-    func lookupInventory () {
-        JSSQueue.enter()
-        JSSQueue.enter()
-        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.deviceInventoryNumber, method: .get, headers: headers)
-            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
-                if (response.result.isSuccess) {
-                    if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
-                        if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
-                            if mobileDevice.count > 0 {
-                                if let deviceName = mobileDevice[0][workingjss.deviceNameKey] as? String {
-                                    workingData.deviceName = deviceName
-                                }
-                                if let deviceSN = mobileDevice[0][workingjss.serialNumberKey] as? String {
-                                    workingData.deviceSN = deviceSN
-                                }
-                                if let deviceMAC = mobileDevice[0][workingjss.MACAddressKey] as? String {
-                                    workingData.deviceMAC = deviceMAC
-                                }
-                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
-                                    workingData.deviceID = deviceID
-                                }
-                                if let userName = mobileDevice[0][workingjss.realNameKey] as? String {
-                                    workingData.realName = userName
-                                }
-                                if let userShortName = mobileDevice[0][workingjss.usernameKey] as? String {
-                                    workingData.user = userShortName
-                                }
-                            }
-                            else {
-                                let noUserFound = UIAlertController(title: "Unable to locate asset tag", message: "Could not find a device with asset tag  \(workingData.deviceInventoryNumber).", preferredStyle: UIAlertControllerStyle.alert)
-                                noUserFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                                self.present(noUserFound, animated: true)
-                                JSSQueue.leave()
-                            }
-                        }
-                    }
-                }
-                self.getDeviceInfo()
-        }
-        
-        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
-            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
-                if (response.result.isSuccess) {
-                    JSSQueue.leave()
-                }
-        }
-    }
-    
-    
-    func lookupSN() {
-        JSSQueue.enter()
-        Alamofire.request(workingjss.jssURL + devAPISNPath + workingData.deviceSN, method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
-            if (response.response?.statusCode == 404) {
-                let noSNFound = UIAlertController(title: "No device found", message: "Could not find a device with serial number \(workingData.deviceSN).", preferredStyle: UIAlertControllerStyle.alert)
-                noSNFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                self.present(noSNFound, animated: true)
-                JSSQueue.leave()
-            }
-            else if (response.result.isSuccess) {
-                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
-                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> {
-                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> {
-                            if let ip_address = generalData[workingjss.ipAddressKey] as? String {
-                                workingData.deviceIPAddress = ip_address
-                            }
-                            //if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
-                            //    workingData.lastInventory = inventoryTime
-                            //}
-                            if let macAddress = generalData[workingjss.MACAddressKey] as? String {
-                                workingData.deviceMAC = macAddress
-                            }
-                            if let deviceID = generalData[workingjss.idKey] as? Int {
-                                workingData.deviceID = deviceID
-                            }
-                            if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
-                                workingData.lastInventoryEpoc = epochTime/1000
-                                let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
-                                let dateFormat = DateFormatter()
-                                dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
-                                dateFormat.timeZone = TimeZone.current
-                                workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
-                            }
-                        }
-                        if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> {
-                            if let username = location[workingjss.usernameKey] as? String {
-                                workingData.user = username
-                                self.userToCheck.text = workingData.user
-                            }
-                            if let fullName = location[workingjss.realNameKey] as? String {
-                                workingData.realName = fullName
-                            }
-                        }
-                    }
-                }
-            }
-                JSSQueue.leave()
-        }
-    }
-    
-func getUserInfo() {
-        JSSQueue.enter()
-        JSSQueue.enter()
-        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
-            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
-                if (response.result.isSuccess) {
-                    if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
-                        if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
-                            if mobileDevice.count > 0 {
-                                if let deviceName = mobileDevice[0][workingjss.deviceNameKey] as? String {
-                                    workingData.deviceName = deviceName
-                                    }
-                                if let deviceSN = mobileDevice[0][workingjss.serialNumberKey] as? String {
-                                    workingData.deviceSN = deviceSN
-                                }
-                                if let deviceMAC = mobileDevice[0][workingjss.MACAddressKey] as? String {
-                                    workingData.deviceMAC = deviceMAC
-                                }
-                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
-                                    workingData.deviceID = deviceID
-                                }
-                                if let userName = mobileDevice[0][workingjss.realNameKey] as? String {
-                                    workingData.realName = userName
-                                }
-                            }
-                            else {
-                                let noUserFound = UIAlertController(title: "No User Found", message: "Could not find a device assigned to user \(workingData.user).", preferredStyle: UIAlertControllerStyle.alert)
-                                noUserFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-                                self.present(noUserFound, animated: true)
-                                JSSQueue.leave()
-                            }
-                        }
-                    }
-                }
-                self.getDeviceInfo()
-        }
-    
-        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
-            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
-                if (response.result.isSuccess) {
-                    JSSQueue.leave()
-                }
-            }
-    }
-    
-    func getDeviceInfo() {
-        Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(workingData.deviceID), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
-            if (response.result.isSuccess) {
-                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
-                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> {
-                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> {
-                            if let ip_address = generalData[workingjss.ipAddressKey] as? String {
-                                workingData.deviceIPAddress = ip_address
-                                // ******* IP ADDRESS DONE
-                            }
-                            //if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
-                            //    workingData.lastInventory = inventoryTime
-                                // ******* INVENTORY TIME DONE
-                            //}
-                            if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
-                                workingData.lastInventoryEpoc = epochTime/1000
-                                let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
-                                let dateFormat = DateFormatter()
-                                dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
-                                dateFormat.timeZone = TimeZone.current
-                                workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
-                                // ******* INVENTORY EPOCH TIME DONE
-                            }
-
-                            if let asset_tag = generalData[workingjss.inventoryKey] as? String {
-                                workingData.deviceInventoryNumber = asset_tag
-                                self.invNumToCheck.text = workingData.deviceInventoryNumber
-                                // ******* ASSET TAG DONE
-
-                            }
-                        }
-                    }
-                }
-                JSSQueue.leave()
-            }
-        }
-    }
-    
+    // --- OLD CODE BEGIN ---
+    // Test app and then remove this block
     //
+    //// ------------------------------------
+    
+//    func lookupInventory () {
+//        JSSQueue.enter()
+//        JSSQueue.enter()
+//        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.deviceInventoryNumber, method: .get, headers: headers)
+//            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+//                if (response.result.isSuccess) {
+//                    if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+//                        if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
+//                            if mobileDevice.count > 0 {
+//                                if let deviceName = mobileDevice[0][workingjss.deviceNameKey] as? String {
+//                                    workingData.deviceName = deviceName
+//                                }
+//                                if let deviceSN = mobileDevice[0][workingjss.serialNumberKey] as? String {
+//                                    workingData.deviceSN = deviceSN
+//                                }
+//                                if let deviceMAC = mobileDevice[0][workingjss.MACAddressKey] as? String {
+//                                    workingData.deviceMAC = deviceMAC
+//                                }
+//                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+//                                    workingData.deviceID = deviceID
+//                                }
+//                                if let userName = mobileDevice[0][workingjss.realNameKey] as? String {
+//                                    workingData.realName = userName
+//                                }
+//                                if let userShortName = mobileDevice[0][workingjss.usernameKey] as? String {
+//                                    workingData.user = userShortName
+//                                }
+//                            }
+//                            else {
+//                                let noUserFound = UIAlertController(title: "Unable to locate asset tag", message: "Could not find a device with asset tag  \(workingData.deviceInventoryNumber).", preferredStyle: UIAlertControllerStyle.alert)
+//                                noUserFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+//                                self.present(noUserFound, animated: true)
+//                                JSSQueue.leave()
+//                            }
+//                        }
+//                    }
+//                }
+//                self.getDeviceInfo()
+//        }
+//        
+//        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
+//            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+//                if (response.result.isSuccess) {
+//                    JSSQueue.leave()
+//                }
+//        }
+//    }
+//    
+//    
+//    func lookupSN() {
+//        JSSQueue.enter()
+//        Alamofire.request(workingjss.jssURL + devAPISNPath + workingData.deviceSN, method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+//            if (response.response?.statusCode == 404) {
+//                let noSNFound = UIAlertController(title: "No device found", message: "Could not find a device with serial number \(workingData.deviceSN).", preferredStyle: UIAlertControllerStyle.alert)
+//                noSNFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+//                self.present(noSNFound, animated: true)
+//                JSSQueue.leave()
+//            }
+//            else if (response.result.isSuccess) {
+//                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+//                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> {
+//                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> {
+//                            if let ip_address = generalData[workingjss.ipAddressKey] as? String {
+//                                workingData.deviceIPAddress = ip_address
+//                            }
+//                            //if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
+//                            //    workingData.lastInventory = inventoryTime
+//                            //}
+//                            if let macAddress = generalData[workingjss.MACAddressKey] as? String {
+//                                workingData.deviceMAC = macAddress
+//                            }
+//                            if let deviceID = generalData[workingjss.idKey] as? Int {
+//                                workingData.deviceID = deviceID
+//                            }
+//                            if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
+//                                workingData.lastInventoryEpoc = epochTime/1000
+//                                let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
+//                                let dateFormat = DateFormatter()
+//                                dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
+//                                dateFormat.timeZone = TimeZone.current
+//                                workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
+//                            }
+//                        }
+//                        if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> {
+//                            if let username = location[workingjss.usernameKey] as? String {
+//                                workingData.user = username
+//                                self.userToCheck.text = workingData.user
+//                            }
+//                            if let fullName = location[workingjss.realNameKey] as? String {
+//                                workingData.realName = fullName
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//                JSSQueue.leave()
+//        }
+//    }
+//    
+//func getUserInfo() {
+//        JSSQueue.enter()
+//        JSSQueue.enter()
+//        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
+//            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+//                if (response.result.isSuccess) {
+//                    if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+//                        if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
+//                            if mobileDevice.count > 0 {
+//                                if let deviceName = mobileDevice[0][workingjss.deviceNameKey] as? String {
+//                                    workingData.deviceName = deviceName
+//                                    }
+//                                if let deviceSN = mobileDevice[0][workingjss.serialNumberKey] as? String {
+//                                    workingData.deviceSN = deviceSN
+//                                }
+//                                if let deviceMAC = mobileDevice[0][workingjss.MACAddressKey] as? String {
+//                                    workingData.deviceMAC = deviceMAC
+//                                }
+//                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+//                                    workingData.deviceID = deviceID
+//                                }
+//                                if let userName = mobileDevice[0][workingjss.realNameKey] as? String {
+//                                    workingData.realName = userName
+//                                }
+//                            }
+//                            else {
+//                                let noUserFound = UIAlertController(title: "No User Found", message: "Could not find a device assigned to user \(workingData.user).", preferredStyle: UIAlertControllerStyle.alert)
+//                                noUserFound.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+//                                self.present(noUserFound, animated: true)
+//                                JSSQueue.leave()
+//                            }
+//                        }
+//                    }
+//                }
+//                self.getDeviceInfo()
+//        }
+//    
+//        Alamofire.request(workingjss.jssURL + devAPIMatchPath + workingData.user, method: .get, headers: headers)
+//            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+//                if (response.result.isSuccess) {
+//                    JSSQueue.leave()
+//                }
+//            }
+//    }
+//    
+//    func getDeviceInfo() {
+//        Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(workingData.deviceID), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+//            if (response.result.isSuccess) {
+//                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+//                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> {
+//                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> {
+//                            if let ip_address = generalData[workingjss.ipAddressKey] as? String {
+//                                workingData.deviceIPAddress = ip_address
+//                                // ******* IP ADDRESS DONE
+//                            }
+//                            //if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
+//                            //    workingData.lastInventory = inventoryTime
+//                                // ******* INVENTORY TIME DONE
+//                            //}
+//                            if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
+//                                workingData.lastInventoryEpoc = epochTime/1000
+//                                let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
+//                                let dateFormat = DateFormatter()
+//                                dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
+//                                dateFormat.timeZone = TimeZone.current
+//                                workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
+//                                // ******* INVENTORY EPOCH TIME DONE
+//                            }
+//
+//                            if let asset_tag = generalData[workingjss.inventoryKey] as? String {
+//                                workingData.deviceInventoryNumber = asset_tag
+//                                self.invNumToCheck.text = workingData.deviceInventoryNumber
+//                                // ******* ASSET TAG DONE
+//
+//                            }
+//                        }
+//                    }
+//                }
+//                JSSQueue.leave()
+//            }
+//        }
+//    }
+    
+    
+    //// ------------------------------------
+    //
+    // --- OLD CODE END ---
+    // Test app and then remove this block
+    //
+    //// ------------------------------------
+    
+    //// ------------------------------------
     //
     // --- UI RELATED FUNCTIONS BEGIN
     //
-    //
+    //// ------------------------------------
     
     
     func displayData() {
@@ -523,17 +534,17 @@ func getUserInfo() {
         }
     }
     
-    //
+    //// ------------------------------------
     //
     // --- UI RELATED FUNCTIONS END
     //
-    //
+    //// ------------------------------------
     
-    //
+    //// ------------------------------------
     //
     // --- CODE SIMPLIFICATION BEGIN
     //
-    //
+    //// ------------------------------------
     
     func lookupData (parameterToCheck: String, passedItem: String) {
         //JSSQueue.enter()
@@ -667,11 +678,11 @@ func getUserInfo() {
     }
     
     
-    //
+    //// ------------------------------------
     //
     // --- CODE SIMPLIFICATION END
     //
-    //
+    //// ------------------------------------
 }
 
 // Barcode Scanning extensions
