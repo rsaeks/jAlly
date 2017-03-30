@@ -16,9 +16,15 @@ let MOBILE_DEV_PATH = "mobiledevices/"
 let MOBILE_DEV_CMD = "mobiledevicecommands/command/"
 let USER_PATH = "users/name/"
 
+// Dialog Message Placeholders
+let userNameNotFound = " does not appear to have an assigned device to them in the JSS."
+let deviceSNNotFound = " does not appear to be enrolled in the JSS."
+let inventoryNumNotFound = " does not match a device asset tag in the JSS."
+
 //Constructed URL Paths
 let devAPIPath = "\(API_BASE)mobiledevicegroups/id/"
 let devAPIMatchPath = "\(API_BASE)\(MOBILE_DEV_PATH)match/"
+let matchPath = "\(API_BASE)\(MOBILE_DEV_PATH)match/"
 let devAPIMatchPathID = "\(API_BASE)\(MOBILE_DEV_PATH)id/"
 let devAPISNPath = "\(API_BASE)\(MOBILE_DEV_PATH)serialnumber/"
 let devInvPath = "\(API_BASE)\(MOBILE_DEV_PATH)asset_tag/"

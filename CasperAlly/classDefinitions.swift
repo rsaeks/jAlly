@@ -27,7 +27,7 @@ class JSSConfig {
     var mobileDevicesKey: String
     var generalKey: String
     var ipAddressKey: String
-    var inventoryTimeKey: String
+    //var inventoryTimeKey: String
     var idKey: String
     var locationKey: String
     var usernameKey: String
@@ -46,14 +46,14 @@ class JSSConfig {
         mobileDevicesKey = "mobile_devices"
         generalKey = "general"
         ipAddressKey = "ip_address"
-        inventoryTimeKey = "last_inventory_update"
+        //inventoryTimeKey = "last_inventory_update"
         idKey = "id"
         locationKey = "location"
         usernameKey = "username"
         realNameKey = "realname"
-        deviceNameKey = "name"
+        deviceNameKey = "device_name"
         serialNumberKey = "serial_number"
-        MACAddressKey = "mac_address"
+        MACAddressKey = "wifi_mac_address"
         inventoryKey = "asset_tag"
         epochInventroryTimekey = "last_inventory_update_epoch"
     }
@@ -69,7 +69,7 @@ class JSSData {
     var deviceID: Int
     var realName: String
     var deviceIPAddress: String
-    var lastInventory: String
+    //var lastInventory: String
     var deviceInventoryNumber: String
     var lastInventoryEpoc: Double
     var lastInventoryEpocFormatted: String
@@ -83,7 +83,7 @@ class JSSData {
         deviceID = 0
         realName = "RSMB"
         deviceIPAddress = "0.0.0.0"
-        lastInventory = "October 28"
+        //lastInventory = "October 28"
         deviceInventoryNumber = "ToScan"
         lastInventoryEpoc = 0.0
         lastInventoryEpocFormatted = "To Set"

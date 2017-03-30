@@ -46,25 +46,31 @@ class ViewController: UIViewController {
     @IBOutlet weak var shutdownDeviceButton: UIButton!
     @IBOutlet weak var scanBarcodeButton: UIButton!
     
-    override func viewDidLoad() {
+   override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        //Do any additional setup after loading the view, typically from a nib.
         updateUI()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         updateUI()
-        scanBarcodeButton.layer.borderColor = UIColor.lightGray.cgColor
-        scanBarcodeButton.layer.borderWidth = 1
-        scanBarcodeButton.layer.cornerRadius = 5
+        alwaysOnButtons()
     }
-
+    
+    //
+    //
+    // --- CODE TO PROCESS INPUTS BEGIN ---
+    //
+    //
+        
     // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: Any) {
         if (userToCheck.text != "") {
+            JSSQueue.enter()
             view.endEditing(true)
             workingData.user = userToCheck.text!
-            getUserInfo()
+            //getUserInfo()
+            lookupData(parameterToCheck: workingData.user, passedItem: "username")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
         }
     }
@@ -72,21 +78,40 @@ class ViewController: UIViewController {
     // Run this function when the "Lookup SN" Button is pressed
     @IBAction func snToCheckPressed(_ sender: Any) {
         if (snToCheck.text != "") {
+            JSSQueue.enter()
             view.endEditing(true)
             workingData.deviceSN = snToCheck.text!
-            lookupSN()
+            //lookupSN()
+            lookupData(parameterToCheck: workingData.deviceSN, passedItem: "serialnumber")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
         }
     }
     
     @IBAction func lookupInventoryNumber(_ sender: Any) {
         if (invNumToCheck.text != "") {
+            JSSQueue.enter()
             view.endEditing(true)
-            lookupInventory()
+            workingData.deviceInventoryNumber = invNumToCheck.text!
+            //lookupInventory()
+            lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
         }
     }
-    // Run this function when the "Update Inventor Button" is pressed
+    
+    //
+    //
+    // --- CODE TO PROCESS INPUTS END ---
+    //
+    //
+    
+    
+    //
+    //
+    // --- CODE TO PERFORM ACTIONS BEGINS ---
+    //
+    //
+    
+    // Run this function when the "Update Inventory Button" is pressed
     @IBAction func updateInventoryPressed(_ sender: Any) {
         setupButtons()
             Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
@@ -122,7 +147,6 @@ class ViewController: UIViewController {
                 return request
             }
         }
-        //print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
@@ -139,7 +163,6 @@ class ViewController: UIViewController {
     
     @IBAction func reapplyRestrictionsPressed(_ sender: Any) {
         setupButtons()
-        //print("Reapply Restrictions Pressed")
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
             public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
@@ -148,8 +171,6 @@ class ViewController: UIViewController {
                 return request
             }
         }
-        // Fetch Request
-        print(workingjss.jssURL + devAPIPath + workingjss.exclusinGID)
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
@@ -188,9 +209,16 @@ class ViewController: UIViewController {
 
     }
     
+    //
+    //
+    // --- CODE TO PERFORM ACTIONS ENDS ---
+    //
+    //
     
     
-    // BARCODE SCANNING ADDITIONS
+    //
+    //
+    // --- BARCODE SCANNING BEGIN ---
     //
     //
     
@@ -201,17 +229,11 @@ class ViewController: UIViewController {
         controller.dismissalDelegate = self
         print("Presenting the UI")
         present(controller, animated: true, completion: nil)
-        //print("Function Called and returned this ----> \(workingData.deviceInventoryNumber)")
-        //if (workingData.deviceInventoryNumber != "ToScan") {
-         //   print("Inventory number passed check")
-         //   invNumToCheck.text = workingData.deviceInventoryNumber
-        //}
-        //else {
-        //    print("Inventory Number did not pass check")
-        //}
     }
     
-    //End Barcode scanner additions
+    //
+    //
+    // --- BARCODE SCANNING END ---
     //
     //
     
@@ -261,8 +283,7 @@ class ViewController: UIViewController {
                     JSSQueue.leave()
                 }
         }
-
-            }
+    }
     
     
     func lookupSN() {
@@ -281,9 +302,9 @@ class ViewController: UIViewController {
                             if let ip_address = generalData[workingjss.ipAddressKey] as? String {
                                 workingData.deviceIPAddress = ip_address
                             }
-                            if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
-                                workingData.lastInventory = inventoryTime
-                            }
+                            //if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
+                            //    workingData.lastInventory = inventoryTime
+                            //}
                             if let macAddress = generalData[workingjss.MACAddressKey] as? String {
                                 workingData.deviceMAC = macAddress
                             }
@@ -368,10 +389,12 @@ func getUserInfo() {
                         if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> {
                             if let ip_address = generalData[workingjss.ipAddressKey] as? String {
                                 workingData.deviceIPAddress = ip_address
+                                // ******* IP ADDRESS DONE
                             }
-                            if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
-                                workingData.lastInventory = inventoryTime
-                            }
+                            //if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
+                            //    workingData.lastInventory = inventoryTime
+                                // ******* INVENTORY TIME DONE
+                            //}
                             if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
                                 workingData.lastInventoryEpoc = epochTime/1000
                                 let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
@@ -379,11 +402,14 @@ func getUserInfo() {
                                 dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
                                 dateFormat.timeZone = TimeZone.current
                                 workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
+                                // ******* INVENTORY EPOCH TIME DONE
                             }
 
                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                 workingData.deviceInventoryNumber = asset_tag
                                 self.invNumToCheck.text = workingData.deviceInventoryNumber
+                                // ******* ASSET TAG DONE
+
                             }
                         }
                     }
@@ -392,6 +418,13 @@ func getUserInfo() {
             }
         }
     }
+    
+    //
+    //
+    // --- UI RELATED FUNCTIONS BEGIN
+    //
+    //
+    
     
     func displayData() {
         deviceIDLabel.text = String(workingData.deviceID)
@@ -410,6 +443,12 @@ func getUserInfo() {
     func displayInvNumber() {
         invNumToCheck.text = workingData.deviceInventoryNumber
     }
+    
+    func alwaysOnButtons () {
+        scanBarcodeButton.layer.borderColor = UIColor.lightGray.cgColor
+        scanBarcodeButton.layer.borderWidth = 1
+        scanBarcodeButton.layer.cornerRadius = 5
+    }
 
     func enableButtons() {
         updateInventoryButton.isEnabled = true
@@ -420,7 +459,7 @@ func getUserInfo() {
         shutdownDeviceButton.isEnabled = true
         setupButtons()
     }
-
+    
     func setupButtons() {
         updateInventoryButton.layer.borderColor = UIColor.lightGray.cgColor
         updateInventoryButton.layer.borderWidth = 2
@@ -440,8 +479,7 @@ func getUserInfo() {
         shutdownDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
         shutdownDeviceButton.layer.borderWidth = 2
         shutdownDeviceButton.layer.cornerRadius = 5
-        
-        }
+    }
     
     func updateUI() {
         let testURL = defaultsVC.string(forKey: "savedJSSURL")
@@ -449,33 +487,178 @@ func getUserInfo() {
         let testJSSUsername = defaultsVC.string(forKey: "savedJSSUsername")
         let testJSSPassword = keychain.get("savedJSSPassword")
         
-        // Test to make sure JSS URL is populated
         if testURL != nil {
             workingjss.jssURL = testURL!
             jssURLLabel.text = workingjss.jssURL
         }
-     
-        // Test to make sure JSS exclusion GID is populated
+        
         if testExclusionGID != nil {
             workingjss.exclusinGID = testExclusionGID!
             jssGIDLabel.text = workingjss.exclusinGID
         }
         
-        // Test to make sure JSS Username is populated
         if testJSSUsername != nil {
             workingjss.jssUsername = testJSSUsername!
             jssUsernameLabel.text = workingjss.jssUsername
         }
         
-        // Test to make sure JSS Username is populated
         if testJSSPassword != nil {
             workingjss.jssPassword = testJSSPassword!
-            //jssPasswordLabel.text = workingjss.jssPassword
         }
     }
+    
+    //
+    //
+    // --- UI RELATED FUNCTIONS END
+    //
+    //
+    
+    //
+    //
+    // --- CODE SIMPLIFICATION BEGIN
+    //
+    //
+    
+    func lookupData (parameterToCheck: String, passedItem: String) {
+        //JSSQueue.enter()
+        print("We are looking up the following item: \(parameterToCheck) and it is the type \(passedItem)")
+        Alamofire.request(workingjss.jssURL + matchPath + parameterToCheck, method: .get, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+                if (response.result.isSuccess) {
+                    if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+                        if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
+                            if mobileDevice.count > 0 {
+                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+                                    workingData.deviceID = deviceID
+                                    //print("For \(passedItem) with value \(parameterToCheck) we found a match with \(workingData.deviceID)")
+                                    self.getDetails()
+                                }
+                            }
+                            else {
+                                self.notFound(notFoundItem: parameterToCheck, ItemType: passedItem)
+//                                switch passedItem {
+//                                case "username":
+//                                    print("\(parameterToCheck)\(userNameNotFound)")
+//                                    self.notFound(notFoundItem: parameterToCheck, ItemType: passedItem)
+//                                    //JSSQueue.leave()
+//                                case "serialnumber":
+//                                    print("\(parameterToCheck)\(deviceSNNotFound)")
+//                                    JSSQueue.leave()
+//                                case "assettag":
+//                                    print("\(parameterToCheck)\(inventoryNumNotFound)")
+//                                    JSSQueue.leave()
+//                                default:
+//                                    print("Other uncaught error occured")
+//                                    JSSQueue.leave()
+                            }
+                        }
+                    }
+                }
+            }
+    }
+
+    func getDetails() {
+        Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(workingData.deviceID), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+            if (response.result.isSuccess) {
+                if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
+                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> {
+                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> {
+                            if let ip_address = generalData[workingjss.ipAddressKey] as? String {
+                                workingData.deviceIPAddress = ip_address
+                            }
+                            //if let inventoryTime = generalData[workingjss.inventoryTimeKey] as? String {
+                            //    workingData.lastInventory = inventoryTime
+                            //}
+                            if let epochTime = generalData[workingjss.epochInventroryTimekey] as? Double {
+                                workingData.lastInventoryEpoc = epochTime/1000
+                                let date = Date(timeIntervalSince1970: workingData.lastInventoryEpoc)
+                                let dateFormat = DateFormatter()
+                                dateFormat.dateFormat = "E MM/dd/YY HH:mm a"
+                                dateFormat.timeZone = TimeZone.current
+                                workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
+                            }
+                            if let asset_tag = generalData[workingjss.inventoryKey] as? String {
+                                workingData.deviceInventoryNumber = asset_tag
+                                self.invNumToCheck.text = workingData.deviceInventoryNumber
+                            }
+                            if let deviceName = generalData[workingjss.deviceNameKey] as? String {
+                                workingData.deviceName = deviceName
+                            }
+                            if let deviceSN = generalData[workingjss.serialNumberKey] as? String {
+                                workingData.deviceSN = deviceSN
+                                self.snToCheck.text = workingData.deviceSN
+                            }
+                            if let deviceMAC = generalData[workingjss.MACAddressKey] as? String {
+                                workingData.deviceMAC = deviceMAC
+                            }
+                            if let deviceID = generalData[workingjss.idKey] as? Int {
+                                workingData.deviceID = deviceID
+                            }
+                            //if let userName = generalData[workingjss.realNameKey] as? String {
+                            //    workingData.realName = userName
+                            //}
+                        } // Close our general JSON dict
+                        if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> {
+                            if let username = location[workingjss.usernameKey] as? String {
+                                workingData.user = username
+                                self.userToCheck.text = workingData.user
+                            }
+                            if let fullName = location[workingjss.realNameKey] as? String {
+                                workingData.realName = fullName
+                            }
+                        } // Close our location JSON dict
+                    } // Close our mobile_device JSON dict
+                } // Close our response JSON
+                JSSQueue.leave()
+                //self.printResults()
+            } // Close our successful result
+            else {
+                JSSQueue.leave()
+            }
+        }
+    }
+    
+    func notFound(notFoundItem: String, ItemType: String) {
+        var message: String = ""
+        switch ItemType {
+        case "username":
+            message = userNameNotFound
+        case "serialnumber":
+            message = deviceSNNotFound
+        case "assettag":
+            message = inventoryNumNotFound
+        default:
+            print("Other uncaught error occured")
+            JSSQueue.leave()
+        }
+        let notFoundDialog = UIAlertController(title: "Not Found", message: "\(notFoundItem)\(message) ", preferredStyle: UIAlertControllerStyle.alert)
+        notFoundDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(notFoundDialog, animated: true)
+        JSSQueue.leave()
+    }
+    
+    func printResults() {
+    print("----- BEGINNING OF DEVICE INFO -----")
+    print("Username: \(workingData.user)")
+    print("Full Name: \(workingData.realName)")
+    print("Device ID: \(workingData.deviceID)")
+    print("Device SN: \(workingData.deviceSN)")
+    print("Device MAC: \(workingData.deviceMAC)")
+    print("Device IP: \(workingData.deviceIPAddress)")
+    print("Last Inventory: \(workingData.lastInventoryEpocFormatted)")
+    print("Asset Tag: \(workingData.deviceInventoryNumber)")
+    print("----- END OF DEVICE INFO -----")
+    }
+    
+    
+    //
+    //
+    // --- CODE SIMPLIFICATION END
+    //
+    //
 }
 
-// Barcode Scanning Addition
+// Barcode Scanning extensions
 //
 extension ViewController: BarcodeScannerCodeDelegate {
     
