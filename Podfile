@@ -9,4 +9,5 @@ target 'CasperAlly' do
     pod 'Alamofire', '~> 4.3'
     pod 'KeychainSwift', '~> 7.0'
     pod 'SwiftyJSON'
+    pod 'BarcodeScanner'
 end
