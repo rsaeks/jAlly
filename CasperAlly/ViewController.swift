@@ -52,6 +52,11 @@ class ViewController: UIViewController {
         updateUI()
     }
     
+    @IBAction func clearDataPressed(_ sender: Any) {
+        resetUI()
+    }
+    
+    
     //// ------------------------------------
     //
     // --- CODE TO PROCESS INPUTS BEGIN ---
@@ -401,6 +406,19 @@ class ViewController: UIViewController {
         if savedSettings.sharedInstance.snToCheck != nil {
             snToCheck.text = savedSettings.sharedInstance.snToCheck
         }
+    }
+    
+    func resetUI () {
+        userToCheck.text = ""
+        snToCheck.text = ""
+        invNumToCheck.text = ""
+        deviceIDLabel.text = "Device ID"
+        deviceSNLabel.text = "Device SN"
+        deviceMACLabel.text = "Device MAC"
+        usernameLabel.text = "Username"
+        fullNameLabel.text = "Full Name"
+        deviceIPLabel.text = "Device IP"
+        deviceInventorylabel.text = "Last Inventory"
     }
     
     //// ------------------------------------
