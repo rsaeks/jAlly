@@ -10,7 +10,6 @@
 import UIKit
 import KeychainSwift
 import Alamofire
-import SwiftyJSON
 import BarcodeScanner
 
 // Create instances
