@@ -1,18 +1,24 @@
 PODS:
   - Alamofire (4.4.0)
   - BarcodeScanner (2.0.0)
+  - GPUImage (0.1.7)
   - KeychainSwift (7.0.0)
+  - SwiftOCR (1.0):
+    - GPUImage
 
 DEPENDENCIES:
-  - Alamofire (~> 4.3)
+  - Alamofire
   - BarcodeScanner
-  - KeychainSwift (~> 7.0)
+  - KeychainSwift
+  - SwiftOCR
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   BarcodeScanner: 266ab4b479d407b74bc4b473fa5020b4523ad9e3
+  GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
   KeychainSwift: b6947435dd78cc442c64a84ae648dd0e871cf448
+  SwiftOCR: c0965eee5761acf3c780ba2c90020dc1c59de7a1
 
-PODFILE CHECKSUM: 1fc76cc7857cbd3097b79a77861047b301d7e0c8
+PODFILE CHECKSUM: 327f76415c7e76b69f0710c43fe7a9102f80c533
 
 COCOAPODS: 1.2.0

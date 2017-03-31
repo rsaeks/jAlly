@@ -6,7 +6,8 @@ target 'CasperAlly' do
   use_frameworks!
 
   # Pods for CasperAlly
-    pod 'Alamofire', '~> 4.3'
-    pod 'KeychainSwift', '~> 7.0'
+    pod 'Alamofire'
+    pod 'KeychainSwift'
     pod 'BarcodeScanner'
+    pod 'SwiftOCR'
 end

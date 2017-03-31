@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -128,10 +129,10 @@
                                 <rect key="frame" x="10" y="173" width="302" height="103"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="FVy-te-he1" userLabel="Username SV">
-                                        <rect key="frame" x="0.0" y="0.0" width="302" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="302" height="30.5"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="8Qg-ys-3iP">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="200" height="30.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="200" id="LlD-V2-NBq"/>
                                                 </constraints>
@@ -140,7 +141,7 @@
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pia-Xg-Fjh">
-                                                <rect key="frame" x="220" y="0.0" width="82" height="30"/>
+                                                <rect key="frame" x="220" y="0.0" width="82" height="30.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="Lookup User"/>
                                                 <connections>
@@ -152,20 +153,31 @@
                                             <constraint firstAttribute="trailing" secondItem="pia-Xg-Fjh" secondAttribute="trailing" id="xDL-Dk-g4u"/>
                                         </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="GVf-NM-lrF" userLabel="SN SV">
-                                        <rect key="frame" x="0.0" y="36" width="302" height="31"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="GVf-NM-lrF" userLabel="SN SV">
+                                        <rect key="frame" x="0.0" y="36.5" width="302" height="30"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Device SN" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="9Tv-8I-fOd">
-                                                <rect key="frame" x="0.0" y="0.0" width="200" height="31"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="150" height="30"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="200" id="3qx-V9-hiQ"/>
+                                                    <constraint firstAttribute="width" constant="150" id="3qx-V9-hiQ"/>
                                                 </constraints>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" autocorrectionType="no" spellCheckingType="no"/>
                                             </textField>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PcY-ug-1G2" customClass="scanButton" customModule="CasperAlly" customModuleProvider="target">
+                                                <rect key="frame" x="155" y="0.0" width="43" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="43" id="vBG-AS-yDv"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <state key="normal" title="Scan"/>
+                                                <connections>
+                                                    <segue destination="K5i-UA-PSd" kind="show" id="ANz-NE-tbN"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbM-j1-JJX">
-                                                <rect key="frame" x="220" y="0.0" width="82" height="31"/>
+                                                <rect key="frame" x="203" y="0.0" width="99" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="Lookup SN"/>
                                                 <connections>
@@ -178,10 +190,10 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fyL-pS-201">
-                                        <rect key="frame" x="0.0" y="73" width="302" height="30"/>
+                                        <rect key="frame" x="0.0" y="72.5" width="302" height="30.5"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Inventory #" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="mgg-vp-NDs">
-                                                <rect key="frame" x="0.0" y="0.0" width="150" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="150" height="30.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="150" id="FNj-fd-GmJ"/>
                                                 </constraints>
@@ -190,7 +202,7 @@
                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6jc-b7-lfK" customClass="scanButton" customModule="CasperAlly" customModuleProvider="target">
-                                                <rect key="frame" x="155" y="0.0" width="43" height="30"/>
+                                                <rect key="frame" x="155" y="0.0" width="43" height="30.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="43" id="rqJ-6e-Stz"/>
                                                 </constraints>
@@ -204,7 +216,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WII-zQ-kke">
-                                                <rect key="frame" x="203" y="0.0" width="99" height="30"/>
+                                                <rect key="frame" x="203" y="0.0" width="99" height="30.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="Lookup Inv#"/>
                                                 <connections>
@@ -696,7 +708,122 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8vx-Uc-p5q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="855" y="92.957746478873247"/>
+            <point key="canvasLocation" x="1018" y="-82"/>
+        </scene>
+        <!--Camera Scan-->
+        <scene sceneID="X2r-Ls-12l">
+            <objects>
+                <viewController id="K5i-UA-PSd" userLabel="Camera Scan" customClass="CameraVC" customModule="CasperAlly" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xOt-Cf-fJn"/>
+                        <viewControllerLayoutGuide type="bottom" id="rPj-c1-tKh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="c03-yq-NKg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qbe-za-0ES" userLabel="Camera View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0sH-pe-biK" userLabel="View Finder">
+                                <rect key="frame" x="0.0" y="240" width="320" height="88"/>
+                                <color key="backgroundColor" red="1" green="1" blue="0.0" alpha="0.33000000000000002" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="0sH-pe-biK" secondAttribute="height" multiplier="400:110" id="52N-sk-mRu"/>
+                                </constraints>
+                            </view>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="CIW-3R-9Pu">
+                                <rect key="frame" x="18" y="358" width="284" height="31"/>
+                                <connections>
+                                    <action selector="sliderValueDidChange:" destination="K5i-UA-PSd" eventType="valueChanged" id="F4w-nZ-YuZ"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99x-p2-cP3">
+                                <rect key="frame" x="160" y="100" width="0.0" height="0.0"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="JRE-a1-WdC">
+                                <rect key="frame" x="36" y="473" width="248" height="35"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zQZ-an-PAN" customClass="cameraScanButton" customModule="CasperAlly" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="119" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Close">
+                                            <color key="titleShadowColor" red="0.0" green="0.71577194099999997" blue="0.79543481689999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="closeButtonPressed:" destination="K5i-UA-PSd" eventType="touchUpInside" id="TKK-Bg-0hG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ryh-CG-YYS" customClass="cameraScanButton" customModule="CasperAlly" customModuleProvider="target">
+                                        <rect key="frame" x="129" y="0.0" width="119" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <state key="normal" title="Scan">
+                                            <color key="titleShadowColor" red="0.0" green="0.71577194099999997" blue="0.79543481689999995" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="takePhotoButtonPressed:" destination="K5i-UA-PSd" eventType="touchUpInside" id="LYY-p1-bJ4"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z1Y-Pc-f8O" userLabel="TitleBar">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                <color key="backgroundColor" red="0.0" green="0.71577194099999997" blue="0.79543481689999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="fQh-tq-niu"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please place SN in the yellow box and tap Scan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wa2-Xg-gKn" userLabel="AppLabel">
+                                <rect key="frame" x="0.0" y="-172" width="310" height="404"/>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0sH-pe-biK" firstAttribute="top" secondItem="Wa2-Xg-gKn" secondAttribute="bottom" constant="8" symbolic="YES" id="4Xy-BI-WLB"/>
+                            <constraint firstItem="CIW-3R-9Pu" firstAttribute="leading" secondItem="c03-yq-NKg" secondAttribute="leading" constant="20" id="BEL-R8-u3v"/>
+                            <constraint firstItem="0sH-pe-biK" firstAttribute="centerY" secondItem="c03-yq-NKg" secondAttribute="centerY" id="BW6-Ll-MV9"/>
+                            <constraint firstItem="99x-p2-cP3" firstAttribute="top" secondItem="Z1Y-Pc-f8O" secondAttribute="bottom" constant="40" id="ELG-mO-1YY"/>
+                            <constraint firstItem="Z1Y-Pc-f8O" firstAttribute="leading" secondItem="c03-yq-NKg" secondAttribute="leading" id="IS5-GM-aLE"/>
+                            <constraint firstItem="qbe-za-0ES" firstAttribute="leading" secondItem="c03-yq-NKg" secondAttribute="leading" id="Ips-eT-1gd"/>
+                            <constraint firstItem="0sH-pe-biK" firstAttribute="leading" secondItem="c03-yq-NKg" secondAttribute="leading" id="LW0-VB-JZ7"/>
+                            <constraint firstAttribute="trailing" secondItem="CIW-3R-9Pu" secondAttribute="trailing" constant="20" id="NIG-nv-chw"/>
+                            <constraint firstItem="0sH-pe-biK" firstAttribute="width" secondItem="0sH-pe-biK" secondAttribute="height" multiplier="400:110" id="PSX-fk-Mod"/>
+                            <constraint firstItem="rPj-c1-tKh" firstAttribute="top" secondItem="qbe-za-0ES" secondAttribute="bottom" id="Vna-U0-b4l"/>
+                            <constraint firstItem="JRE-a1-WdC" firstAttribute="leading" secondItem="c03-yq-NKg" secondAttribute="leadingMargin" constant="20" id="WAc-y9-PCr"/>
+                            <constraint firstItem="JRE-a1-WdC" firstAttribute="centerX" secondItem="c03-yq-NKg" secondAttribute="centerX" id="Xdb-Be-tTm"/>
+                            <constraint firstItem="CIW-3R-9Pu" firstAttribute="top" secondItem="0sH-pe-biK" secondAttribute="bottom" constant="30" id="YRu-fA-XTH"/>
+                            <constraint firstItem="Wa2-Xg-gKn" firstAttribute="leading" secondItem="Z1Y-Pc-f8O" secondAttribute="leading" id="cDZ-T9-5bj"/>
+                            <constraint firstItem="Wa2-Xg-gKn" firstAttribute="centerY" secondItem="Z1Y-Pc-f8O" secondAttribute="centerY" id="dce-3V-H6b"/>
+                            <constraint firstItem="qbe-za-0ES" firstAttribute="top" secondItem="c03-yq-NKg" secondAttribute="top" id="f8r-h9-i4j"/>
+                            <constraint firstAttribute="trailing" secondItem="0sH-pe-biK" secondAttribute="trailing" id="i5B-3G-6I8"/>
+                            <constraint firstAttribute="trailing" secondItem="qbe-za-0ES" secondAttribute="trailing" id="kyP-DB-j2I"/>
+                            <constraint firstItem="99x-p2-cP3" firstAttribute="centerX" secondItem="c03-yq-NKg" secondAttribute="centerX" id="pTi-qe-GIO"/>
+                            <constraint firstItem="0sH-pe-biK" firstAttribute="centerX" secondItem="c03-yq-NKg" secondAttribute="centerX" id="qbZ-g0-wYy"/>
+                            <constraint firstItem="Z1Y-Pc-f8O" firstAttribute="top" secondItem="c03-yq-NKg" secondAttribute="top" id="taE-6F-gda"/>
+                            <constraint firstAttribute="trailing" secondItem="Wa2-Xg-gKn" secondAttribute="trailing" constant="10" id="vYG-eY-CCT"/>
+                            <constraint firstItem="rPj-c1-tKh" firstAttribute="top" secondItem="JRE-a1-WdC" secondAttribute="bottom" constant="60" id="weI-f9-TyH"/>
+                            <constraint firstAttribute="trailing" secondItem="Z1Y-Pc-f8O" secondAttribute="trailing" id="zma-7K-Ufg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="JRE-a1-WdC" secondAttribute="trailing" constant="20" id="zy3-dm-wgS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cameraView" destination="qbe-za-0ES" id="y0H-VK-VE7"/>
+                        <outlet property="label" destination="99x-p2-cP3" id="3mR-WP-zvt"/>
+                        <outlet property="slider" destination="CIW-3R-9Pu" id="Vdj-To-cHA"/>
+                        <outlet property="viewFinder" destination="0sH-pe-biK" id="Df1-pq-hlG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4rp-zE-T2R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1008" y="637"/>
         </scene>
     </scenes>
 </document>

@@ -11,6 +11,7 @@ import UIKit
 import KeychainSwift
 import Alamofire
 import BarcodeScanner
+import SwiftOCR
 
 // Create instances
 let workingjss = JSSConfig()
@@ -19,6 +20,7 @@ let keychain = KeychainSwift()
 let workingData = JSSData()
 let JSSQueue = DispatchGroup()
 let controller = BarcodeScannerController()
+let scannedSN = SwiftOCR()
 
 
 class ViewController: UIViewController {
@@ -213,6 +215,20 @@ class ViewController: UIViewController {
     //
     //// ------------------------------------
     
+
+    @IBAction func scanSNPressed(_ sender: Any) {
+        print("Scan SN pressed")
+        if let myImage = UIImage(named: "sample") {
+            print("Image set")
+            scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            scannedSN.recognize(myImage) { result in
+            print(result)
+            }
+        }
+    }
+    
+    
+    
     //// ------------------------------------
     //
     // --- LOOKUP DATA BEGIN
@@ -381,6 +397,9 @@ class ViewController: UIViewController {
         }
         if testJSSPassword != nil {
             workingjss.jssPassword = testJSSPassword!
+        }
+        if savedSettings.sharedInstance.snToCheck != nil {
+            snToCheck.text = savedSettings.sharedInstance.snToCheck
         }
     }
     
