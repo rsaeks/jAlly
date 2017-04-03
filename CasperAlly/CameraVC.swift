@@ -10,6 +10,7 @@ import UIKit
 import SwiftOCR
 import AVFoundation
 
+
 extension UIImage {
     func detectOrientationDegree () -> CGFloat {
         switch imageOrientation {
@@ -22,6 +23,7 @@ extension UIImage {
 }
 
 class CameraVC: UIViewController {
+        
     // MARK: - Outlets
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var viewFinder: UIView!
@@ -30,14 +32,22 @@ class CameraVC: UIViewController {
     
     // MARK: - Private Properties
     fileprivate var stillImageOutput: AVCaptureStillImageOutput!
+    
+    //
+    // ADDED BELOW FOR iOS 10
+    fileprivate var stillImageOutput10: AVCapturePhotoOutput!
+    
+    
     fileprivate let captureSession = AVCaptureSession()
     fileprivate let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
     private let ocrInstance = SwiftOCR()
     
     // MARK: - View LifeCycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // start camera init
+    //override func viewDidLoad() {
+    //    super.viewDidLoad()      // start camera init
+    //        }
+    
+    override func viewDidAppear(_ animated: Bool) {
         DispatchQueue.global(qos: .userInitiated).async {
             if self.device != nil {
                 self.configureCameraForUse()
@@ -48,13 +58,27 @@ class CameraVC: UIViewController {
     // MARK: - IBActions
     @IBAction func takePhotoButtonPressed (_ sender: UIButton) {
         DispatchQueue.global(qos: .userInitiated).async {
+            savedSettings.sharedInstance.snToCheck = ""
             let capturedType = self.stillImageOutput.connection(withMediaType: AVMediaTypeVideo)
+            
+            //
+            // ADDED BELOW FOR iOS 10
+            let photoSettings = AVCapturePhotoSettings()
+            photoSettings.isHighResolutionPhotoEnabled = true
+            photoSettings.isAutoStillImageStabilizationEnabled = true
+            photoSettings.isAutoDualCameraFusionEnabled = true
+            //
+            //self.stillImageOutput10.capturePhoto(with: <#T##AVCapturePhotoSettings#>, delegate: AVCapturePhotoCaptureDelegate)
+            
+            
+            //
+            // Begin orig code
             self.stillImageOutput.captureStillImageAsynchronously(from: capturedType) { [weak self] buffer, error -> Void in
                 if buffer != nil {
                     let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer)
                     let image = UIImage(data: imageData!)
-                    
                     let croppedImage = self?.prepareImageForCrop(using: image!)
+                    self?.ocrInstance.characterWhiteList = "ABCDEFGHIJKLMNPQRSTUVWXYZ0123456789"
                     self?.ocrInstance.recognize(croppedImage!) { [weak self] recognizedString in
                         DispatchQueue.main.async {
                             self?.label.text = recognizedString
@@ -96,13 +120,20 @@ extension CameraVC {
     // MARK: AVFoundation
     fileprivate func configureCameraForUse () {
         self.stillImageOutput = AVCaptureStillImageOutput()
+        
+        //
+        // ADDED BELOW FOR iOS 10
+        self.stillImageOutput10 = AVCapturePhotoOutput()
+        
         let fullResolution = UIDevice.current.userInterfaceIdiom == .phone && max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) < 568.0
         
         if fullResolution {
-            self.captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+            //self.captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+            self.captureSession.sessionPreset = AVCaptureSessionPresetHigh
         } else {
             self.captureSession.sessionPreset = AVCaptureSessionPreset1280x720
         }
+        //self.captureSession.sessionPreset = AVCaptureSessionPresetHigh
         
         self.captureSession.addOutput(self.stillImageOutput)
         
@@ -120,6 +151,7 @@ extension CameraVC {
         
         // layer customization
         let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+        //previewLayer?.frame.size = self.cameraView.frame.size
         previewLayer?.frame.size = self.cameraView.frame.size
         previewLayer?.frame.origin = CGPoint.zero
         previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
