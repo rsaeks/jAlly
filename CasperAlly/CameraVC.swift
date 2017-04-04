@@ -35,7 +35,8 @@ class CameraVC: UIViewController {
     
     //
     // ADDED BELOW FOR iOS 10
-    fileprivate var stillImageOutput10: AVCapturePhotoOutput!
+    //fileprivate var PhotoOutput10: AVCapturePhotoOutput!
+    //fileprivate var PhotoOutput10Delegate: AVCapturePhotoCaptureDelegate!
     
     
     fileprivate let captureSession = AVCaptureSession()
@@ -63,12 +64,16 @@ class CameraVC: UIViewController {
             
             //
             // ADDED BELOW FOR iOS 10
-            let photoSettings = AVCapturePhotoSettings()
-            photoSettings.isHighResolutionPhotoEnabled = true
-            photoSettings.isAutoStillImageStabilizationEnabled = true
-            photoSettings.isAutoDualCameraFusionEnabled = true
-            //
-            //self.stillImageOutput10.capturePhoto(with: <#T##AVCapturePhotoSettings#>, delegate: AVCapturePhotoCaptureDelegate)
+            //let photoSettings = AVCapturePhotoSettings()
+            //photoSettings.isHighResolutionPhotoEnabled = true
+            //photoSettings.isAutoStillImageStabilizationEnabled = true
+            //photoSettings.isAutoDualCameraFusionEnabled = true
+            
+            //self.PhotoOutput10.capturePhoto(with: photoSettings, delegate: self.PhotoOutput10Delegate)
+
+            
+            
+            
             
             
             //
@@ -82,6 +87,7 @@ class CameraVC: UIViewController {
                     self?.ocrInstance.recognize(croppedImage!) { [weak self] recognizedString in
                         DispatchQueue.main.async {
                             self?.label.text = recognizedString
+                            self?.label.textColor = UIColor.white
                             savedSettings.sharedInstance.snToCheck = recognizedString
                             print(self?.ocrInstance.currentOCRRecognizedBlobs ?? "Recoginzed Blob is empty")
                         }
@@ -123,19 +129,20 @@ extension CameraVC {
         
         //
         // ADDED BELOW FOR iOS 10
-        self.stillImageOutput10 = AVCapturePhotoOutput()
+        //self.PhotoOutput10 = AVCapturePhotoOutput()
         
         let fullResolution = UIDevice.current.userInterfaceIdiom == .phone && max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) < 568.0
         
         if fullResolution {
-            //self.captureSession.sessionPreset = AVCaptureSessionPresetPhoto
             self.captureSession.sessionPreset = AVCaptureSessionPresetHigh
         } else {
             self.captureSession.sessionPreset = AVCaptureSessionPreset1280x720
         }
-        //self.captureSession.sessionPreset = AVCaptureSessionPresetHigh
         
         self.captureSession.addOutput(self.stillImageOutput)
+        
+        //iOS 10 ADDITIONS
+        //self.captureSession.addOutput(self.PhotoOutput10)
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.prepareCaptureSession()
