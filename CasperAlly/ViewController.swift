@@ -10,8 +10,8 @@
 import UIKit
 import KeychainSwift
 import Alamofire
-import SwiftyJSON
 import BarcodeScanner
+import SwiftOCR
 
 // Create instances
 let workingjss = JSSConfig()
@@ -20,6 +20,7 @@ let keychain = KeychainSwift()
 let workingData = JSSData()
 let JSSQueue = DispatchGroup()
 let controller = BarcodeScannerController()
+let scannedSN = SwiftOCR()
 
 
 class ViewController: UIViewController {
@@ -50,6 +51,11 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         updateUI()
     }
+    
+    @IBAction func clearDataPressed(_ sender: Any) {
+        resetUI()
+    }
+    
     
     //// ------------------------------------
     //
@@ -99,7 +105,7 @@ class ViewController: UIViewController {
     //// ------------------------------------
     
     @IBAction func updateInventoryPressed(_ sender: Any) {
-        setupButtons()
+        setupButtons(buttonWidth: 2)
             Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if (response.result.isSuccess) {
                 self.updateInventoryButton.layer.borderColor = successColor
@@ -111,7 +117,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func sendBlankPushPressed(_ sender: Any) {
-        setupButtons()
+        setupButtons(buttonWidth: 2)
         Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
                 self.sendBlankPushButton.layer.borderColor = successColor
@@ -123,7 +129,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func removeRestrictionsPressed(_ sender: Any) {
-        setupButtons()
+        setupButtons(buttonWidth: 2)
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
             public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
@@ -144,7 +150,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func reapplyRestrictionsPressed(_ sender: Any) {
-        setupButtons()
+        setupButtons(buttonWidth: 2)
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
             public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
@@ -165,7 +171,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func restartDevicePressed(_ sender: Any) {
-        setupButtons()
+        setupButtons(buttonWidth: 2)
         Alamofire.request(workingjss.jssURL + devRestartPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
                 self.restartDeviceButton.layer.borderColor = successColor
@@ -177,7 +183,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func shutdownDevicePressed(_ sender: Any) {
-        setupButtons()
+        setupButtons(buttonWidth: 2)
         Alamofire.request(workingjss.jssURL + devShutdownPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
                 self.shutdownDeviceButton.layer.borderColor = successColor
@@ -213,6 +219,20 @@ class ViewController: UIViewController {
     // --- BARCODE SCANNING END ---
     //
     //// ------------------------------------
+    
+
+    @IBAction func scanSNPressed(_ sender: Any) {
+        print("Scan SN pressed")
+        if let myImage = UIImage(named: "sample") {
+            print("Image set")
+            scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+            scannedSN.recognize(myImage) { result in
+            print(result)
+            }
+        }
+    }
+    
+    
     
     //// ------------------------------------
     //
@@ -350,16 +370,26 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.isEnabled = true
         restartDeviceButton.isEnabled = true
         shutdownDeviceButton.isEnabled = true
-        setupButtons()
+        setupButtons(buttonWidth: 2)
     }
     
-    func setupButtons() {
-        updateInventoryButton.layer.borderWidth = 2
-        sendBlankPushButton.layer.borderWidth = 2
-        removeRestritionsButton.layer.borderWidth = 2
-        reapplyRestrictionsButton.layer.borderWidth = 2
-        restartDeviceButton.layer.borderWidth = 2
-        shutdownDeviceButton.layer.borderWidth = 2
+    func disableButtons() {
+        updateInventoryButton.isEnabled = false
+        sendBlankPushButton.isEnabled = false
+        removeRestritionsButton.isEnabled = false
+        reapplyRestrictionsButton.isEnabled = false
+        restartDeviceButton.isEnabled = false
+        shutdownDeviceButton.isEnabled = false
+        setupButtons(buttonWidth: 0)
+    }
+    
+    func setupButtons(buttonWidth: Int) {
+        updateInventoryButton.layer.borderWidth = CGFloat(buttonWidth)
+        sendBlankPushButton.layer.borderWidth = CGFloat(buttonWidth)
+        removeRestritionsButton.layer.borderWidth = CGFloat(buttonWidth)
+        reapplyRestrictionsButton.layer.borderWidth = CGFloat(buttonWidth)
+        restartDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
+        shutdownDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
         
     }
     
@@ -383,6 +413,24 @@ class ViewController: UIViewController {
         if testJSSPassword != nil {
             workingjss.jssPassword = testJSSPassword!
         }
+        if savedSettings.sharedInstance.snToCheck != nil {
+            snToCheck.text = savedSettings.sharedInstance.snToCheck
+        }
+    }
+    
+    func resetUI () {
+        userToCheck.text = ""
+        snToCheck.text = ""
+        invNumToCheck.text = ""
+        deviceIDLabel.text = "Device ID"
+        deviceSNLabel.text = "Device SN"
+        deviceMACLabel.text = "Device MAC"
+        usernameLabel.text = "Username"
+        fullNameLabel.text = "Full Name"
+        deviceIPLabel.text = "Device IP"
+        deviceInventorylabel.text = "Last Inventory"
+        savedSettings.sharedInstance.snToCheck = ""
+        disableButtons()
     }
     
     //// ------------------------------------

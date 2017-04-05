@@ -18,60 +18,92 @@ class JSSSettingsViewController: UIViewController {
     @IBOutlet weak var jssPassword: UITextField!
     @IBOutlet weak var checkURLLabel: UILabel!
     @IBOutlet weak var checkUPLabel: UILabel!
+    @IBOutlet weak var checkURLButton: UIButton!
+    @IBOutlet weak var checkUPButton: UIButton!
+    @IBOutlet weak var checkingConnection: UIActivityIndicatorView!
 
     
     let defaults = UserDefaults.standard
     
     
     @IBAction func checkURLButtonPressed(_ sender: Any) {
-        Alamofire.request(savedSettings.sharedInstance.jssURL).responseString { response in
-            let statusCode = response.response?.statusCode
-            print(statusCode ?? 999)
-            if statusCode == nil {
-                self.checkURLLabel.text = "No response"
-            }
-            else if statusCode == 401 {
-                self.checkURLLabel.text = "Auth Required"
-            }
-            else if statusCode == 404 {
-                self.checkURLLabel.text = "URL not found"
-            }
-            else {
-                self.checkURLLabel.text = "Other Error"
+        if (JSSURL.text != "" ) {
+            checkingConnection.startAnimating()
+            self.checkURLButton.layer.borderColor = UIColor.lightGray.cgColor
+            //print("Checking URL: " + JSSURL.text!)
+            Alamofire.request(JSSURL.text!).responseString { response in
+                let statusCode = response.response?.statusCode
+                //print(statusCode ?? 999)
+                if statusCode == nil {
+                    self.checkURLButton.layer.borderColor = failColor
+                    self.checkURLButton.layer.borderWidth = 2
+                    self.checkURLLabel.isEnabled = true
+                    self.checkURLLabel.text = "No Response Received"
+                    self.checkingConnection.stopAnimating()
+                }
+                else if statusCode == 401 {
+                    self.checkURLButton.layer.borderColor = successColor
+                    self.checkURLButton.layer.borderWidth = 2
+                    self.checkURLLabel.isEnabled = false
+                    self.checkURLLabel.text = "Authentifcation Required"
+                    self.checkingConnection.stopAnimating()
+                    self.checkUPButton.isEnabled = true
+                }
+                else if statusCode == 404 {
+                    self.checkURLButton.layer.borderColor = failColor
+                    self.checkURLButton.layer.borderWidth = 2
+                    self.checkURLLabel.isEnabled = false
+                    self.checkURLLabel.text = "URL Not Found"
+                    self.checkingConnection.stopAnimating()
+                }
+                else {
+                    self.checkURLButton.layer.borderColor = failColor
+                    self.checkURLButton.layer.borderWidth = 2
+                    self.checkURLLabel.isEnabled = false
+                    self.checkURLLabel.text = "Other Error"
+                    self.checkingConnection.stopAnimating()
+                }
             }
         }
     }
     
     @IBAction func checkUPPressed(_ sender: Any) {
-        //let builtURL: String = savedSettings.sharedInstance.jssURL + userPath + savedSettings.sharedInstance.jssUsername
-        //print(builtURL)
-        Alamofire.request(savedSettings.sharedInstance.jssURL + userPath + savedSettings.sharedInstance.jssUsername).authenticate(user: savedSettings.sharedInstance.jssUsername, password: savedSettings.sharedInstance.jssPassword).responseString { response in
-            let userStatusCode = response.response?.statusCode
-            //print(response.response?.statusCode)
-            // 401 = invalid password
-            // 200 = valid
-            // 404 = no assigned device to user?
-            print(userStatusCode ?? 999)
-            if userStatusCode == nil {
-                self.checkUPLabel.text = "No Response"
-            }
-            else if userStatusCode == 200 {
-                self.checkUPLabel.text = "Valid combo"
-            }
-            else if userStatusCode == 401 {
-                self.checkUPLabel.text = "Invalid combo"
-            }
-            else if userStatusCode == 404 {
-                self.checkUPLabel.text = "Valid Combo"
-            }
-            else {
-                self.checkUPLabel.text = "Other Error"
+        self.checkUPButton.layer.borderColor = UIColor.lightGray.cgColor
+        if (self.jssUsername.text != "") {
+            Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
+                let userStatusCode = response.response?.statusCode
+                if userStatusCode == nil {
+                    self.checkUPButton.layer.borderColor = failColor
+                    self.checkUPButton.layer.borderWidth = 2
+                    self.checkUPLabel.isEnabled = true
+                    self.checkUPLabel.text = "No Response"
+                }
+                else if userStatusCode == 200 {
+                    self.checkUPButton.layer.borderColor = successColor
+                    self.checkUPButton.layer.borderWidth = 2
+                }
+                else if userStatusCode == 401 {
+                    self.checkUPButton.layer.borderColor = failColor
+                    self.checkUPButton.layer.borderWidth = 2
+                    self.checkUPLabel.isEnabled = true
+                    self.checkUPLabel.text = "Invalid Username / Password Combo"
+                }
+                else if userStatusCode == 404 {
+                    self.checkUPButton.layer.borderColor = successColor
+                    self.checkUPButton.layer.borderWidth = 2
+                }
+                else {
+                    self.checkUPButton.layer.borderColor = failColor
+                    self.checkUPButton.layer.borderWidth = 2
+                    self.checkUPLabel.isEnabled = true
+                    self.checkUPLabel.text = "Other Error"
+                }
             }
         }
     }
     
     @IBAction func jssSaveSettings(_ sender: Any) {
-        print("Save Settings Button Pressed")
+        //print("Save Settings Button Pressed")
         defaults.set(JSSURL.text, forKey: "savedJSSURL")
         defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
         defaults.set(jssUsername.text, forKey: "savedJSSUsername")
@@ -83,11 +115,12 @@ class JSSSettingsViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print("Settings View Appeared")
+        //print("Settings View Appeared")
         let testURL = defaults.string(forKey: "savedJSSURL")
         let testExclusionGID = defaults.string(forKey: "savedExclusionGID")
         let testJSSUsername = defaults.string(forKey: "savedJSSUsername")
         let testJSSPassword = keychain.get("savedJSSPassword")
+        checkingConnection.hidesWhenStopped = true
 
         
         // Test to make sure JSS URL is populated
@@ -113,12 +146,5 @@ class JSSSettingsViewController: UIViewController {
             jssPassword.text = testJSSPassword
             savedSettings.sharedInstance.jssPassword = jssPassword.text
         }
-        
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 }
