@@ -36,12 +36,14 @@ class JSSSettingsViewController: UIViewController {
                 //print(statusCode ?? 999)
                 if statusCode == nil {
                     self.checkURLButton.layer.borderColor = failColor
+                    self.checkURLButton.layer.borderWidth = 2
                     self.checkURLLabel.isEnabled = true
                     self.checkURLLabel.text = "No Response Received"
                     self.checkingConnection.stopAnimating()
                 }
                 else if statusCode == 401 {
                     self.checkURLButton.layer.borderColor = successColor
+                    self.checkURLButton.layer.borderWidth = 2
                     self.checkURLLabel.isEnabled = false
                     self.checkURLLabel.text = "Authentifcation Required"
                     self.checkingConnection.stopAnimating()
@@ -49,12 +51,14 @@ class JSSSettingsViewController: UIViewController {
                 }
                 else if statusCode == 404 {
                     self.checkURLButton.layer.borderColor = failColor
+                    self.checkURLButton.layer.borderWidth = 2
                     self.checkURLLabel.isEnabled = false
                     self.checkURLLabel.text = "URL Not Found"
                     self.checkingConnection.stopAnimating()
                 }
                 else {
                     self.checkURLButton.layer.borderColor = failColor
+                    self.checkURLButton.layer.borderWidth = 2
                     self.checkURLLabel.isEnabled = false
                     self.checkURLLabel.text = "Other Error"
                     self.checkingConnection.stopAnimating()
@@ -70,22 +74,27 @@ class JSSSettingsViewController: UIViewController {
                 let userStatusCode = response.response?.statusCode
                 if userStatusCode == nil {
                     self.checkUPButton.layer.borderColor = failColor
+                    self.checkUPButton.layer.borderWidth = 2
                     self.checkUPLabel.isEnabled = true
                     self.checkUPLabel.text = "No Response"
                 }
                 else if userStatusCode == 200 {
                     self.checkUPButton.layer.borderColor = successColor
+                    self.checkUPButton.layer.borderWidth = 2
                 }
                 else if userStatusCode == 401 {
                     self.checkUPButton.layer.borderColor = failColor
+                    self.checkUPButton.layer.borderWidth = 2
                     self.checkUPLabel.isEnabled = true
                     self.checkUPLabel.text = "Invalid Username / Password Combo"
                 }
                 else if userStatusCode == 404 {
                     self.checkUPButton.layer.borderColor = successColor
+                    self.checkUPButton.layer.borderWidth = 2
                 }
                 else {
                     self.checkUPButton.layer.borderColor = failColor
+                    self.checkUPButton.layer.borderWidth = 2
                     self.checkUPLabel.isEnabled = true
                     self.checkUPLabel.text = "Other Error"
                 }
