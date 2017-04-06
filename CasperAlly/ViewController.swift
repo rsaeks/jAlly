@@ -66,7 +66,6 @@ class ViewController: UIViewController {
     // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: Any) {
         if (userToCheck.text != "") {
-            dissmissKeyboard()
             workingData.user = userToCheck.text!
             lookupData(parameterToCheck: workingData.user, passedItem: "username")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
@@ -76,7 +75,6 @@ class ViewController: UIViewController {
     // Run this function when the "Lookup SN" Button is pressed
     @IBAction func snToCheckPressed(_ sender: Any) {
         if (snToCheck.text != "") {
-            dissmissKeyboard()
             workingData.deviceSN = snToCheck.text!
             lookupData(parameterToCheck: workingData.deviceSN, passedItem: "serialnumber")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
@@ -85,7 +83,6 @@ class ViewController: UIViewController {
     
     @IBAction func lookupInventoryNumber(_ sender: Any) {
         if (invNumToCheck.text != "") {
-            dissmissKeyboard()
             workingData.deviceInventoryNumber = invNumToCheck.text!
             lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
@@ -241,6 +238,7 @@ class ViewController: UIViewController {
     //// ------------------------------------
     
     func lookupData (parameterToCheck: String, passedItem: String) {
+        dissmissKeyboard()
         Alamofire.request(workingjss.jssURL + matchPath + parameterToCheck, method: .get, headers: headers)
             .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                 if (response.result.isSuccess) {
