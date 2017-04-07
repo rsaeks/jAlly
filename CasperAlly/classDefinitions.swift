@@ -55,6 +55,7 @@ class JSSConfig {
     var mobileDeviceKey: String
     var mobileDevicesKey: String
     var generalKey: String
+    var purchasingKey: String
     var ipAddressKey: String
     var idKey: String
     var locationKey: String
@@ -65,6 +66,11 @@ class JSSConfig {
     var MACAddressKey: String
     var inventoryKey: String
     var epochInventroryTimekey: String
+    var osVersionKey: String
+    var batteryLevelKey: String
+    var freeSpaceKey: String
+    var percentUsedKey: String
+    var epochWarrantyExpiresKey: String
     init() {
         jssURL = ""
         exclusinGID = ""
@@ -73,6 +79,7 @@ class JSSConfig {
         mobileDeviceKey = "mobile_device"
         mobileDevicesKey = "mobile_devices"
         generalKey = "general"
+        purchasingKey = "purchasing"
         ipAddressKey = "ip_address"
         idKey = "id"
         locationKey = "location"
@@ -83,6 +90,11 @@ class JSSConfig {
         MACAddressKey = "wifi_mac_address"
         inventoryKey = "asset_tag"
         epochInventroryTimekey = "last_inventory_update_epoch"
+        osVersionKey = "os_version"
+        batteryLevelKey = "battery_level"
+        freeSpaceKey = "available_mb"
+        percentUsedKey = "percentage_used"
+        epochWarrantyExpiresKey = "warranty_expires_epoch"
     }
 }
 
@@ -99,6 +111,13 @@ class JSSData {
     var deviceInventoryNumber: String
     var lastInventoryEpoc: Double
     var lastInventoryEpocFormatted: String
+    var iOSVersion: String
+    var batteryLevel: Int
+    var freeSpace: Int
+    var percentUsed: Int
+    var warrantyExpiresEpoch: Double
+    var warrantyExpiresEpochFormatted: String
+    
     init () {
         user = "defaultUser"
         deviceSN = "0"
@@ -112,5 +131,11 @@ class JSSData {
         deviceInventoryNumber = "ToScan"
         lastInventoryEpoc = 0.0
         lastInventoryEpocFormatted = "To Set"
+        iOSVersion = "0.0"
+        batteryLevel = 101
+        freeSpace = 0
+        percentUsed = 0
+        warrantyExpiresEpoch = 0.0
+        warrantyExpiresEpochFormatted = "To Set"
     }
 }

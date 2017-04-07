@@ -35,37 +35,22 @@ class JSSSettingsViewController: UIViewController {
                 let statusCode = response.response?.statusCode
                 //print(statusCode ?? 999)
                 if statusCode == nil {
-                    self.checkURLButton.layer.borderColor = failColor
-                    self.checkURLButton.layer.borderWidth = 2
-                    self.checkURLLabel.isEnabled = true
-                    self.checkURLLabel.text = "No Response Received"
-                    self.checkingConnection.stopAnimating()
+                    self.URLStatus(buttonColor: failColor, showError: true, message: "No Response Received")
                 }
                 else if statusCode == 401 {
-                    self.checkURLButton.layer.borderColor = successColor
-                    self.checkURLButton.layer.borderWidth = 2
-                    self.checkURLLabel.isEnabled = false
-                    self.checkURLLabel.text = "Authentifcation Required"
-                    self.checkingConnection.stopAnimating()
                     self.checkUPButton.isEnabled = true
+                    self.URLStatus(buttonColor: successColor, showError: false, message: "Please Provide Username & Password")
                 }
                 else if statusCode == 404 {
-                    self.checkURLButton.layer.borderColor = failColor
-                    self.checkURLButton.layer.borderWidth = 2
-                    self.checkURLLabel.isEnabled = false
-                    self.checkURLLabel.text = "URL Not Found"
-                    self.checkingConnection.stopAnimating()
+                    self.URLStatus(buttonColor: failColor, showError: true, message: "URL Not Found")
                 }
                 else {
-                    self.checkURLButton.layer.borderColor = failColor
-                    self.checkURLButton.layer.borderWidth = 2
-                    self.checkURLLabel.isEnabled = false
-                    self.checkURLLabel.text = "Other Error"
-                    self.checkingConnection.stopAnimating()
+                    self.URLStatus(buttonColor: failColor, showError: true, message: "Other Error")
                 }
             }
         }
     }
+    
     
     @IBAction func checkUPPressed(_ sender: Any) {
         self.checkUPButton.layer.borderColor = UIColor.lightGray.cgColor
@@ -73,30 +58,19 @@ class JSSSettingsViewController: UIViewController {
             Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
                 let userStatusCode = response.response?.statusCode
                 if userStatusCode == nil {
-                    self.checkUPButton.layer.borderColor = failColor
-                    self.checkUPButton.layer.borderWidth = 2
-                    self.checkUPLabel.isEnabled = true
-                    self.checkUPLabel.text = "No Response"
+                    self.UPStatus(buttonColor: failColor, hideLabel: false, message: "No Response")
                 }
                 else if userStatusCode == 200 {
-                    self.checkUPButton.layer.borderColor = successColor
-                    self.checkUPButton.layer.borderWidth = 2
+                    self.UPStatus(buttonColor: successColor, hideLabel: true, message: "Valid Username & Password")
                 }
                 else if userStatusCode == 401 {
-                    self.checkUPButton.layer.borderColor = failColor
-                    self.checkUPButton.layer.borderWidth = 2
-                    self.checkUPLabel.isEnabled = true
-                    self.checkUPLabel.text = "Invalid Username / Password Combo"
+                    self.UPStatus(buttonColor: failColor, hideLabel: false, message: "Invalid Username / Password Combo")
                 }
                 else if userStatusCode == 404 {
-                    self.checkUPButton.layer.borderColor = successColor
-                    self.checkUPButton.layer.borderWidth = 2
+                    self.UPStatus(buttonColor: successColor, hideLabel: true, message: "JSS Only user with no assigned device")
                 }
                 else {
-                    self.checkUPButton.layer.borderColor = failColor
-                    self.checkUPButton.layer.borderWidth = 2
-                    self.checkUPLabel.isEnabled = true
-                    self.checkUPLabel.text = "Other Error"
+                    self.UPStatus(buttonColor: failColor, hideLabel: false, message: "Other Error")
                 }
             }
         }
@@ -112,6 +86,21 @@ class JSSSettingsViewController: UIViewController {
     
     @IBAction func returnToMainPressed(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func URLStatus (buttonColor: CGColor, showError: Bool, message: String) {
+        self.checkURLButton.layer.borderWidth = 2
+        self.checkingConnection.stopAnimating()
+        self.checkURLButton.layer.borderColor = buttonColor
+        self.checkUPLabel.isEnabled = showError
+        self.checkUPLabel.text = message
+    }
+    
+    func UPStatus (buttonColor: CGColor, hideLabel: Bool, message: String) {
+        self.checkUPButton.layer.borderWidth = 2
+        self.checkUPButton.layer.borderColor = buttonColor
+        self.checkUPLabel.isHidden = hideLabel
+        self.checkUPLabel.text = message
     }
     
     override func viewDidAppear(_ animated: Bool) {

@@ -32,13 +32,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var userToCheck: UITextField!
     @IBOutlet weak var snToCheck: UITextField!
     @IBOutlet weak var invNumToCheck: UITextField!
-    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var iOSVersionLabel: UILabel!
+    @IBOutlet weak var batteryLevelLabel: UILabel!
     @IBOutlet weak var fullNameLabel: UILabel!
+    @IBOutlet weak var freeSpaceLabel: UILabel!
     @IBOutlet weak var deviceIDLabel: UILabel!
-    @IBOutlet weak var deviceSNLabel: UILabel!
     @IBOutlet weak var deviceMACLabel: UILabel!
     @IBOutlet weak var deviceIPLabel: UILabel!
     @IBOutlet weak var deviceInventorylabel: UILabel!
+    @IBOutlet weak var warrantyExpiresLabel: UILabel!
     @IBOutlet weak var updateInventoryButton: UIButton!
     @IBOutlet weak var sendBlankPushButton: UIButton!
     @IBOutlet weak var removeRestritionsButton: UIButton!
@@ -219,16 +221,12 @@ class ViewController: UIViewController {
     
 
     @IBAction func scanSNPressed(_ sender: Any) {
-        print("Scan SN pressed")
-        if let myImage = UIImage(named: "sample") {
-            print("Image set")
+            if let myImage = UIImage(named: "sample") {
             scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
             scannedSN.recognize(myImage) { result in
-            print(result)
             }
         }
     }
-    
     
     
     //// ------------------------------------
@@ -293,6 +291,18 @@ class ViewController: UIViewController {
                             if let deviceID = generalData[workingjss.idKey] as? Int {
                                 workingData.deviceID = deviceID
                             }
+                            if let iOSVersion = generalData[workingjss.osVersionKey] as? String {
+                                workingData.iOSVersion = iOSVersion
+                            }
+                            if let batteryLevel = generalData[workingjss.batteryLevelKey] as? Int {
+                                workingData.batteryLevel = batteryLevel
+                            }
+                            if let freeSpace = generalData[workingjss.freeSpaceKey] as? Int {
+                                workingData.freeSpace = freeSpace
+                            }
+                            if let percentUsed = generalData[workingjss.percentUsedKey] as? Int {
+                                workingData.percentUsed = percentUsed
+                            }
                         } // Close our general JSON dict
                         if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> { // Begin location JSON dict
                             if let username = location[workingjss.usernameKey] as? String {
@@ -303,6 +313,16 @@ class ViewController: UIViewController {
                                 workingData.realName = fullName
                             }
                         } // Close our location JSON dict
+                        if let purchasing = mobileDeviceData[workingjss.purchasingKey] as? Dictionary <String, AnyObject> { // Begin purchasing JSON
+                            if let warrantyExpires = purchasing[workingjss.epochWarrantyExpiresKey] as? Double {
+                                workingData.warrantyExpiresEpoch = warrantyExpires / 1000
+                                let warrantyDate = Date(timeIntervalSince1970: workingData.warrantyExpiresEpoch)
+                                let warrantyDateFormat = DateFormatter()
+                                warrantyDateFormat.dateFormat = "E MM/dd/YY"
+                                warrantyDateFormat.timeZone = TimeZone.current
+                                workingData.warrantyExpiresEpochFormatted = warrantyDateFormat.string(from: warrantyDate)
+                            }
+                        } // Close our purchasing JSON
                     } // Close our mobile_device JSON dict
                 } // Close our response JSON
                 JSSQueue.leave()
@@ -350,14 +370,37 @@ class ViewController: UIViewController {
     
     func displayData() {
         deviceIDLabel.text = String(workingData.deviceID)
-        deviceSNLabel.text = workingData.deviceSN
+        iOSVersionLabel.text = workingData.iOSVersion
         deviceMACLabel.text = workingData.deviceMAC
-        usernameLabel.text = workingData.user
+        // Print & Format coloring of our battery level
+        batteryLevelLabel.text = String(workingData.batteryLevel) + " %"
+        if (workingData.batteryLevel <= 20) {
+            batteryLevelLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0)
+        }
+        else if (workingData.batteryLevel <= 50) {
+            batteryLevelLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0)
+        }
+        else { batteryLevelLabel.textColor = UIColor.black }
+        
+        // Determine color of Free Space text based on percent used
+        if (workingData.percentUsed >= 90) { freeSpaceLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0) }
+        else if (workingData.percentUsed >= 75) { freeSpaceLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0) }
+        else { freeSpaceLabel.textColor = UIColor.black }
+        
+        // Display free space as either GB or MB
+        if (workingData.freeSpace % 1024 > 1) { freeSpaceLabel.text = String.localizedStringWithFormat("%.2f %@", Float(workingData.freeSpace) / Float(1024), " GB") }
+        else { freeSpaceLabel.text = "\(workingData.freeSpace) MB" }
+        
         fullNameLabel.text = workingData.realName
         snToCheck.text = workingData.deviceSN
         userToCheck.text = workingData.user
         deviceIPLabel.text = workingData.deviceIPAddress
         deviceInventorylabel.text = workingData.lastInventoryEpocFormatted
+        
+        warrantyExpiresLabel.text = workingData.warrantyExpiresEpochFormatted
+        if (Date().timeIntervalSince1970 > workingData.warrantyExpiresEpoch) { warrantyExpiresLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0) }
+        else if ((workingData.warrantyExpiresEpoch - Date().timeIntervalSince1970) < 2678400) { warrantyExpiresLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0) }
+        else { warrantyExpiresLabel.textColor = UIColor.black }
         enableButtons()
     }
     
@@ -388,7 +431,6 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.layer.borderWidth = CGFloat(buttonWidth)
         restartDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
         shutdownDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
-        
     }
     
     func updateUI() {
@@ -421,13 +463,14 @@ class ViewController: UIViewController {
         snToCheck.text = ""
         invNumToCheck.text = ""
         deviceIDLabel.text = "Device ID"
-        deviceSNLabel.text = "Device SN"
         deviceMACLabel.text = "Device MAC"
-        usernameLabel.text = "Username"
+        batteryLevelLabel.text = "Battery %"
         fullNameLabel.text = "Full Name"
         deviceIPLabel.text = "Device IP"
         deviceInventorylabel.text = "Last Inventory"
         savedSettings.sharedInstance.snToCheck = ""
+        iOSVersionLabel.text = "iOS Version"
+        warrantyExpiresLabel.text = "Warranty Expires"
         disableButtons()
     }
     

@@ -50,4 +50,5 @@ let devGroupDeletionRight = "</id></mobile_device></mobile_device_deletions></mo
 
 // Button colors
 let successColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0).cgColor
+let warnColor = UIColor(red: 0.9176, green: 0.902, blue: 0, alpha: 1.0).cgColor
 let failColor = UIColor(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0).cgColor
