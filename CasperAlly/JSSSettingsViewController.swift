@@ -30,10 +30,8 @@ class JSSSettingsViewController: UIViewController {
         if (JSSURL.text != "" ) {
             checkingConnection.startAnimating()
             self.checkURLButton.layer.borderColor = UIColor.lightGray.cgColor
-            //print("Checking URL: " + JSSURL.text!)
             Alamofire.request(JSSURL.text!).responseString { response in
                 let statusCode = response.response?.statusCode
-                //print(statusCode ?? 999)
                 if statusCode == nil {
                     self.URLStatus(buttonColor: failColor, showError: true, message: "No Response Received")
                 }
@@ -77,7 +75,6 @@ class JSSSettingsViewController: UIViewController {
     }
     
     @IBAction func jssSaveSettings(_ sender: Any) {
-        //print("Save Settings Button Pressed")
         defaults.set(JSSURL.text, forKey: "savedJSSURL")
         defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
         defaults.set(jssUsername.text, forKey: "savedJSSUsername")
@@ -104,7 +101,6 @@ class JSSSettingsViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //print("Settings View Appeared")
         let testURL = defaults.string(forKey: "savedJSSURL")
         let testExclusionGID = defaults.string(forKey: "savedExclusionGID")
         let testJSSUsername = defaults.string(forKey: "savedJSSUsername")
