@@ -471,7 +471,12 @@ class ViewController: UIViewController {
         savedSettings.sharedInstance.snToCheck = ""
         iOSVersionLabel.text = "iOS Version"
         warrantyExpiresLabel.text = "Warranty Expires"
+        freeSpaceLabel.text = "Free Space"
+        batteryLevelLabel.text = "Battery %"
         disableButtons()
+        batteryLevelLabel.textColor = UIColor.black
+        freeSpaceLabel.textColor = UIColor.black
+        warrantyExpiresLabel.textColor = UIColor.black
     }
     
     //// ------------------------------------
