@@ -31,7 +31,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="V2S-Jn-wKw" userLabel="TitleBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <color key="backgroundColor" red="0.0" green="0.71577194099999997" blue="0.79543481689999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="neB-FS-vPs"/>
                                 </constraints>
@@ -436,7 +436,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.8516397456" green="0.98122094630000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.63776564068067876" green="0.75408679246902466" blue="0.73945610524766892" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="fxn-wN-5jp" firstAttribute="leading" secondItem="5oQ-1B-ywE" secondAttribute="trailing" constant="10" id="0bF-8z-GmN"/>
                             <constraint firstAttribute="trailing" secondItem="V2S-Jn-wKw" secondAttribute="trailing" id="618-Me-29c"/>
@@ -508,7 +508,7 @@
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kie-4v-ZP2" userLabel="TitleBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <color key="backgroundColor" red="0.0" green="0.71577194099999997" blue="0.79543481689999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="kA0-vb-xUr"/>
                                 </constraints>
@@ -795,7 +795,7 @@
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z1Y-Pc-f8O" userLabel="TitleBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                <color key="backgroundColor" red="0.0" green="0.71577194099999997" blue="0.79543481689999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="mgp-Uc-cK2"/>
                                 </constraints>
