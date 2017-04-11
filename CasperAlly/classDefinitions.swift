@@ -44,6 +44,10 @@ class savedSettings {
     var jssUsername: String!
     var jssPassword: String!
     var snToCheck: String!
+    var battWarnLevel: Int! = 30
+    var battCritLevel: Int! = 15
+    var freespaceWarnLevel: Int! = 80
+    var freespaceCritLevel: Int! = 90
 }
 
 

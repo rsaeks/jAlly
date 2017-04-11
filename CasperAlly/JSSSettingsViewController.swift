@@ -21,6 +21,10 @@ class JSSSettingsViewController: UIViewController {
     @IBOutlet weak var checkURLButton: UIButton!
     @IBOutlet weak var checkUPButton: UIButton!
     @IBOutlet weak var checkingConnection: UIActivityIndicatorView!
+    @IBOutlet weak var batteryWarnLevel: UITextField!
+    @IBOutlet weak var batteryCritLevel: UITextField!
+    @IBOutlet weak var freespaceWarnLevel: UITextField!
+    @IBOutlet weak var freespaceCritLevel: UITextField!
 
     
     let defaults = UserDefaults.standard
@@ -78,6 +82,35 @@ class JSSSettingsViewController: UIViewController {
         defaults.set(JSSURL.text, forKey: "savedJSSURL")
         defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
         defaults.set(jssUsername.text, forKey: "savedJSSUsername")
+        
+//        if (batteryWarnLevel.text == nil) {
+//            defaults.set("30", forKey: "batteryWarnLevel")
+//        }
+//        else {
+            defaults.set(batteryWarnLevel.text, forKey: "batteryWarnLevel")
+//        }
+        
+//        if (batteryCritLevel.text == nil) {
+//            defaults.set("15", forKey: "batteryCritLievel")
+//        }
+//        else {
+            defaults.set(batteryCritLevel.text, forKey: "batteryCritLevel")
+//        }
+        
+//        if (freespaceWarnLevel.text == nil) {
+//            defaults.set("80", forKey: "freespaceWarnLevel")
+//        }
+//        else {
+            defaults.set(freespaceWarnLevel.text, forKey: "freespaceWarnLevel")
+//        }
+        
+//        if (freespaceCritLevel.text == nil) {
+//            defaults.set("90", forKey: "freespaceCritLevel")
+//        }
+//        else {
+            defaults.set(freespaceCritLevel.text, forKey: "freespaceCritLevel")
+//        }
+        
         keychain.set(jssPassword.text!, forKey: "savedJSSPassword")
     }
     
@@ -85,6 +118,13 @@ class JSSSettingsViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func statusIconInfoPressed(_ sender: Any) {
+        let statusIconHelp = UIAlertController(title: "Status Icon Help", message: "You may change status icon notification thresholds to levels more suitable to your enviornment. Warning will trigger an orange dot, Critical will tigger a red dot. All options are expressed as a percentage.", preferredStyle: UIAlertControllerStyle.alert)
+        statusIconHelp.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(statusIconHelp, animated: true)
+        
+        
+    }
     func URLStatus (buttonColor: CGColor, showError: Bool, message: String) {
         self.checkURLButton.layer.borderWidth = 2
         self.checkingConnection.stopAnimating()
@@ -106,7 +146,22 @@ class JSSSettingsViewController: UIViewController {
         let testJSSUsername = defaults.string(forKey: "savedJSSUsername")
         let testJSSPassword = keychain.get("savedJSSPassword")
         checkingConnection.hidesWhenStopped = true
-
+        let battWarnLevel = defaults.string(forKey: "batteryWarnLevel")
+//        if battWarnLevel == nil {
+//            savedSettings.sharedInstance.battWarnLevel = 30
+//        }
+        let battCritLevel = defaults.string(forKey: "batteryCritLevel")
+//        if (battCritLevel == nil) {
+//            savedSettings.sharedInstance.battCritLevel = 15
+//        }
+        let freeWarnLevel = defaults.string(forKey: "freespaceWarnLevel")
+//        if (freeWarnLevel == nil) {
+//            savedSettings.sharedInstance.freespaceWarnLevel = 80
+//        }
+        let freeCritLevel = defaults.string(forKey: "freespaceCritLevel")
+//        if (freeCritLevel == nil) {
+//            savedSettings.sharedInstance.freespaceCritLevel = 90
+//        }
         
         // Test to make sure JSS URL is populated
         if testURL != nil {
@@ -131,5 +186,30 @@ class JSSSettingsViewController: UIViewController {
             jssPassword.text = testJSSPassword
             savedSettings.sharedInstance.jssPassword = jssPassword.text
         }
+        
+        if (battWarnLevel != "") {
+            batteryWarnLevel.text = battWarnLevel
+            savedSettings.sharedInstance.battWarnLevel = Int(battWarnLevel!)
+        }
+        else { savedSettings.sharedInstance.battWarnLevel = 30 }
+        
+        if (battCritLevel != "") {
+            batteryCritLevel.text = battCritLevel
+            savedSettings.sharedInstance.battCritLevel = Int(battCritLevel!)
+        }
+        else { savedSettings.sharedInstance.battCritLevel = 15 }
+        
+        if (freeWarnLevel != "") {
+            freespaceWarnLevel.text = freeWarnLevel
+            savedSettings.sharedInstance.freespaceWarnLevel = Int(freeWarnLevel!)
+
+        }
+        else { savedSettings.sharedInstance.freespaceWarnLevel = 80 }
+        
+        if (freeCritLevel != "") {
+            freespaceCritLevel.text = freeCritLevel
+            savedSettings.sharedInstance.freespaceCritLevel = Int(freeCritLevel!)
+        }
+        else { savedSettings.sharedInstance.freespaceCritLevel = 90 }
     }
 }

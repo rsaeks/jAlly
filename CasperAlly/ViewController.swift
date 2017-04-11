@@ -377,12 +377,12 @@ class ViewController: UIViewController {
         deviceMACLabel.text = workingData.deviceMAC
         // Print & Format coloring of our battery level
         batteryLevelLabel.text = String(workingData.batteryLevel) + " %"
-        if (workingData.batteryLevel <= 20) {
+        if (workingData.batteryLevel <= savedSettings.sharedInstance.battCritLevel) {
             //batteryLevelLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0)
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "red")
         }
-        else if (workingData.batteryLevel <= 50) {
+        else if (workingData.batteryLevel <= savedSettings.sharedInstance.battWarnLevel) {
             //batteryLevelLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0)
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "orange")
@@ -390,12 +390,12 @@ class ViewController: UIViewController {
         //else { batteryStatusIcon.isHidden = true }
         
         // Determine color of Free Space text based on percent used
-        if (workingData.percentUsed >= 90) {
+        if (workingData.percentUsed >= savedSettings.sharedInstance.freespaceCritLevel) {
             //freeSpaceLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0)
             freeSpaceStatusIcon.isHidden = false
             freeSpaceStatusIcon.image = #imageLiteral(resourceName: "red")
         }
-        else if (workingData.percentUsed >= 75) {
+        else if (workingData.percentUsed >= savedSettings.sharedInstance.freespaceWarnLevel) {
             //freeSpaceLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0)
             freeSpaceStatusIcon.isHidden = false
             freeSpaceStatusIcon.image = #imageLiteral(resourceName: "orange")
