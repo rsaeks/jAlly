@@ -387,7 +387,7 @@ class ViewController: UIViewController {
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "orange")
         }
-        else { batteryStatusIcon.isHidden = true }
+        //else { batteryStatusIcon.isHidden = true }
         
         // Determine color of Free Space text based on percent used
         if (workingData.percentUsed >= 90) {
@@ -400,7 +400,7 @@ class ViewController: UIViewController {
             freeSpaceStatusIcon.isHidden = false
             freeSpaceStatusIcon.image = #imageLiteral(resourceName: "orange")
         }
-        else { freeSpaceStatusIcon.isHidden = true }
+        //else { freeSpaceStatusIcon.isHidden = true }
         
         // Display free space as either GB or MB
         if (workingData.freeSpace % 1024 > 1) { freeSpaceLabel.text = String.localizedStringWithFormat("%.2f %@", Float(workingData.freeSpace) / Float(1024), " GB") }
@@ -423,7 +423,7 @@ class ViewController: UIViewController {
             warrantyExpiresIcon.isHidden = false
             warrantyExpiresIcon.image = #imageLiteral(resourceName: "orange")
         }
-        else { warrantyExpiresIcon.isHidden = true }
+        //else { warrantyExpiresIcon.isHidden = true }
         enableButtons()
     }
     
@@ -500,9 +500,9 @@ class ViewController: UIViewController {
         batteryLevelLabel.textColor = UIColor.black
         freeSpaceLabel.textColor = UIColor.black
         warrantyExpiresLabel.textColor = UIColor.black
-        batteryStatusIcon.isHidden = true
-        freeSpaceStatusIcon.isHidden = true
-        warrantyExpiresIcon.isHidden = true
+        batteryStatusIcon.image = nil
+        freeSpaceStatusIcon.image = nil
+        warrantyExpiresIcon.image = nil
     }
     
     //// ------------------------------------
