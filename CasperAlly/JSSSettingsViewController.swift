@@ -33,17 +33,17 @@ class JSSSettingsViewController: UIViewController {
             Alamofire.request(JSSURL.text!).responseString { response in
                 let statusCode = response.response?.statusCode
                 if statusCode == nil {
-                    self.URLStatus(buttonColor: failColor, showError: true, message: "No Response Received")
+                    self.URLStatus(buttonColor: failColor.cgColor, showError: true, message: "No Response Received")
                 }
                 else if statusCode == 401 {
                     self.checkUPButton.isEnabled = true
-                    self.URLStatus(buttonColor: successColor, showError: false, message: "Please Provide Username & Password")
+                    self.URLStatus(buttonColor: successColor.cgColor, showError: false, message: "Please Provide Username & Password")
                 }
                 else if statusCode == 404 {
-                    self.URLStatus(buttonColor: failColor, showError: true, message: "URL Not Found")
+                    self.URLStatus(buttonColor: failColor.cgColor, showError: true, message: "URL Not Found")
                 }
                 else {
-                    self.URLStatus(buttonColor: failColor, showError: true, message: "Other Error")
+                    self.URLStatus(buttonColor: failColor.cgColor, showError: true, message: "Other Error")
                 }
             }
         }
@@ -56,19 +56,19 @@ class JSSSettingsViewController: UIViewController {
             Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
                 let userStatusCode = response.response?.statusCode
                 if userStatusCode == nil {
-                    self.UPStatus(buttonColor: failColor, hideLabel: false, message: "No Response")
+                    self.UPStatus(buttonColor: failColor.cgColor, hideLabel: false, message: "No Response")
                 }
                 else if userStatusCode == 200 {
-                    self.UPStatus(buttonColor: successColor, hideLabel: true, message: "Valid Username & Password")
+                    self.UPStatus(buttonColor: successColor.cgColor, hideLabel: true, message: "Valid Username & Password")
                 }
                 else if userStatusCode == 401 {
-                    self.UPStatus(buttonColor: failColor, hideLabel: false, message: "Invalid Username / Password Combo")
+                    self.UPStatus(buttonColor: failColor.cgColor, hideLabel: false, message: "Invalid Username / Password Combo")
                 }
                 else if userStatusCode == 404 {
-                    self.UPStatus(buttonColor: successColor, hideLabel: true, message: "JSS Only user with no assigned device")
+                    self.UPStatus(buttonColor: successColor.cgColor, hideLabel: true, message: "JSS Only user with no assigned device")
                 }
                 else {
-                    self.UPStatus(buttonColor: failColor, hideLabel: false, message: "Other Error")
+                    self.UPStatus(buttonColor: failColor.cgColor, hideLabel: false, message: "Other Error")
                 }
             }
         }
