@@ -16,8 +16,6 @@ class JSSSettingsViewController: UIViewController {
     @IBOutlet weak var jssExclusionGroupID: UITextField!
     @IBOutlet weak var jssUsername: UITextField!
     @IBOutlet weak var jssPassword: UITextField!
-    @IBOutlet weak var checkURLLabel: UILabel!
-    @IBOutlet weak var checkUPLabel: UILabel!
     @IBOutlet weak var checkURLButton: UIButton!
     @IBOutlet weak var checkUPButton: UIButton!
     @IBOutlet weak var checkingConnection: UIActivityIndicatorView!
@@ -25,6 +23,7 @@ class JSSSettingsViewController: UIViewController {
     @IBOutlet weak var batteryCritLevel: UITextField!
     @IBOutlet weak var freespaceWarnLevel: UITextField!
     @IBOutlet weak var freespaceCritLevel: UITextField!
+    @IBOutlet weak var connectionErrorLabel: UILabel!
 
     
     let defaults = UserDefaults.standard
@@ -32,47 +31,51 @@ class JSSSettingsViewController: UIViewController {
     
     @IBAction func checkURLButtonPressed(_ sender: Any) {
         if (JSSURL.text != "" ) {
+            self.connectionErrorLabel.isHidden = true
             checkingConnection.startAnimating()
             self.checkURLButton.layer.borderColor = UIColor.lightGray.cgColor
             Alamofire.request(JSSURL.text!).responseString { response in
                 let statusCode = response.response?.statusCode
-                if statusCode == nil {
-                    self.URLStatus(buttonColor: failColor.cgColor, showError: true, message: "No Response Received")
-                }
-                else if statusCode == 401 {
-                    self.checkUPButton.isEnabled = true
-                    self.URLStatus(buttonColor: successColor.cgColor, showError: false, message: "Please Provide Username & Password")
-                }
-                else if statusCode == 404 {
-                    self.URLStatus(buttonColor: failColor.cgColor, showError: true, message: "URL Not Found")
+                if statusCode != nil {
+                    if statusCode == 401 {
+                        self.checkUPButton.isEnabled = true
+                        self.URLStatus(buttonColor: successColor.cgColor, hideMessage: true, message: "Please Provide Username & Password")
+                    }
+                    else if statusCode == 404 {
+                        self.URLStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Please check path to JSS")
+                    }
+                    else {
+                        self.URLStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Other Error")
+                    }
                 }
                 else {
-                    self.URLStatus(buttonColor: failColor.cgColor, showError: true, message: "Other Error")
+                    self.URLStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "No Response Received from JSS")
                 }
             }
         }
     }
     
-    
     @IBAction func checkUPPressed(_ sender: Any) {
         self.checkUPButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.connectionErrorLabel.isHidden = true
         if (self.jssUsername.text != "") {
             Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
                 let userStatusCode = response.response?.statusCode
                 if userStatusCode == nil {
-                    self.UPStatus(buttonColor: failColor.cgColor, hideLabel: false, message: "No Response")
+                    self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "No Response")
                 }
                 else if userStatusCode == 200 {
-                    self.UPStatus(buttonColor: successColor.cgColor, hideLabel: true, message: "Valid Username & Password")
+                    self.UPStatus(buttonColor: successColor.cgColor, hideMessage: true, message: "Valid Username & Password")
                 }
                 else if userStatusCode == 401 {
-                    self.UPStatus(buttonColor: failColor.cgColor, hideLabel: false, message: "Invalid Username / Password Combo")
+                    self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Invalid Username / Password Combo")
                 }
                 else if userStatusCode == 404 {
-                    self.UPStatus(buttonColor: successColor.cgColor, hideLabel: true, message: "JSS Only user with no assigned device")
+                    self.UPStatus(buttonColor: successColor.cgColor, hideMessage: true, message: "JSS Only user with no assigned device")
                 }
                 else {
-                    self.UPStatus(buttonColor: failColor.cgColor, hideLabel: false, message: "Other Error")
+                    self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Please check URL")
+                    print("calling else block")
                 }
             }
         }
@@ -82,35 +85,10 @@ class JSSSettingsViewController: UIViewController {
         defaults.set(JSSURL.text, forKey: "savedJSSURL")
         defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
         defaults.set(jssUsername.text, forKey: "savedJSSUsername")
-        
-//        if (batteryWarnLevel.text == nil) {
-//            defaults.set("30", forKey: "batteryWarnLevel")
-//        }
-//        else {
-            defaults.set(batteryWarnLevel.text, forKey: "batteryWarnLevel")
-//        }
-        
-//        if (batteryCritLevel.text == nil) {
-//            defaults.set("15", forKey: "batteryCritLievel")
-//        }
-//        else {
-            defaults.set(batteryCritLevel.text, forKey: "batteryCritLevel")
-//        }
-        
-//        if (freespaceWarnLevel.text == nil) {
-//            defaults.set("80", forKey: "freespaceWarnLevel")
-//        }
-//        else {
-            defaults.set(freespaceWarnLevel.text, forKey: "freespaceWarnLevel")
-//        }
-        
-//        if (freespaceCritLevel.text == nil) {
-//            defaults.set("90", forKey: "freespaceCritLevel")
-//        }
-//        else {
-            defaults.set(freespaceCritLevel.text, forKey: "freespaceCritLevel")
-//        }
-        
+        defaults.set(batteryWarnLevel.text, forKey: "batteryWarnLevel")
+        defaults.set(batteryCritLevel.text, forKey: "batteryCritLevel")
+        defaults.set(freespaceWarnLevel.text, forKey: "freespaceWarnLevel")
+        defaults.set(freespaceCritLevel.text, forKey: "freespaceCritLevel")
         keychain.set(jssPassword.text!, forKey: "savedJSSPassword")
     }
     
@@ -125,19 +103,19 @@ class JSSSettingsViewController: UIViewController {
         
         
     }
-    func URLStatus (buttonColor: CGColor, showError: Bool, message: String) {
+    func URLStatus (buttonColor: CGColor, hideMessage: Bool, message: String) {
         self.checkURLButton.layer.borderWidth = 2
         self.checkingConnection.stopAnimating()
         self.checkURLButton.layer.borderColor = buttonColor
-        self.checkUPLabel.isEnabled = showError
-        self.checkUPLabel.text = message
+        self.connectionErrorLabel.isHidden = hideMessage
+        self.connectionErrorLabel.text = message
     }
     
-    func UPStatus (buttonColor: CGColor, hideLabel: Bool, message: String) {
+    func UPStatus (buttonColor: CGColor, hideMessage: Bool, message: String) {
         self.checkUPButton.layer.borderWidth = 2
         self.checkUPButton.layer.borderColor = buttonColor
-        self.checkUPLabel.isHidden = hideLabel
-        self.checkUPLabel.text = message
+        self.connectionErrorLabel.isHidden = hideMessage
+        self.connectionErrorLabel.text = message
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -147,22 +125,10 @@ class JSSSettingsViewController: UIViewController {
         let testJSSPassword = keychain.get("savedJSSPassword")
         checkingConnection.hidesWhenStopped = true
         let battWarnLevel = defaults.string(forKey: "batteryWarnLevel")
-//        if battWarnLevel == nil {
-//            savedSettings.sharedInstance.battWarnLevel = 30
-//        }
         let battCritLevel = defaults.string(forKey: "batteryCritLevel")
-//        if (battCritLevel == nil) {
-//            savedSettings.sharedInstance.battCritLevel = 15
-//        }
         let freeWarnLevel = defaults.string(forKey: "freespaceWarnLevel")
-//        if (freeWarnLevel == nil) {
-//            savedSettings.sharedInstance.freespaceWarnLevel = 80
-//        }
         let freeCritLevel = defaults.string(forKey: "freespaceCritLevel")
-//        if (freeCritLevel == nil) {
-//            savedSettings.sharedInstance.freespaceCritLevel = 90
-//        }
-        
+
         // Test to make sure JSS URL is populated
         if testURL != nil {
             JSSURL.text = testURL
@@ -187,29 +153,40 @@ class JSSSettingsViewController: UIViewController {
             savedSettings.sharedInstance.jssPassword = jssPassword.text
         }
         
-        if (battWarnLevel != "") {
-            batteryWarnLevel.text = battWarnLevel
-            savedSettings.sharedInstance.battWarnLevel = Int(battWarnLevel!)
+        if battWarnLevel != nil {
+            if battWarnLevel != "" {
+                batteryWarnLevel.text = battWarnLevel
+                savedSettings.sharedInstance.battWarnLevel = Int(battWarnLevel!)
+            }
         }
-        else { savedSettings.sharedInstance.battWarnLevel = 30 }
         
-        if (battCritLevel != "") {
+        if battCritLevel != nil {
+            if battCritLevel != "" {
             batteryCritLevel.text = battCritLevel
             savedSettings.sharedInstance.battCritLevel = Int(battCritLevel!)
+            }
         }
-        else { savedSettings.sharedInstance.battCritLevel = 15 }
         
-        if (freeWarnLevel != "") {
+        if freeWarnLevel != nil {
+            if freeWarnLevel != "" {
             freespaceWarnLevel.text = freeWarnLevel
             savedSettings.sharedInstance.freespaceWarnLevel = Int(freeWarnLevel!)
+            }
 
         }
-        else { savedSettings.sharedInstance.freespaceWarnLevel = 80 }
         
-        if (freeCritLevel != "") {
+        if freeCritLevel != nil {
+            if freeCritLevel != "" {
             freespaceCritLevel.text = freeCritLevel
             savedSettings.sharedInstance.freespaceCritLevel = Int(freeCritLevel!)
+            }
         }
-        else { savedSettings.sharedInstance.freespaceCritLevel = 90 }
+    }
+    
+    func initSavedSettings() {
+        savedSettings.sharedInstance.battWarnLevel = 30
+        savedSettings.sharedInstance.battCritLevel = 15
+        savedSettings.sharedInstance.freespaceWarnLevel = 80
+        savedSettings.sharedInstance.freespaceCritLevel = 90
     }
 }
