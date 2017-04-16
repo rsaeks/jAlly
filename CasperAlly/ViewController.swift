@@ -106,31 +106,35 @@ class ViewController: UIViewController {
     //
     //// ------------------------------------
     
-    @IBAction func updateInventoryPressed(_ sender: Any) {
+    @IBAction func updateInventoryPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
             Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if (response.result.isSuccess) {
-                self.updateInventoryButton.layer.borderColor = successColor.cgColor
+                //self.updateInventoryButton.layer.borderColor = successColor.cgColor
+                sender.layer.borderColor = successColor.cgColor
             }
             else {
-                self.updateInventoryButton.layer.borderColor = failColor.cgColor
+                //self.updateInventoryButton.layer.borderColor = failColor.cgColor
+                sender.layer.borderColor = failColor.cgColor
                 }
         }
     }
     
-    @IBAction func sendBlankPushPressed(_ sender: Any) {
+    @IBAction func sendBlankPushPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
         Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                self.sendBlankPushButton.layer.borderColor = successColor.cgColor
+                //self.sendBlankPushButton.layer.borderColor = successColor.cgColor
+                sender.layer.borderColor = successColor.cgColor
             }
             else {
-                self.sendBlankPushButton.layer.borderColor = failColor.cgColor
+                //self.sendBlankPushButton.layer.borderColor = failColor.cgColor
+                sender.layer.borderColor = failColor.cgColor
             }
         }
     }
     
-    @IBAction func removeRestrictionsPressed(_ sender: Any) {
+    @IBAction func removeRestrictionsPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
@@ -143,15 +147,17 @@ class ViewController: UIViewController {
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
-                    self.removeRestritionsButton.layer.borderColor = successColor.cgColor
+                    //self.removeRestritionsButton.layer.borderColor = successColor.cgColor
+                    sender.layer.borderColor = successColor.cgColor
                 }
                 else {
-                    self.removeRestritionsButton.layer.borderColor = failColor.cgColor
+                    //self.removeRestritionsButton.layer.borderColor = failColor.cgColor
+                    sender.layer.borderColor = failColor.cgColor
                 }
         }
     }
     
-    @IBAction func reapplyRestrictionsPressed(_ sender: Any) {
+    @IBAction func reapplyRestrictionsPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
@@ -164,34 +170,40 @@ class ViewController: UIViewController {
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
-                    self.reapplyRestrictionsButton.layer.borderColor = successColor.cgColor
+                    //self.reapplyRestrictionsButton.layer.borderColor = successColor.cgColor
+                    sender.layer.borderColor = successColor.cgColor
                 }
                 else {
-                    self.reapplyRestrictionsButton.layer.borderColor = failColor.cgColor
+                    //self.reapplyRestrictionsButton.layer.borderColor = failColor.cgColor
+                    sender.layer.borderColor = failColor.cgColor
                 }
         }
     }
     
-    @IBAction func restartDevicePressed(_ sender: Any) {
+    @IBAction func restartDevicePressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
         Alamofire.request(workingjss.jssURL + devRestartPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                self.restartDeviceButton.layer.borderColor = successColor.cgColor
+                //self.restartDeviceButton.layer.borderColor = successColor.cgColor
+                sender.layer.borderColor = successColor.cgColor
             }
             else {
-                self.restartDeviceButton.layer.borderColor = failColor.cgColor
+                //self.restartDeviceButton.layer.borderColor = failColor.cgColor
+                sender.layer.borderColor = failColor.cgColor
             }
         }
     }
     
-    @IBAction func shutdownDevicePressed(_ sender: Any) {
+    @IBAction func shutdownDevicePressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
         Alamofire.request(workingjss.jssURL + devShutdownPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                self.shutdownDeviceButton.layer.borderColor = successColor.cgColor
+                //self.shutdownDeviceButton.layer.borderColor = successColor.cgColor
+                sender.layer.borderColor = successColor.cgColor
             }
             else {
-                self.shutdownDeviceButton.layer.borderColor = failColor.cgColor
+                //self.shutdownDeviceButton.layer.borderColor = failColor.cgColor
+                sender.layer.borderColor = failColor.cgColor
             }
         }
     }
