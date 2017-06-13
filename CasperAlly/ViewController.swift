@@ -75,6 +75,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.user, passedItem: "username")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
         }
+        resetButtons()
     }
     
     // Run this function when the "Lookup SN" Button is pressed
@@ -84,6 +85,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.deviceSN, passedItem: "serialnumber")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
         }
+        resetButtons()
     }
     
     @IBAction func lookupInventoryNumber(_ sender: Any) {
@@ -92,6 +94,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
             JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
         }
+        resetButtons()
     }
     
     //// ------------------------------------
@@ -108,13 +111,12 @@ class ViewController: UIViewController {
     
     @IBAction func updateInventoryPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
+        updateInventoryButton.layer.borderColor = warnColor.cgColor
             Alamofire.request(workingjss.jssURL + devAPIUpdateInventoryPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if (response.result.isSuccess) {
-                //self.updateInventoryButton.layer.borderColor = successColor.cgColor
                 sender.layer.borderColor = successColor.cgColor
             }
             else {
-                //self.updateInventoryButton.layer.borderColor = failColor.cgColor
                 sender.layer.borderColor = failColor.cgColor
                 }
         }
@@ -122,13 +124,12 @@ class ViewController: UIViewController {
     
     @IBAction func sendBlankPushPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
+        sendBlankPushButton.layer.borderColor = warnColor.cgColor
         Alamofire.request(workingjss.jssURL + devAPIBlankPushPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                //self.sendBlankPushButton.layer.borderColor = successColor.cgColor
                 sender.layer.borderColor = successColor.cgColor
             }
             else {
-                //self.sendBlankPushButton.layer.borderColor = failColor.cgColor
                 sender.layer.borderColor = failColor.cgColor
             }
         }
@@ -136,6 +137,7 @@ class ViewController: UIViewController {
     
     @IBAction func removeRestrictionsPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
+        removeRestritionsButton.layer.borderColor = warnColor.cgColor
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
             public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
@@ -147,11 +149,9 @@ class ViewController: UIViewController {
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
-                    //self.removeRestritionsButton.layer.borderColor = successColor.cgColor
                     sender.layer.borderColor = successColor.cgColor
                 }
                 else {
-                    //self.removeRestritionsButton.layer.borderColor = failColor.cgColor
                     sender.layer.borderColor = failColor.cgColor
                 }
         }
@@ -159,6 +159,7 @@ class ViewController: UIViewController {
     
     @IBAction func reapplyRestrictionsPressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
+        reapplyRestrictionsButton.layer.borderColor = warnColor.cgColor
         struct RawDataEncoding: ParameterEncoding {
             public static var `default`: RawDataEncoding { return RawDataEncoding() }
             public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
@@ -170,11 +171,9 @@ class ViewController: UIViewController {
         Alamofire.request(workingjss.jssURL + devAPIPath + workingjss.exclusinGID, method: .put, encoding: RawDataEncoding.default, headers: xmlHeaders).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
             .responseString { response in
                 if (response.result.isSuccess) {
-                    //self.reapplyRestrictionsButton.layer.borderColor = successColor.cgColor
                     sender.layer.borderColor = successColor.cgColor
                 }
                 else {
-                    //self.reapplyRestrictionsButton.layer.borderColor = failColor.cgColor
                     sender.layer.borderColor = failColor.cgColor
                 }
         }
@@ -182,13 +181,12 @@ class ViewController: UIViewController {
     
     @IBAction func restartDevicePressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
+        restartDeviceButton.layer.borderColor = warnColor.cgColor
         Alamofire.request(workingjss.jssURL + devRestartPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                //self.restartDeviceButton.layer.borderColor = successColor.cgColor
                 sender.layer.borderColor = successColor.cgColor
             }
             else {
-                //self.restartDeviceButton.layer.borderColor = failColor.cgColor
                 sender.layer.borderColor = failColor.cgColor
             }
         }
@@ -196,13 +194,12 @@ class ViewController: UIViewController {
     
     @IBAction func shutdownDevicePressed(_ sender: UIButton) {
         setupButtons(buttonWidth: 2)
+        shutdownDeviceButton.layer.borderColor = warnColor.cgColor
         Alamofire.request(workingjss.jssURL + devShutdownPath + String(workingData.deviceID), method: .post).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseString { response in
             if(response.result.isSuccess) {
-                //self.shutdownDeviceButton.layer.borderColor = successColor.cgColor
                 sender.layer.borderColor = successColor.cgColor
             }
             else {
-                //self.shutdownDeviceButton.layer.borderColor = failColor.cgColor
                 sender.layer.borderColor = failColor.cgColor
             }
         }
@@ -390,12 +387,10 @@ class ViewController: UIViewController {
         // Print & Format coloring of our battery level
         batteryLevelLabel.text = String(workingData.batteryLevel) + " %"
         if (workingData.batteryLevel <= savedSettings.sharedInstance.battCritLevel) {
-            //batteryLevelLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0)
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "red")
         }
         else if (workingData.batteryLevel <= savedSettings.sharedInstance.battWarnLevel) {
-            //batteryLevelLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0)
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "orange")
         }
@@ -403,16 +398,13 @@ class ViewController: UIViewController {
         
         // Determine color of Free Space text based on percent used
         if (workingData.percentUsed >= savedSettings.sharedInstance.freespaceCritLevel) {
-            //freeSpaceLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0)
             freeSpaceStatusIcon.isHidden = false
             freeSpaceStatusIcon.image = #imageLiteral(resourceName: "red")
         }
         else if (workingData.percentUsed >= savedSettings.sharedInstance.freespaceWarnLevel) {
-            //freeSpaceLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0)
             freeSpaceStatusIcon.isHidden = false
             freeSpaceStatusIcon.image = #imageLiteral(resourceName: "orange")
         }
-        //else { freeSpaceStatusIcon.isHidden = true }
         
         // Display free space as either GB or MB
         if (workingData.freeSpace % 1024 > 1) { freeSpaceLabel.text = String.localizedStringWithFormat("%.2f %@", Float(workingData.freeSpace) / Float(1024), " GB") }
@@ -423,19 +415,19 @@ class ViewController: UIViewController {
         userToCheck.text = workingData.user
         deviceIPLabel.text = workingData.deviceIPAddress
         deviceInventorylabel.text = workingData.lastInventoryEpocFormatted
-        
         warrantyExpiresLabel.text = workingData.warrantyExpiresEpochFormatted
-        if (Date().timeIntervalSince1970 > workingData.warrantyExpiresEpoch) {
-            //warrantyExpiresLabel.textColor = UIColor.init(red: 0.498, green: 0.0392, blue: 0.0, alpha: 1.0)
+        
+        if (workingData.warrantyExpiresEpoch == 0.0) {
+            warrantyExpiresLabel.text = "Not provided in JSS"
+        }
+        else if (Date().timeIntervalSince1970 > workingData.warrantyExpiresEpoch) {
             warrantyExpiresIcon.isHidden = false
             warrantyExpiresIcon.image = #imageLiteral(resourceName: "red")
         }
         else if ((workingData.warrantyExpiresEpoch - Date().timeIntervalSince1970) < 2678400) {
-            //warrantyExpiresLabel.textColor = UIColor.init(red: 0.7294, green: 0.5451, blue: 0, alpha: 1.0) 
             warrantyExpiresIcon.isHidden = false
             warrantyExpiresIcon.image = #imageLiteral(resourceName: "orange")
         }
-        //else { warrantyExpiresIcon.isHidden = true }
         enableButtons()
     }
     
@@ -457,6 +449,15 @@ class ViewController: UIViewController {
         restartDeviceButton.isEnabled = false
         shutdownDeviceButton.isEnabled = false
         setupButtons(buttonWidth: 0)
+    }
+    
+    func resetButtons() {
+        updateInventoryButton.layer.borderColor = UIColor.lightGray.cgColor
+        sendBlankPushButton.layer.borderColor = UIColor.lightGray.cgColor
+        removeRestritionsButton.layer.borderColor = UIColor.lightGray.cgColor
+        reapplyRestrictionsButton.layer.borderColor = UIColor.lightGray.cgColor
+        restartDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
+        shutdownDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     func setupButtons(buttonWidth: Int) {
@@ -494,6 +495,7 @@ class ViewController: UIViewController {
     }
     
     func resetUI () {
+        resetButtons()
         userToCheck.text = ""
         snToCheck.text = ""
         invNumToCheck.text = ""
@@ -516,6 +518,7 @@ class ViewController: UIViewController {
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
     }
+
     
     //// ------------------------------------
     //
