@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>BarcodeScanner-Localization.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>BarcodeScanner.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,17 +47,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>19E6534ABB2C9C66491D60CEEB16712C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>2597E77C6D3830202BFB48C276629F0A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2D0E1FF1272770259C68078F549263EB</key>
+		<key>38ACA430605AFB4229712A18BDDF5086</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>38ACA430605AFB4229712A18BDDF5086</key>
+		<key>41AB57C778C3649C78485C9E51311DD2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7546A3D3D2027B77D96BBDDF19EAD866</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -68,11 +83,6 @@
 			<true/>
 		</dict>
 		<key>9DD2F9C70F9BBA7DE07B3D231F225E66</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EFAAB8230EA40F1F8FE61671783A5DEF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

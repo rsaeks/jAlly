@@ -125,6 +125,8 @@ open class BarcodeScannerController: UIViewController {
       })
     }
   }
+    
+  public var barCodeFocusViewType: FocusViewType = .animated
 
   /// The current torch mode on the capture device.
   var torchMode: TorchMode = .off {
@@ -176,7 +178,7 @@ open class BarcodeScannerController: UIViewController {
     super.viewDidLoad()
 
     videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-    videoPreviewLayer?.videoGravity = AVLayerVideoGravityResize
+    videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
 
     view.backgroundColor = UIColor.black
 
@@ -202,18 +204,26 @@ open class BarcodeScannerController: UIViewController {
       name: NSNotification.Name.UIApplicationWillEnterForeground,
       object: nil)
   }
-
+  
   open override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
-    setupFrames()
-    infoView.setupFrames()
+    
     headerView.isHidden = !isBeingPresented
   }
-
+  
   open override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     animateFocusView()
+  }
+  
+  open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+    coordinator.animate(alongsideTransition: { (context) in
+      self.setupFrame()
+    }) { (context) in
+      self.focusView.layer.removeAllAnimations()
+      self.animateFocusView()
+    }
   }
 
   /**
@@ -268,7 +278,7 @@ open class BarcodeScannerController: UIViewController {
     output.metadataObjectTypes = metadata
     videoPreviewLayer?.session = captureSession
 
-    setupFrames()
+    view.setNeedsLayout()
   }
 
   // MARK: - Reset
@@ -310,25 +320,32 @@ open class BarcodeScannerController: UIViewController {
   }
 
   // MARK: - Layout
-
-  /**
-   Sets frames of the subviews.
-   */
-  func setupFrames() {
+  func setupFrame() {
     headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 64)
     flashButton.frame = CGRect(x: view.frame.width - 50, y: 73, width: 37, height: 37)
     infoView.frame = infoFrame
 
     if let videoPreviewLayer = videoPreviewLayer {
       videoPreviewLayer.frame = view.layer.bounds
-
-      if videoPreviewLayer.connection != nil {
-        videoPreviewLayer.connection.videoOrientation = .portrait
+      if let connection = videoPreviewLayer.connection, connection.isVideoOrientationSupported {
+        switch (UIApplication.shared.statusBarOrientation) {
+        case .portrait: connection.videoOrientation = .portrait
+        case .landscapeRight: connection.videoOrientation = .landscapeRight
+        case .landscapeLeft: connection.videoOrientation = .landscapeLeft
+        case .portraitUpsideDown: connection.videoOrientation = .portraitUpsideDown
+        default: connection.videoOrientation = .portrait
+        }
       }
     }
 
-    center(subview: focusView, inSize: CGSize(width: 218, height: 150))
+    if barCodeFocusViewType == .oneDimension {
+        center(subview: focusView, inSize: CGSize(width: 280, height: 80))
+    } else {
+        center(subview: focusView, inSize: CGSize(width: 218, height: 150))
+    }
     center(subview: settingsButton, inSize: CGSize(width: 150, height: 50))
+
+    headerView.isHidden = !isBeingPresented
   }
 
   /**
@@ -343,12 +360,6 @@ open class BarcodeScannerController: UIViewController {
       y: (view.frame.height - size.height) / 2,
       width: size.width,
       height: size.height)
-  }
-
-  // MARK: - Orientation
-
-  open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-    return .portrait
   }
 
   // MARK: - Animations
@@ -385,14 +396,17 @@ open class BarcodeScannerController: UIViewController {
   func animateFocusView() {
     focusView.layer.removeAllAnimations()
     focusView.isHidden = false
-
-    setupFrames()
-
-    UIView.animate(withDuration: 1.0, delay:0,
-      options: [.repeat, .autoreverse, .beginFromCurrentState],
-      animations: {
-        self.center(subview: self.focusView, inSize: CGSize(width: 280, height: 80))
-      }, completion: nil)
+    
+    setupFrame()
+    
+    if barCodeFocusViewType == .animated {
+        UIView.animate(withDuration: 1.0, delay:0,
+              options: [.repeat, .autoreverse, .beginFromCurrentState],
+              animations: {
+                self.center(subview: self.focusView, inSize: CGSize(width: 280, height: 80))
+              }, completion: nil)
+        }
+        view.setNeedsLayout()
   }
 
   // MARK: - Actions
@@ -428,12 +442,17 @@ extension BarcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
 
     guard
       let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject,
-      let code = metadataObj.stringValue,
+      var code = metadataObj.stringValue,
       metadata.contains(metadataObj.type)
       else { return }
 
     if isOneTimeSearch {
       locked = true
+    }
+    // See: https://stackoverflow.com/questions/22767584/ios7-barcode-scanner-api-adds-a-zero-to-upca-barcode-format
+    if metadataObj.type == AVMetadataObjectTypeEAN13Code && code.hasPrefix("0"){
+      let index = code.index(code.startIndex, offsetBy: 1)
+      code = code.substring(from: index)
     }
 
     animateFlash(whenProcessing: isOneTimeSearch)
