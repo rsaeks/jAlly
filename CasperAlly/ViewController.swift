@@ -249,6 +249,7 @@ class ViewController: UIViewController {
     
     func lookupData (parameterToCheck: String, passedItem: String) {
         dissmissKeyboard()
+        //resetStatusIcons()
         Alamofire.request(workingjss.jssURL + matchPath + parameterToCheck, method: .get, headers: headers)
             .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                 if (response.result.isSuccess) {
@@ -381,6 +382,9 @@ class ViewController: UIViewController {
     }
     
     func displayData() {
+        batteryStatusIcon.image = nil
+        freeSpaceStatusIcon.image = nil
+        warrantyExpiresIcon.image = nil
         deviceIDLabel.text = String(workingData.deviceID)
         iOSVersionLabel.text = workingData.iOSVersion
         deviceMACLabel.text = workingData.deviceMAC
@@ -518,6 +522,7 @@ class ViewController: UIViewController {
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
     }
+    
 
     
     //// ------------------------------------
