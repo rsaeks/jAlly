@@ -249,7 +249,6 @@ class ViewController: UIViewController {
     
     func lookupData (parameterToCheck: String, passedItem: String) {
         dissmissKeyboard()
-        //resetStatusIcons()
         Alamofire.request(workingjss.jssURL + matchPath + parameterToCheck, method: .get, headers: headers)
             .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                 if (response.result.isSuccess) {
@@ -543,6 +542,8 @@ extension ViewController: BarcodeScannerCodeDelegate {
         workingData.deviceInventoryNumber = code
         self.invNumToCheck.text = workingData.deviceInventoryNumber
         controller.dismiss(animated: true, completion: nil)
+        lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
+        JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
     }
 }
 
