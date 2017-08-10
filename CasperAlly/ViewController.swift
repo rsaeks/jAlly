@@ -17,7 +17,7 @@ import SwiftOCR
 let workingjss = JSSConfig()
 let defaultsVC = UserDefaults()
 let keychain = KeychainSwift()
-let workingData = JSSData()
+var workingData = JSSData()
 let JSSQueue = DispatchGroup()
 let controller = BarcodeScannerController()
 let scannedSN = SwiftOCR()
@@ -51,6 +51,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var batteryStatusIcon: UIImageView!
     @IBOutlet weak var freeSpaceStatusIcon: UIImageView!
     @IBOutlet weak var warrantyExpiresIcon: UIImageView!
+    @IBOutlet weak var lookupUserButton: scanButton!
+    @IBOutlet weak var lookupSNButton: scanButton!
+    @IBOutlet weak var lookupINVNumButton: scanButton!
     
 
     override func viewDidAppear(_ animated: Bool) {
@@ -59,6 +62,7 @@ class ViewController: UIViewController {
     
     @IBAction func clearDataPressed(_ sender: Any) {
         resetUI()
+        workingData = JSSData()
     }
     
     
@@ -69,30 +73,42 @@ class ViewController: UIViewController {
     //// ------------------------------------
         
     // Run this function when the "Lookup User" Button is pressed
-    @IBAction func userToCheckPressed(_ sender: Any) {
+    @IBAction func userToCheckPressed(_ sender: UIButton) {
         if (userToCheck.text != "") {
+            workingData = JSSData()
+            sender.layer.borderColor = warnColor.cgColor
             workingData.user = userToCheck.text!
             lookupData(parameterToCheck: workingData.user, passedItem: "username")
-            JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
+            JSSQueue.notify(queue: DispatchQueue.main, execute: {
+                self.displayData(theButton: sender)
+            } )
         }
         resetButtons()
     }
     
     // Run this function when the "Lookup SN" Button is pressed
-    @IBAction func snToCheckPressed(_ sender: Any) {
+    @IBAction func snToCheckPressed(_ sender: UIButton) {
         if (snToCheck.text != "") {
+            workingData = JSSData()
+            sender.layer.borderColor = warnColor.cgColor
             workingData.deviceSN = snToCheck.text!
             lookupData(parameterToCheck: workingData.deviceSN, passedItem: "serialnumber")
-            JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
+            JSSQueue.notify(queue: DispatchQueue.main, execute: {
+                self.displayData(theButton: sender)
+            } )
         }
         resetButtons()
     }
     
-    @IBAction func lookupInventoryNumber(_ sender: Any) {
+    @IBAction func lookupInventoryNumber(_ sender: UIButton) {
         if (invNumToCheck.text != "") {
+            workingData = JSSData()
+            sender.layer.borderColor = warnColor.cgColor
             workingData.deviceInventoryNumber = invNumToCheck.text!
             lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
-            JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
+            JSSQueue.notify(queue: DispatchQueue.main, execute: {
+                self.displayData(theButton: sender)
+            } )
         }
         resetButtons()
     }
@@ -350,10 +366,13 @@ class ViewController: UIViewController {
         switch ItemType {
         case "username":
             message = userNameNotFound
+            lookupUserButton.layer.borderColor = failColor.cgColor
         case "serialnumber":
             message = deviceSNNotFound
+            lookupSNButton.layer.borderColor = failColor.cgColor
         case "assettag":
             message = inventoryNumNotFound
+            lookupINVNumButton.layer.borderColor = failColor.cgColor
         default:
             message = "Other uncaught error occured"
         }
@@ -380,14 +399,18 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
     
-    func displayData() {
+    func displayData(theButton: UIButton) {
         batteryStatusIcon.image = nil
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
         deviceIDLabel.text = String(workingData.deviceID)
         iOSVersionLabel.text = workingData.iOSVersion
         deviceMACLabel.text = workingData.deviceMAC
+       
         // Print & Format coloring of our battery level
+        print(workingData.batteryLevel)
+        if workingData.batteryLevel != 101
+        { theButton.layer.borderColor = successColor.cgColor }
         batteryLevelLabel.text = String(workingData.batteryLevel) + " %"
         if (workingData.batteryLevel <= savedSettings.sharedInstance.battCritLevel) {
             batteryStatusIcon.isHidden = false
@@ -520,6 +543,9 @@ class ViewController: UIViewController {
         batteryStatusIcon.image = nil
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
+        lookupUserButton.layer.borderColor = UIColor.lightGray.cgColor
+        lookupSNButton.layer.borderColor = UIColor.lightGray.cgColor
+        lookupINVNumButton.layer.borderColor = UIColor.lightGray.cgColor
     }
     
 
@@ -543,7 +569,7 @@ extension ViewController: BarcodeScannerCodeDelegate {
         self.invNumToCheck.text = workingData.deviceInventoryNumber
         controller.dismiss(animated: true, completion: nil)
         lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
-        JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData()} )
+        JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData(theButton: self.lookupINVNumButton)} )
     }
 }
 

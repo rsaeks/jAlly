@@ -596,6 +596,9 @@
                         <outlet property="jssGIDLabel" destination="uLy-05-jzP" id="RjV-N4-k4V"/>
                         <outlet property="jssURLLabel" destination="4ar-wo-Gd7" id="jYC-op-tcL"/>
                         <outlet property="jssUsernameLabel" destination="Bpk-Xt-MjI" id="eMA-0H-fzd"/>
+                        <outlet property="lookupINVNumButton" destination="WII-zQ-kke" id="7De-0H-VeT"/>
+                        <outlet property="lookupSNButton" destination="kbM-j1-JJX" id="fun-YE-Hed"/>
+                        <outlet property="lookupUserButton" destination="pia-Xg-Fjh" id="eWA-XQ-aVG"/>
                         <outlet property="reapplyRestrictionsButton" destination="449-FK-xc8" id="TJM-XJ-5Z5"/>
                         <outlet property="removeRestritionsButton" destination="g0d-9b-1Er" id="Qdh-s8-JSx"/>
                         <outlet property="restartDeviceButton" destination="Dlv-7y-ojC" id="RVw-q6-QKC"/>
