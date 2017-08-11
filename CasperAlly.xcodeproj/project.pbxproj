@@ -130,7 +130,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Randy Saeks";
 				TargetAttributes = {
 					046F24811E4CD5E3005013E5 = {
@@ -365,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L3CMP2L959;
 				INFOPLIST_FILE = CasperAlly/Info.plist;
@@ -378,6 +379,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L3CMP2L959;
 				INFOPLIST_FILE = CasperAlly/Info.plist;
