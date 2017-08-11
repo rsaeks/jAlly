@@ -407,10 +407,11 @@ class ViewController: UIViewController {
         iOSVersionLabel.text = workingData.iOSVersion
         deviceMACLabel.text = workingData.deviceMAC
        
+        if workingData.batteryLevel != 101 {
+            theButton.layer.borderColor = successColor.cgColor
+        }
+        
         // Print & Format coloring of our battery level
-        print(workingData.batteryLevel)
-        if workingData.batteryLevel != 101
-        { theButton.layer.borderColor = successColor.cgColor }
         batteryLevelLabel.text = String(workingData.batteryLevel) + " %"
         if (workingData.batteryLevel <= savedSettings.sharedInstance.battCritLevel) {
             batteryStatusIcon.isHidden = false
@@ -420,7 +421,6 @@ class ViewController: UIViewController {
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "orange")
         }
-        //else { batteryStatusIcon.isHidden = true }
         
         // Determine color of Free Space text based on percent used
         if (workingData.percentUsed >= savedSettings.sharedInstance.freespaceCritLevel) {
@@ -500,6 +500,7 @@ class ViewController: UIViewController {
         let testExclusionGID = defaultsVC.string(forKey: "savedExclusionGID")
         let testJSSUsername = defaultsVC.string(forKey: "savedJSSUsername")
         let testJSSPassword = keychain.get("savedJSSPassword")
+        
         if testURL != nil {
             workingjss.jssURL = testURL!
             jssURLLabel.text = workingjss.jssURL
@@ -568,6 +569,8 @@ extension ViewController: BarcodeScannerCodeDelegate {
         workingData.deviceInventoryNumber = code
         self.invNumToCheck.text = workingData.deviceInventoryNumber
         controller.dismiss(animated: true, completion: nil)
+        resetButtons()
+        lookupINVNumButton.layer.borderColor = warnColor.cgColor
         lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
         JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData(theButton: self.lookupINVNumButton)} )
     }
