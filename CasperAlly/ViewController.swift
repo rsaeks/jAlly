@@ -12,6 +12,7 @@ import KeychainSwift
 import Alamofire
 import BarcodeScanner
 import SwiftOCR
+import AVFoundation
 
 // Create instances
 let workingjss = JSSConfig()
@@ -74,6 +75,9 @@ class ViewController: UIViewController {
     // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: UIButton) {
         if (userToCheck.text != "") {
+            lookupButtonsReset()
+            snToCheck.text = "looking up ..."
+            invNumToCheck.text = "looking up ..."
             workingData = JSSData()
             sender.layer.borderColor = warnColor.cgColor
             workingData.user = userToCheck.text!
@@ -88,6 +92,9 @@ class ViewController: UIViewController {
     // Run this function when the "Lookup SN" Button is pressed
     @IBAction func snToCheckPressed(_ sender: UIButton) {
         if (snToCheck.text != "") {
+            lookupButtonsReset()
+            userToCheck.text = "looking up ..."
+            invNumToCheck.text = "looking up ..."
             workingData = JSSData()
             sender.layer.borderColor = warnColor.cgColor
             workingData.deviceSN = snToCheck.text!
@@ -101,6 +108,9 @@ class ViewController: UIViewController {
     
     @IBAction func lookupInventoryNumber(_ sender: UIButton) {
         if (invNumToCheck.text != "") {
+            lookupButtonsReset()
+            userToCheck.text = "looking up ..."
+            snToCheck.text = "looking up ..."
             workingData = JSSData()
             sender.layer.borderColor = warnColor.cgColor
             workingData.deviceInventoryNumber = invNumToCheck.text!
@@ -249,6 +259,7 @@ class ViewController: UIViewController {
     
 
     @IBAction func scanSNPressed(_ sender: Any) {
+            workingData = JSSData()
             if let myImage = UIImage(named: "sample") {
             scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
             scannedSN.recognize(myImage) { result in
@@ -544,10 +555,14 @@ class ViewController: UIViewController {
         batteryStatusIcon.image = nil
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
+        workingData = JSSData()
+        lookupButtonsReset()
+    }
+    
+    func lookupButtonsReset() {
         lookupUserButton.layer.borderColor = UIColor.lightGray.cgColor
         lookupSNButton.layer.borderColor = UIColor.lightGray.cgColor
         lookupINVNumButton.layer.borderColor = UIColor.lightGray.cgColor
-        workingData = JSSData()
     }
     
 
@@ -569,6 +584,8 @@ extension ViewController: BarcodeScannerCodeDelegate {
     func barcodeScanner(_ controller: BarcodeScannerController, didCaptureCode code: String, type: String) {
         workingData.deviceInventoryNumber = code
         self.invNumToCheck.text = workingData.deviceInventoryNumber
+        userToCheck.text = "looking up ..."
+        snToCheck.text = "looking up ..."
         controller.dismiss(animated: true, completion: nil)
         resetButtons()
         lookupINVNumButton.layer.borderColor = warnColor.cgColor

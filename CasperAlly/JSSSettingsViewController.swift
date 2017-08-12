@@ -59,23 +59,25 @@ class JSSSettingsViewController: UIViewController {
         self.checkUPButton.layer.borderColor = UIColor.lightGray.cgColor
         self.connectionErrorLabel.isHidden = true
         if (self.jssUsername.text != "") {
-            Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
-                let userStatusCode = response.response?.statusCode
-                if userStatusCode == nil {
-                    self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "No Response")
-                }
-                else if userStatusCode == 200 {
-                    self.UPStatus(buttonColor: successColor.cgColor, hideMessage: true, message: "Valid Username & Password")
-                }
-                else if userStatusCode == 401 {
-                    self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Invalid Username / Password Combo")
-                }
-                else if userStatusCode == 404 {
-                    self.UPStatus(buttonColor: successColor.cgColor, hideMessage: true, message: "JSS Only user with no assigned device")
-                }
-                else {
-                    self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Please check URL")
-                    print("calling else block")
+            if (self.jssPassword.text != "") {
+                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
+                    let userStatusCode = response.response?.statusCode
+                    if userStatusCode == nil {
+                        self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "No Response")
+                    }
+                    else if userStatusCode == 200 {
+                        self.UPStatus(buttonColor: successColor.cgColor, hideMessage: true, message: "Valid Username & Password")
+                    }
+                    else if userStatusCode == 401 {
+                        self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Invalid Username / Password Combo")
+                    }
+                    else if userStatusCode == 404 {
+                        self.UPStatus(buttonColor: successColor.cgColor, hideMessage: true, message: "JSS Only user with no assigned device")
+                    }
+                    else {
+                        self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Please check URL")
+                        print("calling else block")
+                    }
                 }
             }
         }
@@ -135,6 +137,7 @@ class JSSSettingsViewController: UIViewController {
             savedSettings.sharedInstance.jssURL = JSSURL.text
         }
         
+
         // Test to make sure JSS exclusion GID is populated
         if testExclusionGID != nil {
             jssExclusionGroupID.text = testExclusionGID
