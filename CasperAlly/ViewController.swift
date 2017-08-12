@@ -62,7 +62,6 @@ class ViewController: UIViewController {
     
     @IBAction func clearDataPressed(_ sender: Any) {
         resetUI()
-        workingData = JSSData()
     }
     
     
@@ -234,6 +233,7 @@ class ViewController: UIViewController {
     //// ------------------------------------
     
     @IBAction func scanBarCodePressed(_ sender: Any) {
+        workingData = JSSData()
         controller.reset()
         controller.codeDelegate = self
         controller.errorDelegate = self
@@ -547,6 +547,7 @@ class ViewController: UIViewController {
         lookupUserButton.layer.borderColor = UIColor.lightGray.cgColor
         lookupSNButton.layer.borderColor = UIColor.lightGray.cgColor
         lookupINVNumButton.layer.borderColor = UIColor.lightGray.cgColor
+        workingData = JSSData()
     }
     
 
