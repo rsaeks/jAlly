@@ -59,8 +59,11 @@ class JSSSettingsViewController: UIViewController {
         self.checkUPButton.layer.borderColor = UIColor.lightGray.cgColor
         self.connectionErrorLabel.isHidden = true
         if (self.jssUsername.text != "") {
+            print("Checking username with: \(self.jssUsername.text!)")
             if (self.jssPassword.text != "") {
-                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
+                 print("Checking password with: \(self.jssPassword.text!)")
+//                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
+                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: jssPassword.text!).responseString { response in
                     let userStatusCode = response.response?.statusCode
                     if userStatusCode == nil {
                         self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "No Response")
@@ -76,7 +79,6 @@ class JSSSettingsViewController: UIViewController {
                     }
                     else {
                         self.UPStatus(buttonColor: failColor.cgColor, hideMessage: false, message: "Please check URL")
-                        print("calling else block")
                     }
                 }
             }
