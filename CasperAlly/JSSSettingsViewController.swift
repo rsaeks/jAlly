@@ -34,7 +34,7 @@ class JSSSettingsViewController: UIViewController {
             self.connectionErrorLabel.isHidden = true
             checkingConnection.startAnimating()
             self.checkURLButton.layer.borderColor = UIColor.lightGray.cgColor
-            Alamofire.request(JSSURL.text!).responseString { response in
+           Alamofire.request(JSSURL.text!).responseString { response in
                 let statusCode = response.response?.statusCode
                 if statusCode != nil {
                     if statusCode == 401 {
@@ -59,9 +59,7 @@ class JSSSettingsViewController: UIViewController {
         self.checkUPButton.layer.borderColor = UIColor.lightGray.cgColor
         self.connectionErrorLabel.isHidden = true
         if (self.jssUsername.text != "") {
-            print("Checking username with: \(self.jssUsername.text!)")
             if (self.jssPassword.text != "") {
-                 print("Checking password with: \(self.jssPassword.text!)")
 //                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
                 Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: jssPassword.text!).responseString { response in
                     let userStatusCode = response.response?.statusCode
@@ -123,67 +121,58 @@ class JSSSettingsViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let testURL = defaults.string(forKey: "savedJSSURL")
-        let testExclusionGID = defaults.string(forKey: "savedExclusionGID")
-        let testJSSUsername = defaults.string(forKey: "savedJSSUsername")
-        let testJSSPassword = keychain.get("savedJSSPassword")
         checkingConnection.hidesWhenStopped = true
-        let battWarnLevel = defaults.string(forKey: "batteryWarnLevel")
-        let battCritLevel = defaults.string(forKey: "batteryCritLevel")
-        let freeWarnLevel = defaults.string(forKey: "freespaceWarnLevel")
-        let freeCritLevel = defaults.string(forKey: "freespaceCritLevel")
+
 
         // Test to make sure JSS URL is populated
-        if testURL != nil {
-            JSSURL.text = testURL
+        if (defaults.string(forKey: "savedJSSURL") != nil) {
+            JSSURL.text = defaults.string(forKey: "savedJSSURL")
             savedSettings.sharedInstance.jssURL = JSSURL.text
         }
         
-
         // Test to make sure JSS exclusion GID is populated
-        if testExclusionGID != nil {
-            jssExclusionGroupID.text = testExclusionGID
+        if (defaults.string(forKey: "savedExclusionGID") != nil) {
+            jssExclusionGroupID.text = defaults.string(forKey: "savedExclusionGID")
             savedSettings.sharedInstance.exclusionGID = jssExclusionGroupID.text
         }
-        
+
         // Test to make sure JSS Username is populated
-        if testJSSUsername != nil {
-            jssUsername.text = testJSSUsername
+        if (defaults.string(forKey: "savedJSSUsername") != nil) {
+            jssUsername.text = defaults.string(forKey: "savedJSSUsername")
             savedSettings.sharedInstance.jssUsername = jssUsername.text
         }
         
         // Test to make sure JSS Password is populated
-        if testJSSPassword != nil {
-            jssPassword.text = testJSSPassword
+        if (keychain.get("savedJSSPassword") != nil) {
+            jssPassword.text = keychain.get("savedJSSPassword")
             savedSettings.sharedInstance.jssPassword = jssPassword.text
         }
         
-        if battWarnLevel != nil {
-            if battWarnLevel != "" {
-                batteryWarnLevel.text = battWarnLevel
-                savedSettings.sharedInstance.battWarnLevel = Int(battWarnLevel!)
+        if (defaults.string(forKey: "batteryWarnLevel") != nil) {
+            if defaults.string(forKey: "batteryWarnLevel") != "" {
+                batteryWarnLevel.text = defaults.string(forKey: "batteryWarnLevel")
+                savedSettings.sharedInstance.battWarnLevel = Int(batteryWarnLevel.text!)
             }
         }
-        
-        if battCritLevel != nil {
-            if battCritLevel != "" {
-            batteryCritLevel.text = battCritLevel
-            savedSettings.sharedInstance.battCritLevel = Int(battCritLevel!)
-            }
-        }
-        
-        if freeWarnLevel != nil {
-            if freeWarnLevel != "" {
-            freespaceWarnLevel.text = freeWarnLevel
-            savedSettings.sharedInstance.freespaceWarnLevel = Int(freeWarnLevel!)
-            }
 
+        if (defaults.string(forKey: "batteryCritLevel") != nil) {
+            if defaults.string(forKey: "batteryCritLevel") != "" {
+                batteryCritLevel.text = defaults.string(forKey: "batteryCritLevel")
+                savedSettings.sharedInstance.battCritLevel = Int(batteryCritLevel.text!)
+            }
         }
         
-        if freeCritLevel != nil {
-            if freeCritLevel != "" {
-            freespaceCritLevel.text = freeCritLevel
-            savedSettings.sharedInstance.freespaceCritLevel = Int(freeCritLevel!)
+        if (defaults.string(forKey: "freespaceWarnLevel") != nil) {
+            if defaults.string(forKey: "freespaceWarnLevel") != "" {
+                freespaceWarnLevel.text = defaults.string(forKey: "freespaceWarnLevel")
+                savedSettings.sharedInstance.freespaceWarnLevel = Int(freespaceWarnLevel.text!)
+            }
+        }
+        
+        if (defaults.string(forKey: "freespaceCritLevel") != nil) {
+            if defaults.string(forKey: "freespaceCritLevel") != "" {
+                freespaceCritLevel.text = defaults.string(forKey: "freespaceCritLevel")
+                savedSettings.sharedInstance.freespaceCritLevel = Int(freespaceCritLevel.text!)
             }
         }
     }

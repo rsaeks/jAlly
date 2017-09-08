@@ -61,24 +61,7 @@ class CameraVC: UIViewController {
         DispatchQueue.global(qos: .userInitiated).async {
             savedSettings.sharedInstance.snToCheck = ""
             let capturedType = self.stillImageOutput.connection(withMediaType: AVMediaTypeVideo)
-            
-            //
-            // ADDED BELOW FOR iOS 10
-            //let photoSettings = AVCapturePhotoSettings()
-            //photoSettings.isHighResolutionPhotoEnabled = true
-            //photoSettings.isAutoStillImageStabilizationEnabled = true
-            //photoSettings.isAutoDualCameraFusionEnabled = true
-            
-            //self.PhotoOutput10.capturePhoto(with: photoSettings, delegate: self.PhotoOutput10Delegate)
-
-            
-            
-            
-            
-            
-            //
-            // Begin orig code
-            self.stillImageOutput.captureStillImageAsynchronously(from: capturedType) { [weak self] buffer, error -> Void in
+                        self.stillImageOutput.captureStillImageAsynchronously(from: capturedType) { [weak self] buffer, error -> Void in
                 if buffer != nil {
                     let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer)
                     let image = UIImage(data: imageData!)

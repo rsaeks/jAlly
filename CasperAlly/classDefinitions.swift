@@ -48,6 +48,7 @@ class savedSettings {
     var battCritLevel: Int! = 15
     var freespaceWarnLevel: Int! = 80
     var freespaceCritLevel: Int! = 90
+    var numbersOnlyIsOn: Bool! = false
 }
 
 
