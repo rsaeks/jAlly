@@ -60,7 +60,7 @@ class JSSSettingsViewController: UIViewController {
         self.connectionErrorLabel.isHidden = true
         if (self.jssUsername.text != "") {
             if (self.jssPassword.text != "") {
-//                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: savedSettings.sharedInstance.jssPassword).responseString { response in
+//                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: Settings.shared.jssPassword).responseString { response in
                 Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: jssPassword.text!).responseString { response in
                     let userStatusCode = response.response?.statusCode
                     if userStatusCode == nil {
@@ -126,61 +126,53 @@ class JSSSettingsViewController: UIViewController {
 
         // Test to make sure JSS URL is populated
         if (defaults.string(forKey: "savedJSSURL") != nil) {
-            JSSURL.text = defaults.string(forKey: "savedJSSURL")
-            savedSettings.sharedInstance.jssURL = JSSURL.text
+            (JSSURL.text, Settings.shared.jssURL)  = (defaults.string(forKey: "savedJSSURL"),defaults.string(forKey: "savedJSSURL"))
         }
         
         // Test to make sure JSS exclusion GID is populated
         if (defaults.string(forKey: "savedExclusionGID") != nil) {
-            jssExclusionGroupID.text = defaults.string(forKey: "savedExclusionGID")
-            savedSettings.sharedInstance.exclusionGID = jssExclusionGroupID.text
+            (jssExclusionGroupID.text, Settings.shared.exclusionGID) = (defaults.string(forKey: "savedExclusionGID"), defaults.string(forKey: "savedExclusionGID"))
         }
 
         // Test to make sure JSS Username is populated
         if (defaults.string(forKey: "savedJSSUsername") != nil) {
-            jssUsername.text = defaults.string(forKey: "savedJSSUsername")
-            savedSettings.sharedInstance.jssUsername = jssUsername.text
+            (jssUsername.text, Settings.shared.jssUsername) = (defaults.string(forKey: "savedJSSUsername"),defaults.string(forKey: "savedJSSUsername"))
         }
         
         // Test to make sure JSS Password is populated
         if (keychain.get("savedJSSPassword") != nil) {
-            jssPassword.text = keychain.get("savedJSSPassword")
-            savedSettings.sharedInstance.jssPassword = jssPassword.text
+            (jssPassword.text, Settings.shared.jssPassword) = (keychain.get("savedJSSPassword"),keychain.get("savedJSSPassword"))
         }
         
         if (defaults.string(forKey: "batteryWarnLevel") != nil) {
             if defaults.string(forKey: "batteryWarnLevel") != "" {
-                batteryWarnLevel.text = defaults.string(forKey: "batteryWarnLevel")
-                savedSettings.sharedInstance.battWarnLevel = Int(batteryWarnLevel.text!)
+                (batteryWarnLevel.text, Settings.shared.battWarnLevel) = (defaults.string(forKey: "batteryWarnLevel"), Int(defaults.string(forKey: "batteryWarnLevel")!))
             }
         }
 
         if (defaults.string(forKey: "batteryCritLevel") != nil) {
             if defaults.string(forKey: "batteryCritLevel") != "" {
-                batteryCritLevel.text = defaults.string(forKey: "batteryCritLevel")
-                savedSettings.sharedInstance.battCritLevel = Int(batteryCritLevel.text!)
+                (batteryCritLevel.text, Settings.shared.battCritLevel) = (defaults.string(forKey: "batteryCritLevel"), Int(defaults.string(forKey: "batteryCritLevel")!))
             }
         }
         
         if (defaults.string(forKey: "freespaceWarnLevel") != nil) {
             if defaults.string(forKey: "freespaceWarnLevel") != "" {
-                freespaceWarnLevel.text = defaults.string(forKey: "freespaceWarnLevel")
-                savedSettings.sharedInstance.freespaceWarnLevel = Int(freespaceWarnLevel.text!)
+                (freespaceWarnLevel.text, Settings.shared.freespaceWarnLevel)  = (defaults.string(forKey: "freespaceWarnLevel"), Int(defaults.string(forKey: "freespaceWarnLevel")!))
             }
         }
         
         if (defaults.string(forKey: "freespaceCritLevel") != nil) {
             if defaults.string(forKey: "freespaceCritLevel") != "" {
-                freespaceCritLevel.text = defaults.string(forKey: "freespaceCritLevel")
-                savedSettings.sharedInstance.freespaceCritLevel = Int(freespaceCritLevel.text!)
+                (freespaceCritLevel.text, Settings.shared.freespaceCritLevel)  = (defaults.string(forKey: "freespaceCritLevel"), Int(defaults.string(forKey: "freespaceCritLevel")!))
             }
         }
     }
     
-    func initSavedSettings() {
-        savedSettings.sharedInstance.battWarnLevel = 30
-        savedSettings.sharedInstance.battCritLevel = 15
-        savedSettings.sharedInstance.freespaceWarnLevel = 80
-        savedSettings.sharedInstance.freespaceCritLevel = 90
+    func initSettings() {
+        Settings.shared.battWarnLevel = 30
+        Settings.shared.battCritLevel = 15
+        Settings.shared.freespaceWarnLevel = 80
+        Settings.shared.freespaceCritLevel = 90
     }
 }

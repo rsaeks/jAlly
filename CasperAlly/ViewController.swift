@@ -26,7 +26,7 @@ let scannedSN = SwiftOCR()
 
 class ViewController: UIViewController {
 
-    //Setup our connections to UI
+    //Setup connections to UI
     @IBOutlet weak var jssURLLabel: UILabel!
     @IBOutlet weak var jssGIDLabel: UILabel!
     @IBOutlet weak var jssUsernameLabel: UILabel!
@@ -74,7 +74,7 @@ class ViewController: UIViewController {
         
     // Run this function when the "Lookup User" Button is pressed
     @IBAction func userToCheckPressed(_ sender: UIButton) {
-        if (userToCheck.text != "") {
+        if !(userToCheck.text?.isEmpty)! {
             lookupButtonsReset()
             snToCheck.text = "looking up ..."
             invNumToCheck.text = "looking up ..."
@@ -91,7 +91,7 @@ class ViewController: UIViewController {
     
     // Run this function when the "Lookup SN" Button is pressed
     @IBAction func snToCheckPressed(_ sender: UIButton) {
-        if (snToCheck.text != "") {
+        if !(snToCheck.text?.isEmpty)! {
             lookupButtonsReset()
             userToCheck.text = "looking up ..."
             invNumToCheck.text = "looking up ..."
@@ -107,7 +107,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func lookupInventoryNumber(_ sender: UIButton) {
-        if (invNumToCheck.text != "") {
+        if !(invNumToCheck.text?.isEmpty)! {
             lookupButtonsReset()
             userToCheck.text = "looking up ..."
             snToCheck.text = "looking up ..."
@@ -314,15 +314,13 @@ class ViewController: UIViewController {
                                 workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
                             }
                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
-                                workingData.deviceInventoryNumber = asset_tag
-                                self.invNumToCheck.text = workingData.deviceInventoryNumber
+                                (workingData.deviceInventoryNumber, self.invNumToCheck.text) = (asset_tag, asset_tag)
                             }
                             if let deviceName = generalData[workingjss.deviceNameKey] as? String {
                                 workingData.deviceName = deviceName
                             }
                             if let deviceSN = generalData[workingjss.serialNumberKey] as? String {
-                                workingData.deviceSN = deviceSN
-                                self.snToCheck.text = workingData.deviceSN
+                                (workingData.deviceSN, self.snToCheck.text) = (deviceSN, deviceSN)
                             }
                             if let deviceMAC = generalData[workingjss.MACAddressKey] as? String {
                                 workingData.deviceMAC = deviceMAC
@@ -345,8 +343,7 @@ class ViewController: UIViewController {
                         } // Close our general JSON dict
                         if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> { // Begin location JSON dict
                             if let username = location[workingjss.usernameKey] as? String {
-                                workingData.user = username
-                                self.userToCheck.text = workingData.user
+                                (workingData.user, self.userToCheck.text) = (username, username)
                             }
                             if let fullName = location[workingjss.realNameKey] as? String {
                                 workingData.realName = fullName
@@ -424,21 +421,21 @@ class ViewController: UIViewController {
         
         // Print & Format coloring of our battery level
         batteryLevelLabel.text = String(workingData.batteryLevel) + " %"
-        if (workingData.batteryLevel <= savedSettings.sharedInstance.battCritLevel) {
+        if (workingData.batteryLevel <= Settings.shared.battCritLevel) {
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "red")
         }
-        else if (workingData.batteryLevel <= savedSettings.sharedInstance.battWarnLevel) {
+        else if (workingData.batteryLevel <= Settings.shared.battWarnLevel) {
             batteryStatusIcon.isHidden = false
             batteryStatusIcon.image = #imageLiteral(resourceName: "orange")
         }
         
         // Determine color of Free Space text based on percent used
-        if (workingData.percentUsed >= savedSettings.sharedInstance.freespaceCritLevel) {
+        if (workingData.percentUsed >= Settings.shared.freespaceCritLevel) {
             freeSpaceStatusIcon.isHidden = false
             freeSpaceStatusIcon.image = #imageLiteral(resourceName: "red")
         }
-        else if (workingData.percentUsed >= savedSettings.sharedInstance.freespaceWarnLevel) {
+        else if (workingData.percentUsed >= Settings.shared.freespaceWarnLevel) {
             freeSpaceStatusIcon.isHidden = false
             freeSpaceStatusIcon.image = #imageLiteral(resourceName: "orange")
         }
@@ -513,22 +510,19 @@ class ViewController: UIViewController {
         let testJSSPassword = keychain.get("savedJSSPassword")
         
         if testURL != nil {
-            workingjss.jssURL = testURL!
-            jssURLLabel.text = workingjss.jssURL
+            (workingjss.jssURL, jssURLLabel.text) = (testURL!, testURL!)
         }
         if testExclusionGID != nil {
-            workingjss.exclusinGID = testExclusionGID!
-            jssGIDLabel.text = workingjss.exclusinGID
+            (workingjss.exclusinGID, jssGIDLabel.text)  = (testExclusionGID!, testExclusionGID!)
         }
         if testJSSUsername != nil {
-            workingjss.jssUsername = testJSSUsername!
-            jssUsernameLabel.text = workingjss.jssUsername
+            (workingjss.jssUsername, jssUsernameLabel.text) = (testJSSUsername!, testJSSUsername!)
         }
         if testJSSPassword != nil {
             workingjss.jssPassword = testJSSPassword!
         }
-        if savedSettings.sharedInstance.snToCheck != nil {
-            snToCheck.text = savedSettings.sharedInstance.snToCheck
+        if Settings.shared.snToCheck != nil {
+            snToCheck.text = Settings.shared.snToCheck
         }
     }
     
@@ -543,7 +537,7 @@ class ViewController: UIViewController {
         fullNameLabel.text = "Full Name"
         deviceIPLabel.text = "Device IP"
         deviceInventorylabel.text = "Last Inventory"
-        savedSettings.sharedInstance.snToCheck = ""
+        Settings.shared.snToCheck = ""
         iOSVersionLabel.text = "iOS Version"
         warrantyExpiresLabel.text = "Warranty Expires"
         freeSpaceLabel.text = "Free Space"

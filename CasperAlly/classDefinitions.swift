@@ -36,8 +36,8 @@ public class cameraScanButton: UIButton {
     }
 }
 
-class savedSettings {
-    static var sharedInstance = savedSettings()
+class Settings {
+    static var shared = Settings()
     private init() {}
     var jssURL: String!
     var exclusionGID: String!

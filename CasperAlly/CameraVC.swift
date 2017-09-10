@@ -59,7 +59,7 @@ class CameraVC: UIViewController {
     // MARK: - IBActions
     @IBAction func takePhotoButtonPressed (_ sender: UIButton) {
         DispatchQueue.global(qos: .userInitiated).async {
-            savedSettings.sharedInstance.snToCheck = ""
+            Settings.shared.snToCheck = ""
             let capturedType = self.stillImageOutput.connection(withMediaType: AVMediaTypeVideo)
                         self.stillImageOutput.captureStillImageAsynchronously(from: capturedType) { [weak self] buffer, error -> Void in
                 if buffer != nil {
@@ -71,7 +71,7 @@ class CameraVC: UIViewController {
                         DispatchQueue.main.async {
                             self?.label.text = recognizedString
                             self?.label.textColor = UIColor.white
-                            savedSettings.sharedInstance.snToCheck = recognizedString
+                            Settings.shared.snToCheck = recognizedString
                             print(self?.ocrInstance.currentOCRRecognizedBlobs ?? "Recoginzed Blob is empty")
                         }
                     }
