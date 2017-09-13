@@ -7,7 +7,7 @@ target 'CasperAlly' do
 
   # Pods for CasperAlly
     pod 'Alamofire'
-    pod 'KeychainSwift'
+    pod 'KeychainSwift', git: 'https://github.com/marketplacer/keychain-swift.git', branch: 'swift-4.0'
     pod 'BarcodeScanner'
     pod 'SwiftOCR'
 end

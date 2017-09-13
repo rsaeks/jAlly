@@ -8,8 +8,8 @@
 
 // Import frameworks
 import UIKit
-import KeychainSwift
 import Alamofire
+import KeychainSwift
 import BarcodeScanner
 import SwiftOCR
 import AVFoundation
