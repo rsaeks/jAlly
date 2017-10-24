@@ -36,8 +36,8 @@ public enum TorchMode {
   }
 
   /// Returns `AVCaptureTorchMode` value.
-  var captureTorchMode: AVCaptureTorchMode {
-    let result: AVCaptureTorchMode
+  var captureTorchMode: AVCaptureDevice.TorchMode {
+    let result: AVCaptureDevice.TorchMode
 
     switch self {
     case .on:

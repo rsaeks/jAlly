@@ -74,15 +74,22 @@ func localizedString(_ key: String) -> String {
  `AVCaptureMetadataOutput` metadata object types.
  */
 public var metadata = [
-  AVMetadataObjectTypeUPCECode,
-  AVMetadataObjectTypeCode39Code,
-  AVMetadataObjectTypeCode39Mod43Code,
-  AVMetadataObjectTypeEAN13Code,
-  AVMetadataObjectTypeEAN8Code,
-  AVMetadataObjectTypeCode93Code,
-  AVMetadataObjectTypeCode128Code,
-  AVMetadataObjectTypePDF417Code,
-  AVMetadataObjectTypeQRCode,
-  AVMetadataObjectTypeAztecCode,
-  AVMetadataObjectTypeITF14Code
+  AVMetadataObject.ObjectType.aztec,
+  AVMetadataObject.ObjectType.code128,
+  AVMetadataObject.ObjectType.code39,
+  AVMetadataObject.ObjectType.code39Mod43,
+  AVMetadataObject.ObjectType.code93,
+  AVMetadataObject.ObjectType.dataMatrix,
+  AVMetadataObject.ObjectType.ean13,
+  AVMetadataObject.ObjectType.ean8,
+  AVMetadataObject.ObjectType.face,
+  AVMetadataObject.ObjectType.interleaved2of5,
+  AVMetadataObject.ObjectType.itf14,
+  AVMetadataObject.ObjectType.pdf417,
+  AVMetadataObject.ObjectType.qr,
+  AVMetadataObject.ObjectType.upce,
 ]
+
+extension AVMetadataObject.ObjectType {
+    public static let upca: AVMetadataObject.ObjectType = AVMetadataObject.ObjectType(rawValue: "org.gs1.UPC-A")
+}

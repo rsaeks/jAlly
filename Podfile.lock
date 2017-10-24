@@ -1,34 +1,24 @@
 PODS:
   - Alamofire (4.5.1)
-  - BarcodeScanner (2.1.2)
+  - BarcodeScanner (3.0.0)
   - GPUImage (0.1.7)
-  - KeychainSwift (8.0.2)
+  - KeychainSwift (9.0.2)
   - SwiftOCR (1.0):
     - GPUImage
 
 DEPENDENCIES:
   - Alamofire
   - BarcodeScanner
-  - KeychainSwift (from `https://github.com/marketplacer/keychain-swift.git`, branch `swift-4.0`)
+  - KeychainSwift
   - SwiftOCR
-
-EXTERNAL SOURCES:
-  KeychainSwift:
-    :branch: swift-4.0
-    :git: https://github.com/marketplacer/keychain-swift.git
-
-CHECKOUT OPTIONS:
-  KeychainSwift:
-    :commit: d772318c1528998c4bbd24064112464441b575fa
-    :git: https://github.com/marketplacer/keychain-swift.git
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
-  BarcodeScanner: 84b6e5c75b7efad823381ee9bde846b13171a009
+  BarcodeScanner: 4ba61e8b2d50da7b17685085d4bb8e1a0c14613e
   GPUImage: 733a5f0fab92df9de1c37ba9df520a833ccb406d
-  KeychainSwift: e44a619b799a487555a1692e91b76028f35e0ff8
+  KeychainSwift: 3ab1d428d0dbff59cd056f1d0bfc640b36c2b081
   SwiftOCR: c0965eee5761acf3c780ba2c90020dc1c59de7a1
 
-PODFILE CHECKSUM: 730814d5376cb5d371855a19c25cb5eeddb3c2cb
+PODFILE CHECKSUM: 69819dc82960e37c1e1482a566fe441042185178
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0.beta.2
