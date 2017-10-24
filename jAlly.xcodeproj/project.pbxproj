@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		046F24821E4CD5E3005013E5 /* CasperAlly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CasperAlly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		046F24821E4CD5E3005013E5 /* jAlly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jAlly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		046F24851E4CD5E3005013E5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		046F24871E4CD5E3005013E5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		046F248A1E4CD5E3005013E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -61,7 +61,7 @@
 		046F24831E4CD5E3005013E5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				046F24821E4CD5E3005013E5 /* CasperAlly.app */,
+				046F24821E4CD5E3005013E5 /* jAlly.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,9 +103,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		046F24811E4CD5E3005013E5 /* CasperAlly */ = {
+		046F24811E4CD5E3005013E5 /* jAlly */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 046F24941E4CD5E3005013E5 /* Build configuration list for PBXNativeTarget "CasperAlly" */;
+			buildConfigurationList = 046F24941E4CD5E3005013E5 /* Build configuration list for PBXNativeTarget "jAlly" */;
 			buildPhases = (
 				5E0D3970C768138F1F8CBB44 /* [CP] Check Pods Manifest.lock */,
 				046F247E1E4CD5E3005013E5 /* Sources */,
@@ -118,9 +118,9 @@
 			);
 			dependencies = (
 			);
-			name = CasperAlly;
+			name = jAlly;
 			productName = CasperAlly;
-			productReference = 046F24821E4CD5E3005013E5 /* CasperAlly.app */;
+			productReference = 046F24821E4CD5E3005013E5 /* jAlly.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -139,7 +139,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 046F247D1E4CD5E3005013E5 /* Build configuration list for PBXProject "CasperAlly" */;
+			buildConfigurationList = 046F247D1E4CD5E3005013E5 /* Build configuration list for PBXProject "jAlly" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -152,7 +152,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				046F24811E4CD5E3005013E5 /* CasperAlly */,
+				046F24811E4CD5E3005013E5 /* jAlly */,
 			);
 		};
 /* End PBXProject section */
@@ -408,7 +408,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		046F247D1E4CD5E3005013E5 /* Build configuration list for PBXProject "CasperAlly" */ = {
+		046F247D1E4CD5E3005013E5 /* Build configuration list for PBXProject "jAlly" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				046F24921E4CD5E3005013E5 /* Debug */,
@@ -417,7 +417,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		046F24941E4CD5E3005013E5 /* Build configuration list for PBXNativeTarget "CasperAlly" */ = {
+		046F24941E4CD5E3005013E5 /* Build configuration list for PBXNativeTarget "jAlly" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				046F24951E4CD5E3005013E5 /* Debug */,
