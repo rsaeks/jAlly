@@ -35,12 +35,12 @@ class CameraVC: UIViewController {
     
     //
     // ADDED BELOW FOR iOS 10
-    //fileprivate var PhotoOutput10: AVCapturePhotoOutput!
-    //fileprivate var PhotoOutput10Delegate: AVCapturePhotoCaptureDelegate!
+    fileprivate var PhotoOutput10: AVCapturePhotoOutput!
+    fileprivate var PhotoOutput10Delegate: AVCapturePhotoCaptureDelegate!
     
     
     fileprivate let captureSession = AVCaptureSession()
-    fileprivate let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+    fileprivate let device = AVCaptureDevice.default(for: AVMediaType.video)
     private let ocrInstance = SwiftOCR()
     
     // MARK: - View LifeCycle
@@ -60,10 +60,12 @@ class CameraVC: UIViewController {
     @IBAction func takePhotoButtonPressed (_ sender: UIButton) {
         DispatchQueue.global(qos: .userInitiated).async {
             Settings.shared.snToCheck = ""
-            let capturedType = self.stillImageOutput.connection(withMediaType: AVMediaTypeVideo)
-                        self.stillImageOutput.captureStillImageAsynchronously(from: capturedType) { [weak self] buffer, error -> Void in
+            let capturedType = self.stillImageOutput.connection(with: AVMediaType.video)
+            //let capturedType = self.PhotoOutput10.connection(withMediaType: AVMediaTypeVideo)
+                    self.stillImageOutput.captureStillImageAsynchronously(from: capturedType!) { [weak self] buffer, error -> Void in
+                        //self.PhotoOutput10.capture
                 if buffer != nil {
-                    let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer)
+                    let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(buffer!)
                     let image = UIImage(data: imageData!)
                     let croppedImage = self?.prepareImageForCrop(using: image!)
                     self?.ocrInstance.characterWhiteList = "ABCDEFGHIJKLMNPQRSTUVWXYZ0123456789"
@@ -117,9 +119,9 @@ extension CameraVC {
         let fullResolution = UIDevice.current.userInterfaceIdiom == .phone && max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height) < 568.0
         
         if fullResolution {
-            self.captureSession.sessionPreset = AVCaptureSessionPresetHigh
+            self.captureSession.sessionPreset = AVCaptureSession.Preset.high
         } else {
-            self.captureSession.sessionPreset = AVCaptureSessionPreset1280x720
+            self.captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
         }
         
         self.captureSession.addOutput(self.stillImageOutput)
@@ -134,7 +136,7 @@ extension CameraVC {
     
     private func prepareCaptureSession () {
         do {
-            self.captureSession.addInput(try AVCaptureDeviceInput(device: self.device))
+            self.captureSession.addInput(try AVCaptureDeviceInput(device: self.device!))
         } catch {
             print("AVCaptureDeviceInput Error")
         }
@@ -142,9 +144,9 @@ extension CameraVC {
         // layer customization
         let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
         //previewLayer?.frame.size = self.cameraView.frame.size
-        previewLayer?.frame.size = self.cameraView.frame.size
-        previewLayer?.frame.origin = CGPoint.zero
-        previewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+        previewLayer.frame.size = self.cameraView.frame.size
+        previewLayer.frame.origin = CGPoint.zero
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         
         // device lock is important to grab data correctly from image
         do {
@@ -158,7 +160,7 @@ extension CameraVC {
         
         //Set initial Zoom scale
         do {
-            let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+            let device = AVCaptureDevice.default(for: AVMediaType.video)
             try device?.lockForConfiguration()
             
             let zoomScale: CGFloat = 2.5
@@ -173,7 +175,7 @@ extension CameraVC {
         }
         
         DispatchQueue.main.async(execute: {
-            self.cameraView.layer.addSublayer(previewLayer!)
+            self.cameraView.layer.addSublayer(previewLayer)
             self.captureSession.startRunning()
         })
     }

@@ -282,6 +282,36 @@ class ViewController: UIViewController {
                     if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
                         if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
                             if mobileDevice.count > 0 {
+
+                                //
+                                // Begin allowing more than one device to return if matching
+                                //
+                                if passedItem == "serialnumber" && mobileDevice.count > 1 {
+                                    print("This isn't right ... only one serial number is allowed")
+                                }
+                                else if mobileDevice.count > 1 {
+                                    var deviceIDs = [Int]()
+                                    var serialNumbers = [String]()
+                                    var assetTags = [String]()
+                                    for x in 0..<mobileDevice.count {
+                                        print("Getting info for device at index: \(x)")
+                                        deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
+                                        serialNumbers.append(mobileDevice[x][workingjss.serialNumberKey] as! String)
+                                        //print("Device ID number is: \(tempID!)")
+                                        //ToDo: Make a POST to the JSS for Each element
+                                        //      Parse data and save as deviceid [x] / serialNumber[x] / assettag[x] pairs
+                                        //
+                                    }
+                                    print("Device IDs: \(deviceIDs)")
+                                    print("Serial Numbers:\(serialNumbers)")
+                                    // Once procssed all the results, show choices to user
+                                    // User picks row
+                                }
+
+                                //
+                                // End allowing more than one device
+                                //
+                                
                                 if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
                                     workingData.deviceID = deviceID
                                     self.getDetails()
