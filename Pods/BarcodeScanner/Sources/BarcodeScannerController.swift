@@ -30,7 +30,7 @@ public protocol BarcodeScannerDismissalDelegate: class {
 open class BarcodeScannerController: UIViewController {
 
   /// Video capture device.
-  lazy var captureDevice: AVCaptureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+  lazy var captureDevice: AVCaptureDevice = AVCaptureDevice.default(for: AVMediaType.video)!
 
   /// Capture session.
   lazy var captureSession: AVCaptureSession = AVCaptureSession()
@@ -42,10 +42,9 @@ open class BarcodeScannerController: UIViewController {
   lazy var infoView: InfoView = InfoView()
 
   /// Button to change torch mode.
-  lazy var flashButton: UIButton = { [unowned self] in
+  public lazy var flashButton: UIButton = { [unowned self] in
     let button = UIButton(type: .custom)
     button.addTarget(self, action: #selector(flashButtonDidPress), for: .touchUpInside)
-
     return button
     }()
 
@@ -69,8 +68,8 @@ open class BarcodeScannerController: UIViewController {
     let button = UIButton(type: .system)
     let title = NSAttributedString(string: SettingsButton.text,
       attributes: [
-        NSFontAttributeName : SettingsButton.font,
-        NSForegroundColorAttributeName : SettingsButton.color,
+        NSAttributedStringKey.font : SettingsButton.font,
+        NSAttributedStringKey.foregroundColor : SettingsButton.color,
       ])
 
     button.setAttributedTitle(title, for: UIControlState())
@@ -178,7 +177,7 @@ open class BarcodeScannerController: UIViewController {
     super.viewDidLoad()
 
     videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-    videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+    videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
 
     view.backgroundColor = UIColor.black
 
@@ -229,7 +228,7 @@ open class BarcodeScannerController: UIViewController {
   /**
    `UIApplicationWillEnterForegroundNotification` action.
    */
-  func appWillEnterForeground() {
+  @objc func appWillEnterForeground() {
     torchMode = .off
     animateFocusView()
   }
@@ -240,13 +239,13 @@ open class BarcodeScannerController: UIViewController {
    Sets up camera and checks for camera permissions.
    */
   func setupCamera() {
-    let authorizationStatus = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+    let authorizationStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
 
     if authorizationStatus == .authorized {
       setupSession()
       status = Status(state: .scanning)
     } else if authorizationStatus == .notDetermined {
-      AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo,
+      AVCaptureDevice.requestAccess(for: AVMediaType.video,
         completionHandler: { (granted: Bool) -> Void in
           DispatchQueue.main.async {
             if granted {
@@ -344,8 +343,6 @@ open class BarcodeScannerController: UIViewController {
         center(subview: focusView, inSize: CGSize(width: 218, height: 150))
     }
     center(subview: settingsButton, inSize: CGSize(width: 150, height: 50))
-
-    headerView.isHidden = !isBeingPresented
   }
 
   /**
@@ -414,7 +411,7 @@ open class BarcodeScannerController: UIViewController {
   /**
    Opens setting to allow camera usage.
    */
-  func settingsButtonDidPress() {
+  @objc func settingsButtonDidPress() {
     DispatchQueue.main.async {
       if let settingsURL = URL(string: UIApplicationOpenSettingsURLString) {
         UIApplication.shared.openURL(settingsURL)
@@ -425,7 +422,7 @@ open class BarcodeScannerController: UIViewController {
   /**
    Sets the next torch mode.
    */
-  func flashButtonDidPress() {
+  @objc func flashButtonDidPress() {
     torchMode = torchMode.next
   }
 }
@@ -434,11 +431,9 @@ open class BarcodeScannerController: UIViewController {
 
 extension BarcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
 
-  public func captureOutput(_ captureOutput: AVCaptureOutput!,
-                            didOutputMetadataObjects metadataObjects: [Any]!,
-                            from connection: AVCaptureConnection!) {
+  public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
     guard !locked else { return }
-    guard metadataObjects != nil && !metadataObjects.isEmpty else { return }
+    guard !metadataObjects.isEmpty else { return }
 
     guard
       let metadataObj = metadataObjects[0] as? AVMetadataMachineReadableCodeObject,
@@ -449,14 +444,18 @@ extension BarcodeScannerController: AVCaptureMetadataOutputObjectsDelegate {
     if isOneTimeSearch {
       locked = true
     }
+
+    var rawType = metadataObj.type.rawValue
+
+    // UPC-A is an EAN-13 barcode with a zero prefix.
     // See: https://stackoverflow.com/questions/22767584/ios7-barcode-scanner-api-adds-a-zero-to-upca-barcode-format
-    if metadataObj.type == AVMetadataObjectTypeEAN13Code && code.hasPrefix("0"){
-      let index = code.index(code.startIndex, offsetBy: 1)
-      code = code.substring(from: index)
+    if metadataObj.type == AVMetadataObject.ObjectType.ean13 && code.hasPrefix("0") {
+      code = String(code.dropFirst())
+      rawType = AVMetadataObject.ObjectType.upca.rawValue
     }
 
+    codeDelegate?.barcodeScanner(self, didCaptureCode: code, type: rawType)
     animateFlash(whenProcessing: isOneTimeSearch)
-    codeDelegate?.barcodeScanner(self, didCaptureCode: code, type: metadataObj.type)
   }
 }
 

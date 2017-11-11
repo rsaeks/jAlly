@@ -16,7 +16,7 @@
 		D504DEA81E73788D0016F6E7 /* classDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D504DEA71E73788D0016F6E7 /* classDefinitions.swift */; };
 		D5AB74B71E8E17CD008EE547 /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AB74B61E8E17CD008EE547 /* CameraVC.swift */; };
 		D5D616651E55ED470051A818 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D616641E55ED470051A818 /* Constants.swift */; };
-		FBE48F6FB3B4682FC76A9C2E /* Pods_CasperAlly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */; };
+		E4B97974D14AB92F036F6B95 /* Pods_jAlly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F799F01240F5C0CE884EDCF2 /* Pods_jAlly.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,12 +28,12 @@
 		046F248F1E4CD5E3005013E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		046F24911E4CD5E3005013E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04CC36621E4CFA71006E0989 /* JSSSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSSSettingsViewController.swift; sourceTree = "<group>"; };
-		1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CasperAlly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperAlly.release.xcconfig"; path = "Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly.release.xcconfig"; sourceTree = "<group>"; };
-		92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasperAlly.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly.debug.xcconfig"; sourceTree = "<group>"; };
+		242DCD2CFBCBE84FBEE4BC04 /* Pods-jAlly.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jAlly.release.xcconfig"; path = "Pods/Target Support Files/Pods-jAlly/Pods-jAlly.release.xcconfig"; sourceTree = "<group>"; };
 		D504DEA71E73788D0016F6E7 /* classDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = classDefinitions.swift; sourceTree = "<group>"; };
 		D5AB74B61E8E17CD008EE547 /* CameraVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
 		D5D616641E55ED470051A818 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		F1BE7E6E7C2352B58E1BFA15 /* Pods-jAlly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jAlly.debug.xcconfig"; path = "Pods/Target Support Files/Pods-jAlly/Pods-jAlly.debug.xcconfig"; sourceTree = "<group>"; };
+		F799F01240F5C0CE884EDCF2 /* Pods_jAlly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_jAlly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBE48F6FB3B4682FC76A9C2E /* Pods_CasperAlly.framework in Frameworks */,
+				E4B97974D14AB92F036F6B95 /* Pods_jAlly.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,8 +86,8 @@
 		403FFEACDA8BF646C796C514 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */,
-				64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */,
+				F1BE7E6E7C2352B58E1BFA15 /* Pods-jAlly.debug.xcconfig */,
+				242DCD2CFBCBE84FBEE4BC04 /* Pods-jAlly.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -95,7 +95,7 @@
 		D71E237782C99D604C837456 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1AD600237449C18E7AABDBB5 /* Pods_CasperAlly.framework */,
+				F799F01240F5C0CE884EDCF2 /* Pods_jAlly.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -183,7 +183,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-jAlly/Pods-jAlly-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5E0D3970C768138F1F8CBB44 /* [CP] Check Pods Manifest.lock */ = {
@@ -197,7 +197,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-CasperAlly-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-jAlly-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -210,7 +210,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-jAlly/Pods-jAlly-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BarcodeScanner/BarcodeScanner.framework",
 				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
@@ -227,7 +227,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CasperAlly/Pods-CasperAlly-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-jAlly/Pods-jAlly-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -375,7 +375,7 @@
 		};
 		046F24951E4CD5E3005013E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 92FD5DF4075D62B267B2AE6E /* Pods-CasperAlly.debug.xcconfig */;
+			baseConfigurationReference = F1BE7E6E7C2352B58E1BFA15 /* Pods-jAlly.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -391,7 +391,7 @@
 		};
 		046F24961E4CD5E3005013E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64FEF01F214FD804325454F0 /* Pods-CasperAlly.release.xcconfig */;
+			baseConfigurationReference = 242DCD2CFBCBE84FBEE4BC04 /* Pods-jAlly.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

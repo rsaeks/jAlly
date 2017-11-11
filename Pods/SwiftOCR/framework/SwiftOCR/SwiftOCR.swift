@@ -36,8 +36,9 @@ public var globalNetwork = FFNN.fromFile(Bundle(for: SwiftOCR.self).url(forResou
 
 open class SwiftOCR {
     
-    fileprivate     var network = globalNetwork
-    
+	fileprivate		var characters = recognizableCharacters
+	fileprivate     var network = globalNetwork
+	
     //MARK: Setup
     
     ///SwiftOCR's delegate
@@ -65,11 +66,23 @@ open class SwiftOCR {
     //MARK: Init
     public   init(){}
     
-    public   init(image: OCRImage, delegate: SwiftOCRDelegate?, _ completionHandler: @escaping (String) -> Void){
-        self.delegate = delegate
-        self.recognize(image, completionHandler)
-    }
-    
+	public   init(recognizableCharacters: String, network: FFNN) {
+		self.characters = recognizableCharacters
+		self.network = network
+	}
+	
+	public   init(image: OCRImage, delegate: SwiftOCRDelegate?, _ completionHandler: @escaping (String) -> Void){
+		self.delegate = delegate
+		self.recognize(image, completionHandler)
+	}
+	
+	public   init(recognizableCharacters: String, network: FFNN, image: OCRImage, delegate: SwiftOCRDelegate?, _ completionHandler: @escaping (String) -> Void) {
+		self.characters = recognizableCharacters
+		self.network = network
+		self.delegate = delegate
+		self.recognize(image, completionHandler)
+	}
+	
     /**
      
      Performs ocr on the image.
@@ -82,7 +95,7 @@ open class SwiftOCR {
     open   func recognize(_ image: OCRImage, _ completionHandler: @escaping (String) -> Void){
         
         func indexToCharacter(_ index: Int) -> Character {
-            return Array(recognizableCharacters.characters)[index]
+            return Array(characters.characters)[index]
         }
         
         func checkWhiteAndBlackListForCharacter(_ character: Character) -> Bool {
@@ -108,11 +121,11 @@ open class SwiftOCR {
                     if networkResult.max() >= self.confidenceThreshold {
                        
                         /*
-                         let recognizedChar = Array(recognizableCharacters.characters)[networkResult.indexOf(networkResult.maxElement() ?? 0) ?? 0]
+                         let recognizedChar = Array(characters.characters)[networkResult.indexOf(networkResult.maxElement() ?? 0) ?? 0]
                          recognizedString.append(recognizedChar)
                          */
                         
-                        for (networkIndex, _) in networkResult.enumerated().sorted(by: {$0.0.element > $0.1.element}) {
+                        for (networkIndex, _) in networkResult.enumerated().sorted(by: { $0.element > $1.element }) {
                             let character = indexToCharacter(networkIndex)
                             
                             guard checkWhiteAndBlackListForCharacter(character) else {
@@ -378,10 +391,9 @@ open class SwiftOCR {
                     continue
                 }
                 
-                let transposedData = Array(data[minY...maxY].map({return $0[(minX + 2)...(maxX - 2)]})).transpose() // [y][x] -> [x][y]
-                let reducedMaxIndexArray = transposedData.map({return $0.reduce(0, {return UInt32($0.0) + UInt32($0.1)})}) //Covert to UInt32 to prevent overflow
-                let maxIndex = reducedMaxIndexArray.enumerated().max(by: {return $0.1 < $1.1})?.0 ?? 0
-                
+                let transposedData = Array(data[minY...maxY].map({ $0[(minX + 2)...(maxX - 2)]})).transpose() // [y][x] -> [x][y]
+                let reducedMaxIndexArray = transposedData.map({ $0.reduce(0, { UInt32($0) + UInt32($1) }) })
+                let maxIndex = reducedMaxIndexArray.enumerated().max(by: { $0.1 < $1.1})?.0 ?? 0
                 
                 let cutXPosition   = minX + 2 + maxIndex
                 
@@ -456,8 +468,7 @@ open class SwiftOCR {
                 outputImages.append((croppedImage, rect))
             }
         }
-        
-        outputImages.sort(by: {return $0.0.1.origin.x < $0.1.1.origin.x})
+        outputImages.sort { $0.1.origin.x < $1.1.origin.x }
         return outputImages
         
     }
@@ -706,7 +717,7 @@ public struct SwiftOCRRecognizedBlob {
     public let boundingBox:              CGRect!
     
     init(charactersWithConfidence: [(character: Character, confidence: Float)]!, boundingBox: CGRect) {
-        self.charactersWithConfidence = charactersWithConfidence.sorted(by: {return $0.0.confidence > $0.1.confidence})
+        self.charactersWithConfidence = charactersWithConfidence.sorted(by: { $0.confidence > $1.confidence })
         self.boundingBox = boundingBox
     }
     
