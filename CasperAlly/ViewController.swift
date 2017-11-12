@@ -22,6 +22,7 @@ var workingData = JSSData()
 let JSSQueue = DispatchGroup()
 let controller = BarcodeScannerController()
 let scannedSN = SwiftOCR()
+let lookupQueue = DispatchGroup()
 
 
 class ViewController: UIViewController {
@@ -282,28 +283,71 @@ class ViewController: UIViewController {
                     if let outerDict = response.result.value as? Dictionary <String, AnyObject> {
                         if let mobileDevice = outerDict[workingjss.mobileDevicesKey] as? [Dictionary<String,AnyObject>] {
                             if mobileDevice.count > 0 {
-
                                 //
                                 // Begin allowing more than one device to return if matching
                                 //
-                                if passedItem == "serialnumber" && mobileDevice.count > 1 {
+                                if mobileDevice.count == 1 {
+                                    print("Only received one result ... moving forward")
+                                    if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+                                        print("Performing lookup for device ....")
+                                        workingData.deviceID = deviceID
+                                        self.getDetails()
+                                    }
+                                }
+
+                                else if passedItem == "serialnumber" && mobileDevice.count > 1 {
                                     print("This isn't right ... only one serial number is allowed")
                                 }
+                                    
                                 else if mobileDevice.count > 1 {
+                                    print("Received more than one device back ... getting info")
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
                                     var assetTags = [String]()
+                                    lookupQueue.enter()
+                                    print ("Located a total of \(mobileDevice.count) devices")
+                                    var counter = 0
                                     for x in 0..<mobileDevice.count {
-                                        print("Getting info for device at index: \(x)")
+                                        //print("Getting info for device at index: \(x)")
                                         deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
                                         serialNumbers.append(mobileDevice[x][workingjss.serialNumberKey] as! String)
+                                        // Begin Looking up Asset Tags
+                                        Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(deviceIDs[x]), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
+                                            if (response.result.isSuccess) {
+                                                if let outerDict = response.result.value as? Dictionary <String, AnyObject> { // Begin response JSON dict
+                                                    if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> { // Begin mobile_device JSON dict
+                                                        if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> { // Begin general JSON dict
+                                                            if let asset_tag = generalData[workingjss.inventoryKey] as? String {
+                                                                //print("Lookup Function hit here & retrieved asset tag: \(asset_tag)")
+                                                                assetTags.append(asset_tag)
+                                                                counter = counter + 1
+                                                                if counter == (mobileDevice.count) {
+                                                                    print("Leaving queue... count is at \(counter)")
+                                                                    lookupQueue.leave()
+                                                                }
+                                                                else {
+                                                                    print("Counter is at: \(counter)")
+                                                                }
+                                                            }
+                                                        } // Close our general JSON dict
+                                                    } // Close our mobile_device JSON dict
+                                                } // Close our response JSON
+                                            } // Close our successful result
+                                        }
+                                        // End Looking up Asset Tags
+                                        //assetTags.append("11")
                                         //print("Device ID number is: \(tempID!)")
-                                        //ToDo: Make a POST to the JSS for Each element
-                                        //      Parse data and save as deviceid [x] / serialNumber[x] / assettag[x] pairs
+                                        //ToDo: Make a POST to get AssetTag for device at index deviceIDs[x]
+                                        //      Store result in assetTags via.append
                                         //
                                     }
-                                    print("Device IDs: \(deviceIDs)")
-                                    print("Serial Numbers:\(serialNumbers)")
+                                    lookupQueue.notify(queue: DispatchQueue.main, execute: {
+                                        print("Left the queue and now processed the following:")
+                                        print("Device IDs: \(deviceIDs)")
+                                        print("Serial Numbers:\(serialNumbers)")
+                                        print("Asset Tags: \(assetTags)")
+                                    } )
+                                    
                                     // Once procssed all the results, show choices to user
                                     // User picks row
                                 }
@@ -312,10 +356,12 @@ class ViewController: UIViewController {
                                 // End allowing more than one device
                                 //
                                 
-                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
-                                    workingData.deviceID = deviceID
-                                    self.getDetails()
-                                }
+                                
+                                // Will be legacy code and should be deleted one we test everything
+//                                if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+//                                    workingData.deviceID = deviceID
+//                                    self.getDetails()
+//                                }
                             }
                             else {
                                 self.notFound(notFoundItem: parameterToCheck, ItemType: passedItem)
