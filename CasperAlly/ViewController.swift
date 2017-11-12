@@ -326,7 +326,7 @@ class ViewController: UIViewController {
                                                                     lookupQueue.leave()
                                                                 }
                                                                 else {
-                                                                    print("Counter is at: \(counter)")
+                                                                    //print("Counter is at: \(counter)")
                                                                 }
                                                             }
                                                         } // Close our general JSON dict
@@ -346,10 +346,15 @@ class ViewController: UIViewController {
                                         print("Device IDs: \(deviceIDs)")
                                         print("Serial Numbers:\(serialNumbers)")
                                         print("Asset Tags: \(assetTags)")
+                                        let selectVC: multipleSelect = multipleSelect()
+                                        selectVC.selectDeviceIDs = deviceIDs
+                                        selectVC.selectSerialNumbers = serialNumbers
+                                        selectVC.SelectAssetTags = assetTags
+                                        self.present(selectVC, animated: true, completion: nil)
+                                        // Once procssed all the results, show choices to user
+                                        // User picks row
+                                        
                                     } )
-                                    
-                                    // Once procssed all the results, show choices to user
-                                    // User picks row
                                 }
 
                                 //
