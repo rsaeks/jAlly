@@ -57,8 +57,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var lookupSNButton: scanButton!
     @IBOutlet weak var lookupINVNumButton: scanButton!
     
+    
 
     override func viewDidAppear(_ animated: Bool) {
+        print("View appeared")
+        print("Device ID is: \(workingData.deviceID)")
+        workingData.deviceID == 0 ? print("Default data...sleeping") : self.getDetails()
         updateUI()
     }
     
@@ -300,7 +304,6 @@ class ViewController: UIViewController {
                                 }
                                     
                                 else if mobileDevice.count > 1 {
-                                    print("Received more than one device back ... getting info")
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
                                     var assetTags = [String]()
@@ -322,7 +325,7 @@ class ViewController: UIViewController {
                                                                 assetTags.append(asset_tag)
                                                                 counter = counter + 1
                                                                 if counter == (mobileDevice.count) {
-                                                                    print("Leaving queue... count is at \(counter)")
+                                                                    //print("Leaving lookupQueue... count is at \(counter)")
                                                                     lookupQueue.leave()
                                                                 }
                                                                 else {
@@ -342,21 +345,20 @@ class ViewController: UIViewController {
                                         //
                                     }
                                     lookupQueue.notify(queue: DispatchQueue.main, execute: {
-                                        print("Left the queue and now processed the following:")
-                                        print("Device IDs: \(deviceIDs)")
-                                        print("Serial Numbers:\(serialNumbers)")
-                                        print("Asset Tags: \(assetTags)")
+                                        //print("Left the queue and now processed the following:")
+                                        //print("Device IDs: \(deviceIDs)")
+                                        //print("Serial Numbers:\(serialNumbers)")
+                                        //print("Asset Tags: \(assetTags)")
                                         let selectVC: multipleSelect = multipleSelect()
                                         selectVC.selectDeviceIDs = deviceIDs
                                         selectVC.selectSerialNumbers = serialNumbers
-                                        selectVC.SelectAssetTags = assetTags
+                                        selectVC.selectAssetTags = assetTags
+                                        //print("Entering in multiSelectQueue")
+                                        //multiSelectQueue.enter()
                                         self.present(selectVC, animated: true, completion: nil)
-                                        // Once procssed all the results, show choices to user
-                                        // User picks row
-                                        
                                     } )
                                 }
-
+                                
                                 //
                                 // End allowing more than one device
                                 //
@@ -396,12 +398,19 @@ class ViewController: UIViewController {
                             }
                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                 (workingData.deviceInventoryNumber, self.invNumToCheck.text) = (asset_tag, asset_tag)
+                                //print(asset_tag)
+                                //print("line 399")
+                                //workingData.deviceInventoryNumber = asset_tag
+                                //print(workingData.deviceInventoryNumber)
+                                //self.invNumToCheck.text = "Test"
                             }
                             if let deviceName = generalData[workingjss.deviceNameKey] as? String {
                                 workingData.deviceName = deviceName
                             }
                             if let deviceSN = generalData[workingjss.serialNumberKey] as? String {
                                 (workingData.deviceSN, self.snToCheck.text) = (deviceSN, deviceSN)
+                               //print("Line 409")
+                                //print(deviceSN)
                             }
                             if let deviceMAC = generalData[workingjss.MACAddressKey] as? String {
                                 workingData.deviceMAC = deviceMAC
@@ -425,6 +434,8 @@ class ViewController: UIViewController {
                         if let location = mobileDeviceData[workingjss.locationKey] as? Dictionary <String, AnyObject> { // Begin location JSON dict
                             if let username = location[workingjss.usernameKey] as? String {
                                 (workingData.user, self.userToCheck.text) = (username, username)
+                                //print ("Line 434")
+                                //print(username)
                             }
                             if let fullName = location[workingjss.realNameKey] as? String {
                                 workingData.realName = fullName

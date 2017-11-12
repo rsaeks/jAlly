@@ -9,13 +9,12 @@
 import Foundation
 import UIKit
 
-
-
 class multipleSelect: UITableViewController {
     
     var selectDeviceIDs = [Int]()
     var selectSerialNumbers = [String]()
-    var SelectAssetTags = [String]()
+    var selectAssetTags = [String]()
+    var returnedDevice = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,13 +32,13 @@ class multipleSelect: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "deviceCell", for: indexPath)
         if indexPath.row == 0 {
-            print("Index 0")
+            //print("Index 0")
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.textAlignment = .center
             cell.backgroundColor = UIColor(red:0.18, green:0.25, blue:0.34, alpha:1.0)
             cell.textLabel?.textColor = UIColor(red:0.76, green:0.81, blue:0.87, alpha:1.0)
             cell.textLabel?.font = UIFont(name: "Avenir", size: 16)
-            cell.textLabel?.text = "Multiple Devices found.\nPlease select the device from the list below."
+            cell.textLabel?.text = "Multiple Devices found.\nPlease select the device from the list below. \n Tap this box to return without selecting a device"
             return cell
         }
         else {
@@ -52,8 +51,27 @@ class multipleSelect: UITableViewController {
                 cell.backgroundColor = UIColor(red:0.46, green:0.53, blue:0.67, alpha:0.5)
                 cell.textLabel?.shadowColor = UIColor.lightGray
             }
-            cell.textLabel?.text = "Asset Tag: \(SelectAssetTags[indexPath.row - 1]) SN: \(selectSerialNumbers[indexPath.row - 1]) "
+            cell.textLabel?.text = "Asset Tag: \(selectAssetTags[indexPath.row - 1]) SN: \(selectSerialNumbers[indexPath.row - 1]) "
         return cell
       }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            //print("Do nothing")
+            print("Leaving multipleSelect with nothing selected")
+            dismiss(animated: true, completion: nil)
+        }
+        else {
+            //print("Selected contents of row \(indexPath.row)")
+            print("Here is the selected data: \(selectDeviceIDs[indexPath.row - 1]) \(selectSerialNumbers[indexPath.row - 1]) \(selectAssetTags[indexPath.row - 1])")
+            workingData.deviceID = selectDeviceIDs[indexPath.row - 1]
+            //print("We are going to return selected device ID: \(workingData.deviceID)")
+            print("Leaving multiSelect with selected Device ID: \(workingData.deviceID)")
+            //ViewController().getDetails()
+            //ViewController().snToCheck.text = selectSerialNumbers[indexPath.row - 1]
+            //ViewController().invNumToCheck.text = selectAssetTags[indexPath.row - 1]
+            dismiss(animated: true, completion: nil)
+        }
     }
 }
