@@ -60,7 +60,6 @@ class JSSSettingsViewController: UIViewController {
         self.connectionErrorLabel.isHidden = true
         if (self.jssUsername.text != "") {
             if (self.jssPassword.text != "") {
-//                Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: Settings.shared.jssPassword).responseString { response in
                 Alamofire.request(JSSURL.text! + userPath + jssUsername.text!).authenticate(user: jssUsername.text!, password: jssPassword.text!).responseString { response in
                     let userStatusCode = response.response?.statusCode
                     if userStatusCode == nil {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13770" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13770"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -873,15 +873,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Icon Configuration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dlq-FJ-XuW">
-                                <rect key="frame" x="16" y="305" width="343" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="22" id="afO-LC-Nea"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="j8p-cM-1cg">
+                                <rect key="frame" x="80" y="305" width="215.5" height="22"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Icon Configuration" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dlq-FJ-XuW">
+                                        <rect key="frame" x="0.0" y="0.0" width="186.5" height="22"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="afO-LC-Nea"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CAV-fJ-gFz">
+                                        <rect key="frame" x="193.5" y="0.0" width="22" height="22"/>
+                                        <connections>
+                                            <action selector="statusIconInfoPressed:" destination="Sj3-da-iqA" eventType="touchUpInside" id="4YD-3T-Afn"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="7Qe-GI-SF7" userLabel="Config SV">
                                 <rect key="frame" x="26" y="337" width="323" height="87"/>
                                 <subviews>
@@ -980,14 +991,15 @@
                         <constraints>
                             <constraint firstItem="lb3-2a-qxC" firstAttribute="leading" secondItem="VdF-y1-3Ib" secondAttribute="leadingMargin" id="3Bu-Eh-q5f"/>
                             <constraint firstItem="7Qe-GI-SF7" firstAttribute="leading" secondItem="VdF-y1-3Ib" secondAttribute="leadingMargin" constant="10" id="650-GA-UXk"/>
-                            <constraint firstItem="dlq-FJ-XuW" firstAttribute="leading" secondItem="VdF-y1-3Ib" secondAttribute="leadingMargin" id="7av-kA-1Jk"/>
+                            <constraint firstItem="j8p-cM-1cg" firstAttribute="top" secondItem="aAD-aA-fsT" secondAttribute="bottom" constant="10" id="6AL-FY-1Hj"/>
                             <constraint firstItem="R8Q-wi-bC6" firstAttribute="leading" secondItem="VdF-y1-3Ib" secondAttribute="leadingMargin" constant="10" id="E2p-LE-BOK"/>
                             <constraint firstItem="Kie-4v-ZP2" firstAttribute="top" secondItem="VdF-y1-3Ib" secondAttribute="top" id="ILA-Ig-Erl"/>
                             <constraint firstAttribute="trailingMargin" secondItem="aAD-aA-fsT" secondAttribute="trailing" id="IlR-4m-mNp"/>
                             <constraint firstAttribute="trailing" secondItem="6CB-3O-KrA" secondAttribute="trailing" constant="10" id="MdT-RT-HgH"/>
-                            <constraint firstItem="dlq-FJ-XuW" firstAttribute="top" secondItem="aAD-aA-fsT" secondAttribute="bottom" constant="10" id="NLc-fg-PVM"/>
+                            <constraint firstItem="7Qe-GI-SF7" firstAttribute="top" secondItem="j8p-cM-1cg" secondAttribute="bottom" constant="10" id="Ogn-BX-esM"/>
                             <constraint firstItem="W72-Hy-rvb" firstAttribute="top" secondItem="R8Q-wi-bC6" secondAttribute="bottom" constant="20" id="Qqf-Dz-VOo"/>
                             <constraint firstAttribute="trailing" secondItem="Kie-4v-ZP2" secondAttribute="trailing" id="Uvi-3U-a2x"/>
+                            <constraint firstItem="j8p-cM-1cg" firstAttribute="centerX" secondItem="VdF-y1-3Ib" secondAttribute="centerX" id="VUl-aA-bpk"/>
                             <constraint firstItem="aAD-aA-fsT" firstAttribute="leading" secondItem="VdF-y1-3Ib" secondAttribute="leadingMargin" id="bQu-X9-8Gv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="R8Q-wi-bC6" secondAttribute="trailing" constant="10" id="hqi-68-vNw"/>
                             <constraint firstItem="aAD-aA-fsT" firstAttribute="top" secondItem="VdF-y1-3Ib" secondAttribute="top" constant="273" id="hwy-TW-4Nt"/>
@@ -995,11 +1007,9 @@
                             <constraint firstAttribute="trailingMargin" secondItem="lb3-2a-qxC" secondAttribute="trailing" id="lWS-dV-uIn"/>
                             <constraint firstItem="lb3-2a-qxC" firstAttribute="top" secondItem="Kie-4v-ZP2" secondAttribute="bottom" constant="20" id="mTj-pJ-2aB"/>
                             <constraint firstItem="6CB-3O-KrA" firstAttribute="leading" secondItem="VdF-y1-3Ib" secondAttribute="leading" constant="10" id="mqa-5C-Pwn"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="dlq-FJ-XuW" secondAttribute="trailing" id="pwR-Bw-PsO"/>
                             <constraint firstItem="Kie-4v-ZP2" firstAttribute="leading" secondItem="VdF-y1-3Ib" secondAttribute="leading" id="rFR-sE-vnu"/>
                             <constraint firstItem="aAD-aA-fsT" firstAttribute="top" secondItem="lb3-2a-qxC" secondAttribute="bottom" constant="20" id="t9f-XD-yyz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7Qe-GI-SF7" secondAttribute="trailing" constant="10" id="ucW-tG-m8Z"/>
-                            <constraint firstItem="7Qe-GI-SF7" firstAttribute="top" secondItem="dlq-FJ-XuW" secondAttribute="bottom" constant="10" id="wal-XK-xy6"/>
                         </constraints>
                     </view>
                     <connections>

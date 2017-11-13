@@ -18,21 +18,18 @@ class multipleSelect: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // setup stuff
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "deviceCell")
     }
     
-    // MARK: TableView
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return selectDeviceIDs.count + 1
-        //return 3 // set to value needed
+        // Add one to index to allow for a blank first cell
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "deviceCell", for: indexPath)
         if indexPath.row == 0 {
-            //print("Index 0")
+            // Setup our custom header with the following parameters
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.textAlignment = .center
             cell.backgroundColor = UIColor(red:0.18, green:0.25, blue:0.34, alpha:1.0)
@@ -42,7 +39,7 @@ class multipleSelect: UITableViewController {
             return cell
         }
         else {
-            //print("Current Index: \(indexPath.row)")
+            // Alternate row colors
             if indexPath.row % 2 == 0 {
                 cell.backgroundColor = UIColor(red:0.76, green:0.78, blue:0.81, alpha:0.5)
                 cell.textLabel?.shadowColor = UIColor.lightGray
@@ -58,19 +55,10 @@ class multipleSelect: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            //print("Do nothing")
-            print("Leaving multipleSelect with nothing selected")
             dismiss(animated: true, completion: nil)
         }
         else {
-            //print("Selected contents of row \(indexPath.row)")
-            print("Here is the selected data: \(selectDeviceIDs[indexPath.row - 1]) \(selectSerialNumbers[indexPath.row - 1]) \(selectAssetTags[indexPath.row - 1])")
             workingData.deviceID = selectDeviceIDs[indexPath.row - 1]
-            //print("We are going to return selected device ID: \(workingData.deviceID)")
-            print("Leaving multiSelect with selected Device ID: \(workingData.deviceID)")
-            //ViewController().getDetails()
-            //ViewController().snToCheck.text = selectSerialNumbers[indexPath.row - 1]
-            //ViewController().invNumToCheck.text = selectAssetTags[indexPath.row - 1]
             dismiss(animated: true, completion: nil)
         }
     }
