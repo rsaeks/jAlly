@@ -300,21 +300,39 @@ class ViewController: UIViewController {
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
                                     var assetTags = [String]()
+                                    var testArray = [String]()
                                     lookupQueue.enter()
                                     var counter = 0
                                     for x in 0..<mobileDevice.count {
                                         deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
                                         serialNumbers.append(mobileDevice[x][workingjss.serialNumberKey] as! String)
+                                        //print("Data for device \(x) is JSs ID number: \(mobileDevice[x][workingjss.idKey]) and serial number: \(mobileDevice[x][workingjss.serialNumberKey])")
                                         Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(deviceIDs[x]), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                                             if (response.result.isSuccess) {
                                                 if let outerDict = response.result.value as? Dictionary <String, AnyObject> { // Begin response JSON dict
                                                     if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> { // Begin mobile_device JSON dict
                                                         if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> { // Begin general JSON dict
                                                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
-                                                                assetTags.append(asset_tag)
-                                                                counter = counter + 1
-                                                                if counter == (mobileDevice.count) {
-                                                                    lookupQueue.leave()
+                                                                if asset_tag == "" {
+                                                                    //print("Asset Tag not found")
+                                                                    //assetTags.append("Not Found")
+                                                                    testArray.append(String(deviceIDs[x]))
+                                                                    testArray.append("Not Found")
+                                                                    counter = counter + 1
+                                                                    if counter == (mobileDevice.count) {
+                                                                        lookupQueue.leave()
+                                                                    }
+                                                                }
+                                                                else {
+                                                                    //print("Counter value is \(counter) and Asset tag is: \(asset_tag)")
+                                                                    //print("Asset tag returned for device ID: \(deviceIDs[x]) is: \(asset_tag)")
+                                                                    //assetTags.append(asset_tag)
+                                                                    testArray.append(String(deviceIDs[x]))
+                                                                    testArray.append(asset_tag)
+                                                                    counter = counter + 1
+                                                                    if counter == (mobileDevice.count) {
+                                                                        lookupQueue.leave()
+                                                                    }
                                                                 }
                                                             }
                                                         } // Close our general JSON dict
@@ -324,10 +342,27 @@ class ViewController: UIViewController {
                                         }
                                     }
                                     lookupQueue.notify(queue: DispatchQueue.main, execute: {
+                                        //print("In loookup queue")
+                                        //print(testArray)
+                                        for x in 0..<deviceIDs.count {
+                                            //print("Looking at matches for ID array at index \(x)")
+                                            for y in 0..<deviceIDs.count {
+                                                //print("Looking for match in tempArray at index \(y)")
+                                                if String(deviceIDs[x]) == testArray[y*2] {
+                                                    //print("Found match at position: \(y)")
+                                                    //print("Value is: \(testArray[(2*y) + 1])")
+                                                    assetTags.append(testArray[(2*y) + 1])
+                                                }
+                                            }
+                                        }
+                                        
                                         let selectVC: multipleSelect = multipleSelect()
                                         selectVC.selectDeviceIDs = deviceIDs
                                         selectVC.selectSerialNumbers = serialNumbers
                                         selectVC.selectAssetTags = assetTags
+                                        //print(deviceIDs)
+                                        //print(serialNumbers)
+                                        //print(assetTags)
                                         self.present(selectVC, animated: true, completion: nil)
                                     } )
                                 }
