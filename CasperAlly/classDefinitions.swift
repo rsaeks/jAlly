@@ -7,14 +7,48 @@
 //
 
 import Foundation
+import UIKit
 
-class savedSettings {
-    static var sharedInstance = savedSettings()
+public class actionButton: UIButton {
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderWidth = 0
+        self.layer.cornerRadius = 5
+    }
+}
+
+public class scanButton: UIButton {
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.borderColor = UIColor.lightGray.cgColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 5
+    }
+}
+
+public class cameraScanButton: UIButton {
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.layer.borderColor = UIColor.darkGray.cgColor
+        self.layer.borderWidth = 1
+        self.layer.cornerRadius = 5
+    }
+}
+
+class Settings {
+    static var shared = Settings()
     private init() {}
     var jssURL: String!
     var exclusionGID: String!
     var jssUsername: String!
     var jssPassword: String!
+    var snToCheck: String!
+    var battWarnLevel: Int! = 30
+    var battCritLevel: Int! = 15
+    var freespaceWarnLevel: Int! = 80
+    var freespaceCritLevel: Int! = 90
+    var numbersOnlyIsOn: Bool! = false
 }
 
 
@@ -26,8 +60,8 @@ class JSSConfig {
     var mobileDeviceKey: String
     var mobileDevicesKey: String
     var generalKey: String
+    var purchasingKey: String
     var ipAddressKey: String
-    var inventoryTimeKey: String
     var idKey: String
     var locationKey: String
     var usernameKey: String
@@ -37,6 +71,11 @@ class JSSConfig {
     var MACAddressKey: String
     var inventoryKey: String
     var epochInventroryTimekey: String
+    var osVersionKey: String
+    var batteryLevelKey: String
+    var freeSpaceKey: String
+    var percentUsedKey: String
+    var epochWarrantyExpiresKey: String
     init() {
         jssURL = ""
         exclusinGID = ""
@@ -45,17 +84,22 @@ class JSSConfig {
         mobileDeviceKey = "mobile_device"
         mobileDevicesKey = "mobile_devices"
         generalKey = "general"
+        purchasingKey = "purchasing"
         ipAddressKey = "ip_address"
-        inventoryTimeKey = "last_inventory_update"
         idKey = "id"
         locationKey = "location"
         usernameKey = "username"
         realNameKey = "realname"
-        deviceNameKey = "name"
+        deviceNameKey = "device_name"
         serialNumberKey = "serial_number"
-        MACAddressKey = "mac_address"
+        MACAddressKey = "wifi_mac_address"
         inventoryKey = "asset_tag"
         epochInventroryTimekey = "last_inventory_update_epoch"
+        osVersionKey = "os_version"
+        batteryLevelKey = "battery_level"
+        freeSpaceKey = "available_mb"
+        percentUsedKey = "percentage_used"
+        epochWarrantyExpiresKey = "warranty_expires_epoch"
     }
 }
 
@@ -69,10 +113,16 @@ class JSSData {
     var deviceID: Int
     var realName: String
     var deviceIPAddress: String
-    var lastInventory: String
     var deviceInventoryNumber: String
     var lastInventoryEpoc: Double
     var lastInventoryEpocFormatted: String
+    var iOSVersion: String
+    var batteryLevel: Int
+    var freeSpace: Int
+    var percentUsed: Int
+    var warrantyExpiresEpoch: Double
+    var warrantyExpiresEpochFormatted: String
+    
     init () {
         user = "defaultUser"
         deviceSN = "0"
@@ -83,9 +133,14 @@ class JSSData {
         deviceID = 0
         realName = "RSMB"
         deviceIPAddress = "0.0.0.0"
-        lastInventory = "October 28"
         deviceInventoryNumber = "ToScan"
         lastInventoryEpoc = 0.0
         lastInventoryEpocFormatted = "To Set"
+        iOSVersion = "0.0"
+        batteryLevel = 101
+        freeSpace = 0
+        percentUsed = 0
+        warrantyExpiresEpoch = 0.0
+        warrantyExpiresEpochFormatted = "To Set"
     }
 }
