@@ -8,7 +8,7 @@ class InfoView: UIVisualEffectView {
   /// Text label.
   lazy var label: UILabel = {
     let label = UILabel()
-    label.numberOfLines = 3
+    label.numberOfLines = 2
 
     return label
   }()
@@ -36,7 +36,7 @@ class InfoView: UIVisualEffectView {
    */
   var status: Status = Status(state: .scanning) {
     didSet {
-      setNeedsLayout()
+      setupFrames()
 
       let stateStyles = status.state.styles
 
@@ -64,11 +64,7 @@ class InfoView: UIVisualEffectView {
     super.init(effect: blurEffect)
 
     [label, imageView, borderView].forEach {
-        if #available(iOS 11.0, *) {
-            contentView.addSubview($0)
-        } else {
-            addSubview($0)
-        }
+      addSubview($0)
     }
 
     status = Status(state: .scanning)
@@ -83,9 +79,7 @@ class InfoView: UIVisualEffectView {
   /**
    Sets up frames of subviews.
    */
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
+  func setupFrames() {
     let padding: CGFloat = 10
     let labelHeight: CGFloat = 40
     let imageSize = CGSize(width: 30, height: 27)
@@ -133,7 +127,7 @@ class InfoView: UIVisualEffectView {
     borderView.isHidden = false
 
     animate(blurStyle: .light)
-    animate(borderViewAngle: CGFloat(Double.pi/2))
+    animate(borderViewAngle: CGFloat(M_PI_2))
   }
 
   /**
@@ -147,8 +141,8 @@ class InfoView: UIVisualEffectView {
     UIView.animate(withDuration: 2.0, delay: 0.5, options: [.beginFromCurrentState],
       animations: {
         self.effect = UIBlurEffect(style: style)
-      }, completion: { [weak self] _ in
-        self?.animate(blurStyle: style == .light ? .extraLight : .light)
+      }, completion: { _ in
+        self.animate(blurStyle: style == .light ? .extraLight : .light)
     })
   }
 
@@ -169,8 +163,8 @@ class InfoView: UIVisualEffectView {
       options: [.beginFromCurrentState],
       animations: {
         self.borderView.transform = CGAffineTransform(rotationAngle: borderViewAngle)
-      }, completion: { [weak self] _ in
-        self?.animate(borderViewAngle: borderViewAngle + CGFloat(Double.pi/2))
+      }, completion: { _ in
+        self.animate(borderViewAngle: borderViewAngle + CGFloat(M_PI_2))
     })
   }
 }

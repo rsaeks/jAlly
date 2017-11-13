@@ -8,95 +8,21 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-		<key>BarcodeScanner-BarcodeScanner.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>6</integer>
-		</dict>
-		<key>BarcodeScanner.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>5</integer>
-		</dict>
-		<key>GPUImage.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>7</integer>
-		</dict>
-		<key>KeychainSwift.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
 		</dict>
 		<key>Pods-CasperAlly.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-		<key>SwiftOCR.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>8</integer>
-		</dict>
-		<key>SwiftyJSON.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>21F6CDD95162993A169BB3FAB56025DE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2597E77C6D3830202BFB48C276629F0A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2D0E1FF1272770259C68078F549263EB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>35680B9A155AF86D8A1266067AA9533A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>38ACA430605AFB4229712A18BDDF5086</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>76B99BC43AF383ACE0A8B6BCC5831086</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>88E9EC28B8B46C3631E6B242B50F4442</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9DD2F9C70F9BBA7DE07B3D231F225E66</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>D107557A1767E346A7411B92FA3799C0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EFAAB8230EA40F1F8FE61671783A5DEF</key>
 		<dict>
 			<key>primary</key>
 			<true/>

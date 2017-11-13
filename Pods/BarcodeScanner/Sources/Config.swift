@@ -4,29 +4,32 @@ import AVFoundation
 // MARK: - Configurations
 
 public struct Title {
-  public static var text = localizedString("SCAN_BARCODE_TITLE")
+  public static var text = NSLocalizedString("Scan barcode", comment: "")
   public static var font = UIFont.boldSystemFont(ofSize: 17)
   public static var color = UIColor.black
-  public static var backgroundColor = UIColor.white
 }
 
 public struct CloseButton {
-  public static var text = localizedString("BUTTON_CLOSE")
+  public static var text = NSLocalizedString("Close", comment: "")
   public static var font = UIFont.boldSystemFont(ofSize: 17)
   public static var color = UIColor.black
 }
 
 public struct SettingsButton {
-  public static var text = localizedString("BUTTON_SETTINGS")
+  public static var text = NSLocalizedString("Settings", comment: "")
   public static var font = UIFont.boldSystemFont(ofSize: 17)
   public static var color = UIColor.white
 }
 
 public struct Info {
-  public static var text = localizedString("INFO_DESCRIPTION_TEXT")
-  public static var loadingText = localizedString("INFO_LOADING_TITLE")
-  public static var notFoundText = localizedString("NO_PRODUCT_ERROR_TITLE")
-  public static var settingsText = localizedString("ASK_FOR_PERMISSION_TEXT")
+  public static var text = NSLocalizedString(
+    "Place the barcode within the window to scan. The search will start automatically.", comment: "")
+  public static var loadingText = NSLocalizedString(
+    "Looking for your product...", comment: "")
+  public static var notFoundText = NSLocalizedString(
+    "No product found.", comment: "")
+  public static var settingsText = NSLocalizedString(
+    "In order to scan barcodes you have to allow camera under your settings.", comment: "")
 
   public static var font = UIFont.boldSystemFont(ofSize: 14)
   public static var textColor = UIColor.black
@@ -61,35 +64,18 @@ func imageNamed(_ name: String) -> UIImage {
   return image
 }
 
-func localizedString(_ key: String) -> String {
-  if let path = Bundle(for: BarcodeScannerController.self).resourcePath,
-    let resourceBundle = Bundle(path: path + "/Localization.bundle") {
-    return resourceBundle.localizedString(forKey: key, value: nil, table: "Localizable")
-  }
-  return key
-}
-
-
 /**
  `AVCaptureMetadataOutput` metadata object types.
  */
 public var metadata = [
-  AVMetadataObject.ObjectType.aztec,
-  AVMetadataObject.ObjectType.code128,
-  AVMetadataObject.ObjectType.code39,
-  AVMetadataObject.ObjectType.code39Mod43,
-  AVMetadataObject.ObjectType.code93,
-  AVMetadataObject.ObjectType.dataMatrix,
-  AVMetadataObject.ObjectType.ean13,
-  AVMetadataObject.ObjectType.ean8,
-  AVMetadataObject.ObjectType.face,
-  AVMetadataObject.ObjectType.interleaved2of5,
-  AVMetadataObject.ObjectType.itf14,
-  AVMetadataObject.ObjectType.pdf417,
-  AVMetadataObject.ObjectType.qr,
-  AVMetadataObject.ObjectType.upce,
+  AVMetadataObjectTypeUPCECode,
+  AVMetadataObjectTypeCode39Code,
+  AVMetadataObjectTypeCode39Mod43Code,
+  AVMetadataObjectTypeEAN13Code,
+  AVMetadataObjectTypeEAN8Code,
+  AVMetadataObjectTypeCode93Code,
+  AVMetadataObjectTypeCode128Code,
+  AVMetadataObjectTypePDF417Code,
+  AVMetadataObjectTypeQRCode,
+  AVMetadataObjectTypeAztecCode
 ]
-
-extension AVMetadataObject.ObjectType {
-    public static let upca: AVMetadataObject.ObjectType = AVMetadataObject.ObjectType(rawValue: "org.gs1.UPC-A")
-}
