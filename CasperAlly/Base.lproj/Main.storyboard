@@ -623,14 +623,14 @@
             </objects>
             <point key="canvasLocation" x="53.600000000000001" y="92.203898050974516"/>
         </scene>
-        <!--Multiple Selct-->
+        <!--Multiple SelectTVC-->
         <scene sceneID="DQA-yd-I54">
             <objects>
-                <tableViewController id="vAb-dQ-mWr" customClass="multipleSelct" customModule="jAlly" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="vAb-dQ-mWr" customClass="multipleSelectTVC" customModule="jAlly" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="DBC-4U-vCR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.18039215689999999" green="0.25098039220000001" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="deviceCell" id="53M-Pw-BhI">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -646,10 +646,12 @@
                             <outlet property="delegate" destination="vAb-dQ-mWr" id="ox8-N6-xWJ"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="KAx-Cd-xie"/>
+                    <nil key="simulatedTopBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="INn-ch-7Lh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1016" y="-892"/>
+            <point key="canvasLocation" x="1693.5999999999999" y="-892.80359820089961"/>
         </scene>
         <!--Settings-->
         <scene sceneID="WFM-87-WnJ">

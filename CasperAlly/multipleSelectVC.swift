@@ -33,21 +33,23 @@ class multipleSelect: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "deviceCell", for: indexPath)
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.textLabel?.minimumScaleFactor = 0.1
+        cell.layer.borderWidth = 0.5
+        cell.layer.borderColor = UIColor.darkGray.cgColor
         if indexPath.row == 0 {
             // Setup our custom header with the following parameters
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.textAlignment = .center
             cell.backgroundColor = UIColor(red:0.18, green:0.25, blue:0.34, alpha:1.0)
             cell.textLabel?.textColor = UIColor(red:0.76, green:0.81, blue:0.87, alpha:1.0)
-            cell.textLabel?.font = UIFont(name: "Avenir", size: 16)
+            cell.textLabel?.font = UIFont(name: "Avenir", size: 18)
             cell.textLabel?.text = "Multiple Devices found.\nPlease select the device from the list below."
             return cell
         }
         else if indexPath.row == 1 {
-            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.numberOfLines = 1
             cell.textLabel?.textAlignment = .center
             cell.textLabel?.textColor = UIColor.black
-            cell.textLabel?.font = UIFont(name: "Avenir", size: 16)
+            cell.textLabel?.font = UIFont(name: "Avenir-Heavy", size: 18)
             cell.textLabel?.text = "Tap here to return without selecting a device"
             cell.backgroundColor = UIColor(red:0.84, green:0.26, blue:0.26, alpha:0.75)
             return cell
@@ -56,13 +58,11 @@ class multipleSelect: UITableViewController {
             // Alternate row colors
             if indexPath.row % 2 == 0 {
                 cell.backgroundColor = UIColor(red:0.76, green:0.78, blue:0.81, alpha:0.5)
-                cell.textLabel?.shadowColor = UIColor.lightGray
             }
             else {
                 cell.backgroundColor = UIColor(red:0.46, green:0.53, blue:0.67, alpha:0.5)
-                cell.textLabel?.shadowColor = UIColor.lightGray
             }
-            cell.textLabel?.text = "Asset Tag: \(selectAssetTags[indexPath.row - 2]) SN: \(selectSerialNumbers[indexPath.row - 2]) "
+            cell.textLabel?.text = "Asset Tag: \(selectAssetTags[indexPath.row - 2])\t\tSN: \(selectSerialNumbers[indexPath.row - 2]) "
         return cell
       }
     }

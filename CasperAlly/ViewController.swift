@@ -287,6 +287,8 @@ class ViewController: UIViewController {
                             if mobileDevice.count > 0 {
                                 if mobileDevice.count == 1 {
                                     if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+                                        self.snToCheck.text = "looking up ..."
+                                        self.invNumToCheck.text = "looking up ..."
                                         workingData.deviceID = deviceID
                                         self.getDetails()
                                     }
@@ -360,9 +362,8 @@ class ViewController: UIViewController {
                                         selectVC.selectDeviceIDs = deviceIDs
                                         selectVC.selectSerialNumbers = serialNumbers
                                         selectVC.selectAssetTags = assetTags
-                                        //print(deviceIDs)
-                                        //print(serialNumbers)
-                                        //print(assetTags)
+                                        self.snToCheck.text = ""
+                                        self.invNumToCheck.text = ""
                                         self.present(selectVC, animated: true, completion: nil)
                                     } )
                                 }
