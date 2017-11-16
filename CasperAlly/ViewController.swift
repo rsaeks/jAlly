@@ -299,6 +299,7 @@ class ViewController: UIViewController {
                                 }
                                     
                                 else if mobileDevice.count > 1 {
+                                    var IDAssetTags = [Int: String] ()
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
                                     var assetTags = [String]()
@@ -318,8 +319,9 @@ class ViewController: UIViewController {
                                                                 if asset_tag == "" {
                                                                     //print("Asset Tag not found")
                                                                     //assetTags.append("Not Found")
-                                                                    testArray.append(String(deviceIDs[x]))
-                                                                    testArray.append("Not Found")
+                                                                    IDAssetTags[deviceIDs[x]] = "Not Found"
+//                                                                    testArray.append(String(deviceIDs[x]))
+//                                                                    testArray.append("Not Found")
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
@@ -329,8 +331,9 @@ class ViewController: UIViewController {
                                                                     //print("Counter value is \(counter) and Asset tag is: \(asset_tag)")
                                                                     //print("Asset tag returned for device ID: \(deviceIDs[x]) is: \(asset_tag)")
                                                                     //assetTags.append(asset_tag)
-                                                                    testArray.append(String(deviceIDs[x]))
-                                                                    testArray.append(asset_tag)
+                                                                    IDAssetTags[deviceIDs[x]] = asset_tag
+//                                                                    testArray.append(String(deviceIDs[x]))
+//                                                                    testArray.append(asset_tag)
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
@@ -344,24 +347,26 @@ class ViewController: UIViewController {
                                         }
                                     }
                                     lookupQueue.notify(queue: DispatchQueue.main, execute: {
+                                        print(IDAssetTags)
                                         //print("In loookup queue")
                                         //print(testArray)
-                                        for x in 0..<deviceIDs.count {
-                                            //print("Looking at matches for ID array at index \(x)")
-                                            for y in 0..<deviceIDs.count {
-                                                //print("Looking for match in tempArray at index \(y)")
-                                                if String(deviceIDs[x]) == testArray[y*2] {
-                                                    //print("Found match at position: \(y)")
-                                                    //print("Value is: \(testArray[(2*y) + 1])")
-                                                    assetTags.append(testArray[(2*y) + 1])
-                                                }
-                                            }
-                                        }
+//                                        for x in 0..<deviceIDs.count {
+//                                            //print("Looking at matches for ID array at index \(x)")
+//                                            for y in 0..<deviceIDs.count {
+//                                                //print("Looking for match in tempArray at index \(y)")
+//                                                if String(deviceIDs[x]) == testArray[y*2] {
+//                                                    //print("Found match at position: \(y)")
+//                                                    //print("Value is: \(testArray[(2*y) + 1])")
+//                                                    assetTags.append(testArray[(2*y) + 1])
+//                                                }
+//                                            }
+//                                        }
                                         
                                         let selectVC: multipleSelect = multipleSelect()
                                         selectVC.selectDeviceIDs = deviceIDs
                                         selectVC.selectSerialNumbers = serialNumbers
                                         selectVC.selectAssetTags = assetTags
+                                        selectVC.selectIDAssetTags = IDAssetTags
                                         self.snToCheck.text = ""
                                         self.invNumToCheck.text = ""
                                         self.present(selectVC, animated: true, completion: nil)

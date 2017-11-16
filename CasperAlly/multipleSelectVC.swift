@@ -15,6 +15,7 @@ class multipleSelect: UITableViewController {
     var selectSerialNumbers = [String]()
     var selectAssetTags = [String]()
     var returnedDevice = 0
+    var selectIDAssetTags = [Int: String] ()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +63,9 @@ class multipleSelect: UITableViewController {
             else {
                 cell.backgroundColor = UIColor(red:0.46, green:0.53, blue:0.67, alpha:0.5)
             }
-            cell.textLabel?.text = "Asset Tag: \(selectAssetTags[indexPath.row - 2])\t\tSN: \(selectSerialNumbers[indexPath.row - 2]) "
+//            print("Device ID: \(selectDeviceIDs[indexPath.row - 2])")
+//            print("Asset Tag: \(selectIDAssetTags[selectDeviceIDs[indexPath.row - 2]] ?? "Not Found")")
+            cell.textLabel?.text = "Asset Tag: \(selectIDAssetTags[selectDeviceIDs[indexPath.row - 2]] ?? "Not Found")\t\tSN: \(selectSerialNumbers[indexPath.row - 2]) "
         return cell
       }
     }
