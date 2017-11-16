@@ -367,6 +367,7 @@ class ViewController: UIViewController {
                                         selectVC.selectSerialNumbers = serialNumbers
                                         selectVC.selectAssetTags = assetTags
                                         selectVC.selectIDAssetTags = IDAssetTags
+                                        selectVC.selectParameterToCheck = parameterToCheck
                                         self.snToCheck.text = ""
                                         self.invNumToCheck.text = ""
                                         self.present(selectVC, animated: true, completion: nil)
