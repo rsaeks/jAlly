@@ -24,6 +24,8 @@ let controller = BarcodeScannerController()
 let scannedSN = SwiftOCR()
 let lookupQueue = DispatchGroup()
 
+var cameFromLostMode = false
+
 
 class ViewController: UIViewController {
 
@@ -305,7 +307,7 @@ class ViewController: UIViewController {
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
                                     var assetTags = [String]()
-                                    var testArray = [String]()
+                                    //var testArray = [String]()
                                     lookupQueue.enter()
                                     var counter = 0
                                     for x in 0..<mobileDevice.count {
@@ -451,7 +453,19 @@ class ViewController: UIViewController {
                         } // Close our purchasing JSON
                     } // Close our mobile_device JSON dict
                 } // Close our response JSON
-                JSSQueue.leave()
+                ///
+                ///
+                ///
+                if !cameFromLostMode  {
+                    print("Did not come from lost mode screen")
+                    JSSQueue.leave()
+                    cameFromLostMode = false
+                }
+                else {
+                    print("Came from lost mode VC")
+                    print("Resetting to false")
+                    cameFromLostMode = false
+                }
             } // Close our successful result
             else {
                 JSSQueue.leave()
@@ -660,43 +674,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func enableLostModePressed(_ sender: UIButton) {
-        print("Enable Lost Mode pressed for device ID: \(workingData.deviceID)")
-        sender.layer.borderColor = warnColor.cgColor
-        let headers = [ "Content-Type":"application/xml", ]
-        
-        // Custom Body Encoding
-        struct RawDataEncoding: ParameterEncoding {
-            public static var `default`: RawDataEncoding { return RawDataEncoding() }
-            public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
-                var request = try urlRequest.asURLRequest()
-//                print("Incoming Data....")
-//                print(LostMode.lostModeSettings.lostModeMessage)
-//                print(LostMode.lostModeSettings.lostModeNumber)
-//                print(LostMode.lostModeSettings.lostModeFootNote)
-//                print(LostMode.lostModeSettings.lostModeForced)
-//                print(LostMode.lostModeSettings.lostModeSound)
-                request.httpBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mobile_device_command><general><command>EnableLostMode</command><lost_mode_message>\(LostMode.lostModeSettings.lostModeMessage!)</lost_mode_message><lost_mode_phone>\(LostMode.lostModeSettings.lostModeNumber!)</lost_mode_phone><lost_mode_footnote>\(LostMode.lostModeSettings.lostModeFootNote!)</lost_mode_footnote><always_enforce_lost_mode>\(LostMode.lostModeSettings.lostModeForced!)</always_enforce_lost_mode><lost_mode_with_sound>\(LostMode.lostModeSettings.lostModeSound!)</lost_mode_with_sound></general><mobile_devices><mobile_device><id>\(workingData.deviceID)</id></mobile_device></mobile_devices></mobile_device_command>".data(using: String.Encoding.utf8, allowLossyConversion: false)
-                return request
-            }
-        }
-        
-        // Fetch Request
-        print(workingjss.jssURL + devLostModePath)
-        Alamofire.request(workingjss.jssURL + devLostModePath, method: .post, encoding: RawDataEncoding.default, headers: headers)
-            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
-            .validate(statusCode: 200..<300)
-            .responseString { response in
-                if (response.result.error == nil) {
-                    print("Successful Command")
-                    sender.layer.borderColor = successColor.cgColor
-                    //debugPrint("HTTP Response Body: \(response.data)")
-                }
-                else {
-                    print("Failed Command")
-                    sender.layer.borderColor = failColor.cgColor
-                    //debugPrint("HTTP Request failed: \(response.result.error)")
-                }
-        }
+        performSegue(withIdentifier: "lostModVCSeg", sender: self)
     }
 
     @IBAction func disableLostModePressed(_ sender: UIButton) {
