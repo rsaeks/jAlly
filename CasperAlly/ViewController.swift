@@ -47,6 +47,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var sendBlankPushButton: UIButton!
     @IBOutlet weak var removeRestritionsButton: UIButton!
     @IBOutlet weak var reapplyRestrictionsButton: UIButton!
+    @IBOutlet weak var enableLostModeButton: actionButton!
+    @IBOutlet weak var disableLostMode: actionButton!
     @IBOutlet weak var restartDeviceButton: UIButton!
     @IBOutlet weak var shutdownDeviceButton: UIButton!
     @IBOutlet weak var scanBarcodeButton: UIButton!
@@ -560,7 +562,10 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.isEnabled = true
         restartDeviceButton.isEnabled = true
         shutdownDeviceButton.isEnabled = true
+        enableLostModeButton.isEnabled = true
+        disableLostMode.isEnabled = true
         setupButtons(buttonWidth: 2)
+        
     }
     
     func disableButtons() {
@@ -570,7 +575,10 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.isEnabled = false
         restartDeviceButton.isEnabled = false
         shutdownDeviceButton.isEnabled = false
+        enableLostModeButton.isEnabled = false
+        disableLostMode.isEnabled = false
         setupButtons(buttonWidth: 0)
+        
     }
     
     func resetButtons() {
@@ -580,6 +588,8 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.layer.borderColor = UIColor.lightGray.cgColor
         restartDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
         shutdownDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
+        enableLostModeButton.layer.borderColor = UIColor.lightGray.cgColor
+        disableLostMode.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     func setupButtons(buttonWidth: Int) {
@@ -589,6 +599,8 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.layer.borderWidth = CGFloat(buttonWidth)
         restartDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
         shutdownDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
+        enableLostModeButton.layer.borderWidth = CGFloat(buttonWidth)
+        disableLostMode.layer.borderWidth = CGFloat(buttonWidth)
     }
     
     func updateUI() {
@@ -647,15 +659,88 @@ class ViewController: UIViewController {
         lookupINVNumButton.layer.borderColor = UIColor.lightGray.cgColor
     }
     
+    @IBAction func enableLostModePressed(_ sender: UIButton) {
+        print("Enable Lost Mode pressed for device ID: \(workingData.deviceID)")
+        sender.layer.borderColor = warnColor.cgColor
+        let headers = [ "Content-Type":"application/xml", ]
+        
+        // Custom Body Encoding
+        struct RawDataEncoding: ParameterEncoding {
+            public static var `default`: RawDataEncoding { return RawDataEncoding() }
+            public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
+                var request = try urlRequest.asURLRequest()
+//                print("Incoming Data....")
+//                print(LostMode.lostModeSettings.lostModeMessage)
+//                print(LostMode.lostModeSettings.lostModeNumber)
+//                print(LostMode.lostModeSettings.lostModeFootNote)
+//                print(LostMode.lostModeSettings.lostModeForced)
+//                print(LostMode.lostModeSettings.lostModeSound)
+                request.httpBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mobile_device_command><general><command>EnableLostMode</command><lost_mode_message>\(LostMode.lostModeSettings.lostModeMessage!)</lost_mode_message><lost_mode_phone>\(LostMode.lostModeSettings.lostModeNumber!)</lost_mode_phone><lost_mode_footnote>\(LostMode.lostModeSettings.lostModeFootNote!)</lost_mode_footnote><always_enforce_lost_mode>\(LostMode.lostModeSettings.lostModeForced!)</always_enforce_lost_mode><lost_mode_with_sound>\(LostMode.lostModeSettings.lostModeSound!)</lost_mode_with_sound></general><mobile_devices><mobile_device><id>\(workingData.deviceID)</id></mobile_device></mobile_devices></mobile_device_command>".data(using: String.Encoding.utf8, allowLossyConversion: false)
+                return request
+            }
+        }
+        
+        // Fetch Request
+        print(workingjss.jssURL + devLostModePath)
+        Alamofire.request(workingjss.jssURL + devLostModePath, method: .post, encoding: RawDataEncoding.default, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
+            .validate(statusCode: 200..<300)
+            .responseString { response in
+                if (response.result.error == nil) {
+                    print("Successful Command")
+                    sender.layer.borderColor = successColor.cgColor
+                    //debugPrint("HTTP Response Body: \(response.data)")
+                }
+                else {
+                    print("Failed Command")
+                    sender.layer.borderColor = failColor.cgColor
+                    //debugPrint("HTTP Request failed: \(response.result.error)")
+                }
+        }
+    }
 
+    @IBAction func disableLostModePressed(_ sender: UIButton) {
+        print("Disable Lost mode pressed for device ID: \(workingData.deviceID)")
+        sender.layer.borderColor = warnColor.cgColor
+        let headers = [ "Content-Type":"application/xml" ]
+        // Custom Body Encoding
+        struct RawDataEncoding: ParameterEncoding {
+            public static var `default`: RawDataEncoding { return RawDataEncoding() }
+            public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
+                var request = try urlRequest.asURLRequest()
+                request.httpBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mobile_device_command><general><command>DisableLostMode</command></general><mobile_devices><mobile_device><id>\(workingData.deviceID)</id></mobile_device></mobile_devices></mobile_device_command>".data(using: String.Encoding.utf8, allowLossyConversion: false)
+                return request
+            }
+        }
+        // Fetch Request
+        Alamofire.request(workingjss.jssURL + devLostModePath, method: .post, encoding: RawDataEncoding.default, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
+            .validate(statusCode: 200..<300)
+            .responseString { response in
+                if (response.result.error == nil) {
+                    sender.layer.borderColor = successColor.cgColor
+                    print("Successful Command")
+                    //debugPrint("HTTP Response Body: \(response.data)")
+                }
+                else {
+                    sender.layer.borderColor = failColor.cgColor
+                    print("Failed Command")
+                    //debugPrint("HTTP Request failed: \(response.result.error)")
+                }
+        }
+    }
+}
+
+
+
+    
     
     //// ------------------------------------
     //
     // --- UI RELATED FUNCTIONS END
     //
     //// ------------------------------------
-    
-}
+
 ////
 //
 // Barcode Scanning extensions

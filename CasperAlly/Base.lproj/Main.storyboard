@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Segues with Peek and Pop" minToolsVersion="7.1"/>
@@ -497,47 +497,55 @@
                                     <constraint firstItem="bQC-G4-PHa" firstAttribute="bottom" secondItem="r28-ni-1u3" secondAttribute="bottom" id="ymd-fd-5Wy"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="a7O-pN-KNg">
-                                <rect key="frame" x="45.5" y="551" width="284" height="106"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="a7O-pN-KNg" userLabel="Action Buttons SV">
+                                <rect key="frame" x="37" y="514" width="301" height="143"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="mgd-Lw-nuK" userLabel="LeftButtonsSV">
-                                        <rect key="frame" x="0.0" y="0.0" width="125" height="106"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="142" height="143"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rUx-4f-8MA" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="125" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="142" height="32"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                 <state key="normal" title="  Update Inventory  "/>
                                                 <connections>
                                                     <action selector="updateInventoryPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ppt-0n-IOS"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2u-jG-CZ0" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="37" width="125" height="32"/>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g0d-9b-1Er" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="37" width="142" height="32"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                                <state key="normal" title="  Send Blank Push  "/>
+                                                <state key="normal" title="  Remove Restrictions  "/>
                                                 <connections>
-                                                    <action selector="sendBlankPushPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1aG-Ub-7br"/>
+                                                    <action selector="removeRestrictionsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gSF-4M-pG4"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dlv-7y-ojC" userLabel="Restart Device" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="74" width="125" height="32"/>
+                                                <rect key="frame" x="0.0" y="74" width="142" height="32"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
                                                 <state key="normal" title="  Restart Device  "/>
                                                 <connections>
                                                     <action selector="restartDevicePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hFc-ag-2lV"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="msF-0H-Hau" userLabel="Enable Lost Mode" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="111" width="142" height="32"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                                <state key="normal" title="  Enable Lost Mode  "/>
+                                                <connections>
+                                                    <action selector="enableLostModePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4Kq-t8-MYF"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="793-9t-a7K" userLabel="RightButtonsSV">
-                                        <rect key="frame" x="135" y="0.0" width="149" height="106"/>
+                                        <rect key="frame" x="152" y="0.0" width="149" height="143"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g0d-9b-1Er" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2u-jG-CZ0" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="149" height="32"/>
                                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
-                                                <state key="normal" title="  Remove Restrictions  "/>
+                                                <state key="normal" title="  Send Blank Push  "/>
                                                 <connections>
-                                                    <action selector="removeRestrictionsPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gSF-4M-pG4"/>
+                                                    <action selector="sendBlankPushPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1aG-Ub-7br"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="449-FK-xc8" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
@@ -554,6 +562,14 @@
                                                 <state key="normal" title="  Shutdown Device  "/>
                                                 <connections>
                                                     <action selector="shutdownDevicePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3PZ-cJ-KRp"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ni-lD-Wtn" userLabel="Disable Lost Mode" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="111" width="149" height="32"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="14"/>
+                                                <state key="normal" title="  Disable Lost Mode "/>
+                                                <connections>
+                                                    <action selector="disableLostModePressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1ZI-tt-VsH"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -595,6 +611,8 @@
                         <outlet property="deviceIPLabel" destination="oET-ys-f07" id="MWr-dO-U6v"/>
                         <outlet property="deviceInventorylabel" destination="d0G-29-qxP" id="t6R-7I-zSX"/>
                         <outlet property="deviceMACLabel" destination="Nrz-wf-P4T" id="FNp-bg-1zM"/>
+                        <outlet property="disableLostMode" destination="7Ni-lD-Wtn" id="UUH-Ui-9Bb"/>
+                        <outlet property="enableLostModeButton" destination="msF-0H-Hau" id="j7d-w3-SI3"/>
                         <outlet property="freeSpaceLabel" destination="LMm-eB-va7" id="4F4-63-lxC"/>
                         <outlet property="freeSpaceStatusIcon" destination="oO9-Be-rgs" id="VsG-d0-kE6"/>
                         <outlet property="fullNameLabel" destination="NQF-xa-8qc" id="qeK-RQ-KOU"/>
@@ -668,7 +686,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="INn-ch-7Lh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1693.5999999999999" y="-892.80359820089961"/>
+            <point key="canvasLocation" x="1008" y="-962"/>
         </scene>
         <!--Settings-->
         <scene sceneID="WFM-87-WnJ">

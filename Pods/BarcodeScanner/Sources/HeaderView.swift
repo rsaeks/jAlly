@@ -7,10 +7,9 @@ protocol HeaderViewDelegate: class {
 /**
  Header view that simulates a navigation bar.
  */
-class HeaderView: UIView {
-
+final class HeaderView: UIView {
   /// Title label.
-  lazy var label: UILabel = {
+  private lazy var label: UILabel = {
     let label = UILabel()
     label.text = Title.text
     label.font = Title.font
@@ -22,13 +21,12 @@ class HeaderView: UIView {
   }()
 
   /// Close button.
-  lazy var button: UIButton = {
+  private lazy var button: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle(CloseButton.text, for: UIControlState())
     button.titleLabel?.font = CloseButton.font
     button.tintColor = CloseButton.color
     button.addTarget(self, action: #selector(buttonDidPress), for: .touchUpInside)
-
     return button
   }()
 
@@ -61,17 +59,22 @@ class HeaderView: UIView {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    let padding: CGFloat = 8
+    let insets = viewInsets
+    let leadingPadding: CGFloat = 15 + insets.left
+    let topPadding: CGFloat = 8 + insets.top
     let labelHeight: CGFloat = 40
-
+    
     button.sizeToFit()
 
-    button.frame.origin = CGPoint(x: 15,
-      y: ((frame.height - button.frame.height) / 2) + padding)
+    button.frame.origin = CGPoint(
+      x: leadingPadding,
+      y: ((frame.height - button.frame.height) / 2) + topPadding
+    )
 
     label.frame = CGRect(
-      x: 0, y: ((frame.height - labelHeight) / 2) + padding,
-      width: frame.width, height: labelHeight)
+      x: 0, y: ((frame.height - labelHeight) / 2) + topPadding,
+      width: frame.width, height: labelHeight
+    )
   }
 
   // MARK: - Actions
@@ -79,7 +82,7 @@ class HeaderView: UIView {
   /**
    Close button action handler.
    */
-  @objc func buttonDidPress() {
+  @objc private func buttonDidPress() {
     delegate?.headerViewDidPressClose(self)
   }
 }

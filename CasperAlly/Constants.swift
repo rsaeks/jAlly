@@ -32,6 +32,7 @@ let devAPIBlankPushPath = "\(API_BASE)\(MOBILE_DEV_CMD)BlankPush/id/"
 let userPath = "\(API_BASE)\(USER_PATH)"
 let devRestartPath = "\(API_BASE)\(MOBILE_DEV_CMD)RestartDevice/id/"
 let devShutdownPath = "\(API_BASE)\(MOBILE_DEV_CMD)ShutdownDevice/id/"
+let devLostModePath = "\(API_BASE)mobiledevicecommands/command"
 
 // Header options
 let headers = [
@@ -40,12 +41,19 @@ let headers = [
 let xmlHeaders = [
     "Content-Type":"text/xml",
 ]
+let xmlAppHeaders = [
+    "Content-Type":"application/xml",
+]
+
 
 // XML strings
 let devGroupAdditionLeft = "<mobile_device_group><mobile_device_additions><mobile_device><id>"
 let devGroupAdditionRight = "</id></mobile_device></mobile_device_additions></mobile_device_group>"
 let devGroupDeletionLeft = "<mobile_device_group><mobile_device_deletions><mobile_device><id>"
 let devGroupDeletionRight = "</id></mobile_device></mobile_device_deletions></mobile_device_group>"
+let enableLostMode = """
+<?xml version="1.0" encoding="UTF-8"?><mobile_device_command><general><command>EnableLostMode</command><lost_mode_message>Lost Mode Test</lost_mode_message><lost_mode_phone>18478357834</lost_mode_phone><lost_mode_footnote>_</lost_mode_footnote><always_enforce_lost_mode>false</always_enforce_lost_mode><lost_mode_with_sound>true</lost_mode_with_sound></general><mobile_devices><mobile_device><id>718</id></mobile_device></mobile_devices></mobile_device_command>
+"""
 
 // Button colors
 let successColor = UIColor(red: 0, green: 0.4863, blue: 0.1843, alpha: 1.0)

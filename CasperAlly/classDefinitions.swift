@@ -51,6 +51,21 @@ class Settings {
     var numbersOnlyIsOn: Bool! = false
 }
 
+class LostMode {
+    static var lostModeSettings = LostMode()
+    var lostModeMessage: String!
+    var lostModeNumber: String!
+    var lostModeFootNote: String!
+    var lostModeForced: Bool!
+    var lostModeSound: Bool!
+    init () {
+        lostModeMessage = "This device has been reported as lost"
+        lostModeNumber = "1234567890"
+        lostModeFootNote = "Lost device"
+        lostModeForced = false
+        lostModeSound = true
+    }
+}
 
 class JSSConfig {
     var jssURL: String

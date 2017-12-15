@@ -3,28 +3,25 @@ import UIKit
 /**
  Info view is an overlay with loading and error messages.
  */
-class InfoView: UIVisualEffectView {
-
+final class InfoView: UIVisualEffectView {
   /// Text label.
-  lazy var label: UILabel = {
+  private lazy var label: UILabel = {
     let label = UILabel()
     label.numberOfLines = 3
-
     return label
   }()
 
   /// Info image view.
-  lazy var imageView: UIImageView = {
+  private lazy var imageView: UIImageView = {
     let image = imageNamed("info").withRenderingMode(.alwaysTemplate)
     let imageView = UIImageView(image: image)
-
     return imageView
   }()
 
   /// Border view.
-  lazy var borderView: UIView = {
+  private lazy var borderView: UIView = {
     let view = UIView()
-    view.backgroundColor = UIColor.clear
+    view.backgroundColor = .clear
     view.layer.borderWidth = 2
     view.layer.cornerRadius = 10
 
@@ -85,7 +82,8 @@ class InfoView: UIVisualEffectView {
    */
   override func layoutSubviews() {
     super.layoutSubviews()
-
+    
+    let insets = viewInsets
     let padding: CGFloat = 10
     let labelHeight: CGFloat = 40
     let imageSize = CGSize(width: 30, height: 27)
@@ -93,35 +91,40 @@ class InfoView: UIVisualEffectView {
 
     if status.state != .processing && status.state != .notFound {
       imageView.frame = CGRect(
-        x: padding,
+        x: padding + insets.left,
         y: (frame.height - imageSize.height) / 2,
         width: imageSize.width,
-        height: imageSize.height)
+        height: imageSize.height
+      )
 
       label.frame = CGRect(
         x: imageView.frame.maxX + padding,
         y: 0,
-        width: frame.width - imageView.frame.maxX - 2 * padding,
-        height: frame.height)
+        width: frame.width - imageView.frame.maxX - 2 * padding - insets.right,
+        height: frame.height
+      )
     } else {
       imageView.frame = CGRect(
         x: (frame.width - imageSize.width) / 2,
         y: (frame.height - imageSize.height) / 2 - 60,
         width: imageSize.width,
-        height: imageSize.height)
+        height: imageSize.height
+      )
 
       label.frame = CGRect(
         x: padding,
         y: imageView.frame.maxY + 14,
         width: frame.width - 2 * padding,
-        height: labelHeight)
+        height: labelHeight
+      )
     }
 
     borderView.frame = CGRect(
       x: (frame.width - borderSize) / 2,
       y: imageView.frame.minY - 12,
       width: borderSize,
-      height: borderSize)
+      height: borderSize
+    )
   }
 
   // MARK: - Animations
@@ -141,7 +144,7 @@ class InfoView: UIVisualEffectView {
 
    - Parameter style: The current blur style.
    */
-  func animate(blurStyle style: UIBlurEffectStyle) {
+  private func animate(blurStyle style: UIBlurEffectStyle) {
     guard status.state == .processing else { return }
 
     UIView.animate(withDuration: 2.0, delay: 0.5, options: [.beginFromCurrentState],
@@ -157,7 +160,7 @@ class InfoView: UIVisualEffectView {
 
    - Parameter angle: Rotation angle.
    */
-  func animate(borderViewAngle: CGFloat) {
+  private func animate(borderViewAngle: CGFloat) {
     guard status.state == .processing else {
       borderView.transform = CGAffineTransform.identity
       return
