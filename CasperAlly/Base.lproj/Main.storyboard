@@ -1295,10 +1295,29 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="30Z-qt-wSN">
-                                <rect key="frame" x="26" y="376" width="323" height="82"/>
+                                <rect key="frame" x="26" y="376" width="323" height="132"/>
                                 <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BUb-AN-Ye3">
+                                        <rect key="frame" x="0.0" y="0.0" width="256" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z29-Va-w9u" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="123" height="30"/>
+                                                <state key="normal" title="Enable Lost Mode"/>
+                                                <connections>
+                                                    <action selector="enableLostModePressed:" destination="9oP-Wx-m4v" eventType="touchUpInside" id="SEl-gi-mQ5"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HpT-aK-MUv" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
+                                                <rect key="frame" x="133" y="0.0" width="123" height="30"/>
+                                                <state key="normal" title="Close"/>
+                                                <connections>
+                                                    <action selector="closeButtonPressed:" destination="9oP-Wx-m4v" eventType="touchUpInside" id="ao4-pa-ubs"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KY0-h7-nt6">
-                                        <rect key="frame" x="0.0" y="0.0" width="323" height="31"/>
+                                        <rect key="frame" x="0.0" y="50" width="323" height="31"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Always Enforce Lost Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VbK-6K-D9R">
                                                 <rect key="frame" x="0.0" y="0.0" width="274" height="31"/>
@@ -1312,7 +1331,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jRP-Jq-ihc">
-                                        <rect key="frame" x="0.0" y="51" width="323" height="31"/>
+                                        <rect key="frame" x="0.0" y="101" width="323" height="31"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play Lost Mode Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gie-Ce-lgl">
                                                 <rect key="frame" x="0.0" y="0.0" width="274" height="31"/>
@@ -1333,43 +1352,20 @@
                                     <constraint firstAttribute="trailing" secondItem="KY0-h7-nt6" secondAttribute="trailing" id="nst-xb-dZs"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="BUb-AN-Ye3">
-                                <rect key="frame" x="36" y="587" width="303" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z29-Va-w9u" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="146.5" height="30"/>
-                                        <state key="normal" title="Enable Lost Mode"/>
-                                        <connections>
-                                            <action selector="enableLostModePressed:" destination="9oP-Wx-m4v" eventType="touchUpInside" id="SEl-gi-mQ5"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HpT-aK-MUv" customClass="actionButton" customModule="jAlly" customModuleProvider="target">
-                                        <rect key="frame" x="156.5" y="0.0" width="146.5" height="30"/>
-                                        <state key="normal" title="Close"/>
-                                        <connections>
-                                            <action selector="closeButtonPressed:" destination="9oP-Wx-m4v" eventType="touchUpInside" id="ao4-pa-ubs"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.92000000000000004" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="BUb-AN-Ye3" firstAttribute="centerX" secondItem="6NY-HI-v5L" secondAttribute="centerX" id="8SM-vo-qZN"/>
                             <constraint firstItem="0hi-fV-xZ4" firstAttribute="centerX" secondItem="6NY-HI-v5L" secondAttribute="centerX" id="C2c-Z3-Kg3"/>
                             <constraint firstAttribute="trailing" secondItem="65t-Ow-FAd" secondAttribute="trailing" id="FT2-gP-Wxx"/>
                             <constraint firstItem="0hi-fV-xZ4" firstAttribute="top" secondItem="S8Y-XO-EDW" secondAttribute="bottom" id="Ho9-c1-HQA"/>
                             <constraint firstItem="30Z-qt-wSN" firstAttribute="leading" secondItem="6NY-HI-v5L" secondAttribute="leadingMargin" constant="10" id="Qm2-6n-zVR"/>
                             <constraint firstItem="FIs-W9-T3J" firstAttribute="leading" secondItem="6NY-HI-v5L" secondAttribute="leading" constant="20" id="UAR-zG-a8Q"/>
                             <constraint firstAttribute="trailingMargin" secondItem="30Z-qt-wSN" secondAttribute="trailing" constant="10" id="XVi-Ap-nTE"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="BUb-AN-Ye3" secondAttribute="trailing" constant="20" id="dAh-QV-68S"/>
-                            <constraint firstItem="BUb-AN-Ye3" firstAttribute="leading" secondItem="6NY-HI-v5L" secondAttribute="leadingMargin" constant="20" id="eFW-hT-EbD"/>
                             <constraint firstItem="FIs-W9-T3J" firstAttribute="top" secondItem="0hi-fV-xZ4" secondAttribute="bottom" constant="20" id="fc7-wl-yjh"/>
                             <constraint firstItem="65t-Ow-FAd" firstAttribute="leading" secondItem="6NY-HI-v5L" secondAttribute="leading" id="gsu-cm-z81"/>
                             <constraint firstItem="30Z-qt-wSN" firstAttribute="top" secondItem="FIs-W9-T3J" secondAttribute="bottom" constant="40" id="mlj-6m-hGQ"/>
                             <constraint firstItem="65t-Ow-FAd" firstAttribute="top" secondItem="6NY-HI-v5L" secondAttribute="top" id="qUV-7Y-WXX"/>
                             <constraint firstAttribute="trailing" secondItem="FIs-W9-T3J" secondAttribute="trailing" constant="20" id="qwK-tN-2jU"/>
-                            <constraint firstItem="2gX-mW-wiG" firstAttribute="top" secondItem="BUb-AN-Ye3" secondAttribute="bottom" constant="50" id="vrU-Wg-L2F"/>
                         </constraints>
                     </view>
                     <connections>
