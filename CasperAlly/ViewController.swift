@@ -60,12 +60,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var lookupUserButton: scanButton!
     @IBOutlet weak var lookupSNButton: scanButton!
     @IBOutlet weak var lookupINVNumButton: scanButton!
+    @IBOutlet weak var scanSNOCRButton: scanButton!
     
     
 
     override func viewDidAppear(_ animated: Bool) {
         workingData.deviceID == 0 ? nil : self.getDetails()
         updateUI()
+        scanSNOCRButton.layer.borderWidth = 0
     }
     
     @IBAction func clearDataPressed(_ sender: Any) {
@@ -266,12 +268,12 @@ class ViewController: UIViewController {
     
 
     @IBAction func scanSNPressed(_ sender: Any) {
-            workingData = JSSData()
-            if let myImage = UIImage(named: "sample") {
-            scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            scannedSN.recognize(myImage) { result in
-            }
-        }
+//            workingData = JSSData()
+//            if let myImage = UIImage(named: "sample") {
+//            scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+//            scannedSN.recognize(myImage) { result in
+//            }
+//        }
     }
     
     
