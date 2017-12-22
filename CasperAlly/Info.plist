@@ -23,7 +23,11 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.2</string>
 	<key>CFBundleVersion</key>
+<<<<<<< HEAD
 	<string>9</string>
+=======
+	<string>7</string>
+>>>>>>> develop
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>

@@ -628,6 +628,7 @@
                         <outlet property="removeRestritionsButton" destination="g0d-9b-1Er" id="Qdh-s8-JSx"/>
                         <outlet property="restartDeviceButton" destination="Dlv-7y-ojC" id="RVw-q6-QKC"/>
                         <outlet property="scanBarcodeButton" destination="6jc-b7-lfK" id="2vQ-Eu-Umh"/>
+                        <outlet property="scanSNOCRButton" destination="PcY-ug-1G2" id="tUV-Ar-WMe"/>
                         <outlet property="sendBlankPushButton" destination="v2u-jG-CZ0" id="91c-ON-btr"/>
                         <outlet property="shutdownDeviceButton" destination="n2q-mG-exi" id="6Uj-pF-nEo"/>
                         <outlet property="snToCheck" destination="9Tv-8I-fOd" id="RAa-2V-ce9"/>
