@@ -60,19 +60,25 @@ class ViewController: UIViewController {
     @IBOutlet weak var lookupUserButton: scanButton!
     @IBOutlet weak var lookupSNButton: scanButton!
     @IBOutlet weak var lookupINVNumButton: scanButton!
+<<<<<<< HEAD
+    @IBOutlet weak var ocrSNButton: scanButton!
+=======
     @IBOutlet weak var scanSNOCRButton: scanButton!
+>>>>>>> develop
     
     
 
     override func viewDidAppear(_ animated: Bool) {
         workingData.deviceID == 0 ? nil : self.getDetails()
         updateUI()
+<<<<<<< HEAD
+        ocrSNButton.layer.borderWidth = 0
+=======
         scanSNOCRButton.layer.borderWidth = 0
+>>>>>>> develop
     }
     
-    @IBAction func clearDataPressed(_ sender: Any) {
-        resetUI()
-    }
+    @IBAction func clearDataPressed(_ sender: Any) { resetUI() }
     
     
     //// ------------------------------------
@@ -296,7 +302,13 @@ class ViewController: UIViewController {
                             if mobileDevice.count > 0 {
                                 if mobileDevice.count == 1 {
                                     if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+<<<<<<< HEAD
                                         print("One mobile device found")
+=======
+                                        // Added to (hopefully) prevent crash on unique barcode
+                                        //lookupQueue.enter()
+                                        //print("--- lookupQueue Enter via line 298 ---")
+>>>>>>> develop
                                         self.snToCheck.text = "looking up ..."
                                         self.invNumToCheck.text = "looking up ..."
                                         workingData.deviceID = deviceID
@@ -316,7 +328,11 @@ class ViewController: UIViewController {
                                     var assetTags = [String]()
                                     //var testArray = [String]()
                                     lookupQueue.enter()
+<<<<<<< HEAD
                                     print("--- LookupQueue Entered line 316 ---")
+=======
+                                    print("--- lookupQueue Enter via line 317 ---")
+>>>>>>> develop
                                     var counter = 0
                                     for x in 0..<mobileDevice.count {
                                         deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
@@ -337,7 +353,11 @@ class ViewController: UIViewController {
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
+<<<<<<< HEAD
                                                                         print("--- LookupQueue left line 339 ---")
+=======
+                                                                        print("--- lookupQueue Leave via line 337 ---")
+>>>>>>> develop
                                                                     }
                                                                 }
                                                                 else {
@@ -350,7 +370,11 @@ class ViewController: UIViewController {
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
+<<<<<<< HEAD
                                                                         print("--- LookupQueue left line 352 ---")
+=======
+                                                                        print("--- lookupQueue Leave via line 351---")
+>>>>>>> develop
                                                                     }
                                                                 }
                                                             }
@@ -361,7 +385,11 @@ class ViewController: UIViewController {
                                         }
                                     }
                                     lookupQueue.notify(queue: DispatchQueue.main, execute: {
+<<<<<<< HEAD
                                         print("--- LookupQueue notified ---")
+=======
+                                        print("In lookupQueue notifier to handle multiple IDs")
+>>>>>>> develop
                                         print(IDAssetTags)
                                         //print("In loookup queue")
                                         //print(testArray)
@@ -467,21 +495,30 @@ class ViewController: UIViewController {
                 ///
                 ///
                 ///
+                print("Finished Getting details ... now to test if we came from lost mode screen" )
                 if !cameFromLostMode  {
                     print("Did not come from lost mode screen")
                     JSSQueue.leave()
+<<<<<<< HEAD
                     print("--- JSSQueue left line 471 ---")
+=======
+                    print("--- JSSQueue Leave via line 470---")
+>>>>>>> develop
                     cameFromLostMode = false
                 }
                 else {
                     print("Came from lost mode VC")
-                    print("Resetting to false")
+                    //print("Resetting to false")
                     cameFromLostMode = false
                 }
             } // Close our successful result
             else {
                 JSSQueue.leave()
+<<<<<<< HEAD
                 print("--- JSSQueue left line 482 ---")
+=======
+                print("--- JSSQueue Leave via 480---")
+>>>>>>> develop
             }
         }
     }
@@ -505,7 +542,11 @@ class ViewController: UIViewController {
         notFoundDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(notFoundDialog, animated: true)
         JSSQueue.leave()
+<<<<<<< HEAD
         print("--- JSSQueue left line 506 ---")
+=======
+        print("--- JSSQueue Leave via 504---")
+>>>>>>> develop
     }
     
     //// ------------------------------------
@@ -522,11 +563,16 @@ class ViewController: UIViewController {
     
     func dissmissKeyboard () {
         JSSQueue.enter()
+<<<<<<< HEAD
         print("--- JSSQueue entered line 523 ---")
+=======
+        print("--- JSSQueue Entered via line 522 ---")
+>>>>>>> develop
         view.endEditing(true)
     }
     
     func displayData(theButton: UIButton) {
+        print("Entering display data function on line 529")
         batteryStatusIcon.image = nil
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil

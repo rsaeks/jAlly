@@ -703,6 +703,7 @@
                         <outlet property="lookupINVNumButton" destination="WII-zQ-kke" id="7De-0H-VeT"/>
                         <outlet property="lookupSNButton" destination="kbM-j1-JJX" id="fun-YE-Hed"/>
                         <outlet property="lookupUserButton" destination="pia-Xg-Fjh" id="eWA-XQ-aVG"/>
+                        <outlet property="ocrSNButton" destination="PcY-ug-1G2" id="eza-9e-wJo"/>
                         <outlet property="reapplyRestrictionsButton" destination="449-FK-xc8" id="TJM-XJ-5Z5"/>
                         <outlet property="removeRestritionsButton" destination="g0d-9b-1Er" id="Qdh-s8-JSx"/>
                         <outlet property="restartDeviceButton" destination="Dlv-7y-ojC" id="RVw-q6-QKC"/>
