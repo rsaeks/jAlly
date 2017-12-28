@@ -93,6 +93,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.user, passedItem: "username")
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
                 self.displayData(theButton: sender)
+                print("--- JSSQueue notify line 96 ---")
             } )
         }
         resetButtons()
@@ -110,6 +111,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.deviceSN, passedItem: "serialnumber")
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
                 self.displayData(theButton: sender)
+                print("--- JSSQueue notify line 114 ---")
             } )
         }
         resetButtons()
@@ -126,6 +128,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
                 self.displayData(theButton: sender)
+                print("--- JSSQueue notify line 131 ---")
             } )
         }
         resetButtons()
@@ -293,6 +296,7 @@ class ViewController: UIViewController {
                             if mobileDevice.count > 0 {
                                 if mobileDevice.count == 1 {
                                     if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+                                        print("One mobile device found")
                                         self.snToCheck.text = "looking up ..."
                                         self.invNumToCheck.text = "looking up ..."
                                         workingData.deviceID = deviceID
@@ -305,12 +309,14 @@ class ViewController: UIViewController {
                                 }
                                     
                                 else if mobileDevice.count > 1 {
+                                    print("Multiple mobile devices found")
                                     var IDAssetTags = [Int: String] ()
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
                                     var assetTags = [String]()
                                     //var testArray = [String]()
                                     lookupQueue.enter()
+                                    print("--- LookupQueue Entered line 316 ---")
                                     var counter = 0
                                     for x in 0..<mobileDevice.count {
                                         deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
@@ -331,6 +337,7 @@ class ViewController: UIViewController {
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
+                                                                        print("--- LookupQueue left line 339 ---")
                                                                     }
                                                                 }
                                                                 else {
@@ -343,6 +350,7 @@ class ViewController: UIViewController {
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
+                                                                        print("--- LookupQueue left line 352 ---")
                                                                     }
                                                                 }
                                                             }
@@ -353,6 +361,7 @@ class ViewController: UIViewController {
                                         }
                                     }
                                     lookupQueue.notify(queue: DispatchQueue.main, execute: {
+                                        print("--- LookupQueue notified ---")
                                         print(IDAssetTags)
                                         //print("In loookup queue")
                                         //print(testArray)
@@ -461,6 +470,7 @@ class ViewController: UIViewController {
                 if !cameFromLostMode  {
                     print("Did not come from lost mode screen")
                     JSSQueue.leave()
+                    print("--- JSSQueue left line 471 ---")
                     cameFromLostMode = false
                 }
                 else {
@@ -471,6 +481,7 @@ class ViewController: UIViewController {
             } // Close our successful result
             else {
                 JSSQueue.leave()
+                print("--- JSSQueue left line 482 ---")
             }
         }
     }
@@ -494,6 +505,7 @@ class ViewController: UIViewController {
         notFoundDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(notFoundDialog, animated: true)
         JSSQueue.leave()
+        print("--- JSSQueue left line 506 ---")
     }
     
     //// ------------------------------------
@@ -510,6 +522,7 @@ class ViewController: UIViewController {
     
     func dissmissKeyboard () {
         JSSQueue.enter()
+        print("--- JSSQueue entered line 523 ---")
         view.endEditing(true)
     }
     
@@ -581,7 +594,6 @@ class ViewController: UIViewController {
         enableLostModeButton.isEnabled = true
         disableLostMode.isEnabled = true
         setupButtons(buttonWidth: 2)
-        
     }
     
     func disableButtons() {
@@ -594,7 +606,6 @@ class ViewController: UIViewController {
         enableLostModeButton.isEnabled = false
         disableLostMode.isEnabled = false
         setupButtons(buttonWidth: 0)
-        
     }
     
     func resetButtons() {
@@ -731,13 +742,16 @@ extension ViewController: BarcodeScannerCodeDelegate {
     func barcodeScanner(_ controller: BarcodeScannerController, didCaptureCode code: String, type: String) {
         workingData.deviceInventoryNumber = code
         self.invNumToCheck.text = workingData.deviceInventoryNumber
-        userToCheck.text = "looking up ..."
-        snToCheck.text = "looking up ..."
+        //userToCheck.text = "looking up ..."
+        //snToCheck.text = "looking up ..."
         controller.dismiss(animated: true, completion: nil)
         resetButtons()
-        lookupINVNumButton.layer.borderColor = warnColor.cgColor
-        lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
-        JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData(theButton: self.lookupINVNumButton)} )
+        //lookupINVNumButton.layer.borderColor = warnColor.cgColor
+        //ookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
+        JSSQueue.notify(queue: DispatchQueue.main, execute: {
+            //self.displayData(theButton: self.lookupINVNumButton)
+            print("--- JSSQueue notified line 750 ---")
+        } )
     }
 }
 
