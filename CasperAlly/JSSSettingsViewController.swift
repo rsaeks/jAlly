@@ -94,6 +94,14 @@ class JSSSettingsViewController: UIViewController {
     }
     
     @IBAction func returnToMainPressed(_ sender: Any) {
+        defaults.set(JSSURL.text, forKey: "savedJSSURL")
+        defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
+        defaults.set(jssUsername.text, forKey: "savedJSSUsername")
+        defaults.set(batteryWarnLevel.text, forKey: "batteryWarnLevel")
+        defaults.set(batteryCritLevel.text, forKey: "batteryCritLevel")
+        defaults.set(freespaceWarnLevel.text, forKey: "freespaceWarnLevel")
+        defaults.set(freespaceCritLevel.text, forKey: "freespaceCritLevel")
+        keychain.set(jssPassword.text!, forKey: "savedJSSPassword")
         dismiss(animated: true, completion: nil)
     }
     
