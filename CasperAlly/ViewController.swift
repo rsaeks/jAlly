@@ -60,22 +60,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var lookupUserButton: scanButton!
     @IBOutlet weak var lookupSNButton: scanButton!
     @IBOutlet weak var lookupINVNumButton: scanButton!
-<<<<<<< HEAD
-    @IBOutlet weak var ocrSNButton: scanButton!
-=======
     @IBOutlet weak var scanSNOCRButton: scanButton!
->>>>>>> develop
+    @IBOutlet weak var deviceModelLabel: UILabel!
     
     
 
     override func viewDidAppear(_ animated: Bool) {
         workingData.deviceID == 0 ? nil : self.getDetails()
         updateUI()
-<<<<<<< HEAD
-        ocrSNButton.layer.borderWidth = 0
-=======
         scanSNOCRButton.layer.borderWidth = 0
->>>>>>> develop
     }
     
     @IBAction func clearDataPressed(_ sender: Any) { resetUI() }
@@ -302,13 +295,10 @@ class ViewController: UIViewController {
                             if mobileDevice.count > 0 {
                                 if mobileDevice.count == 1 {
                                     if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
-<<<<<<< HEAD
                                         print("One mobile device found")
-=======
                                         // Added to (hopefully) prevent crash on unique barcode
                                         //lookupQueue.enter()
                                         //print("--- lookupQueue Enter via line 298 ---")
->>>>>>> develop
                                         self.snToCheck.text = "looking up ..."
                                         self.invNumToCheck.text = "looking up ..."
                                         workingData.deviceID = deviceID
@@ -326,13 +316,11 @@ class ViewController: UIViewController {
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
                                     var assetTags = [String]()
+                                    var deviceModels = [String]()
+                                    var indexModel = [Int: String] ()
                                     //var testArray = [String]()
                                     lookupQueue.enter()
-<<<<<<< HEAD
-                                    print("--- LookupQueue Entered line 316 ---")
-=======
-                                    print("--- lookupQueue Enter via line 317 ---")
->>>>>>> develop
+                                    print("--- LookupQueue Entered line 320 ---")
                                     var counter = 0
                                     for x in 0..<mobileDevice.count {
                                         deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
@@ -343,6 +331,11 @@ class ViewController: UIViewController {
                                                 if let outerDict = response.result.value as? Dictionary <String, AnyObject> { // Begin response JSON dict
                                                     if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> { // Begin mobile_device JSON dict
                                                         if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> { // Begin general JSON dict
+                                                            if let model_name = generalData[workingjss.deviceModelNameKey] as? String {
+                                                                print("Got a value for model on device \(x)")
+                                                                indexModel[x] = model_name
+                                                            }
+                                                            
                                                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                                                 if asset_tag == "" {
                                                                     //print("Asset Tag not found")
@@ -353,11 +346,7 @@ class ViewController: UIViewController {
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
-<<<<<<< HEAD
-                                                                        print("--- LookupQueue left line 339 ---")
-=======
-                                                                        print("--- lookupQueue Leave via line 337 ---")
->>>>>>> develop
+                                                                        print("--- LookupQueue left line 341 ---")
                                                                     }
                                                                 }
                                                                 else {
@@ -370,11 +359,7 @@ class ViewController: UIViewController {
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
-<<<<<<< HEAD
-                                                                        print("--- LookupQueue left line 352 ---")
-=======
-                                                                        print("--- lookupQueue Leave via line 351---")
->>>>>>> develop
+                                                                        print("--- LookupQueue left line 354 ---")
                                                                     }
                                                                 }
                                                             }
@@ -385,12 +370,10 @@ class ViewController: UIViewController {
                                         }
                                     }
                                     lookupQueue.notify(queue: DispatchQueue.main, execute: {
-<<<<<<< HEAD
                                         print("--- LookupQueue notified ---")
-=======
                                         print("In lookupQueue notifier to handle multiple IDs")
->>>>>>> develop
                                         print(IDAssetTags)
+                                        print(indexModel)
                                         //print("In loookup queue")
                                         //print(testArray)
 //                                        for x in 0..<deviceIDs.count {
@@ -411,6 +394,9 @@ class ViewController: UIViewController {
                                         selectVC.selectAssetTags = assetTags
                                         selectVC.selectIDAssetTags = IDAssetTags
                                         selectVC.selectParameterToCheck = parameterToCheck
+                                        selectVC.selectModel = deviceModels
+                                        selectVC.selectindexModel = indexModel
+                                        
                                         self.snToCheck.text = ""
                                         self.invNumToCheck.text = ""
                                         self.present(selectVC, animated: true, completion: nil)
@@ -444,6 +430,11 @@ class ViewController: UIViewController {
                                 dateFormat.timeZone = TimeZone.current
                                 workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
                             }
+                            if let model_name = generalData[workingjss.deviceModelNameKey] as? String {
+//                                print("Found device Model: \(model_name)")
+                                workingData.deviceModel = model_name
+                            }
+                            
                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                 (workingData.deviceInventoryNumber, self.invNumToCheck.text) = (asset_tag, asset_tag)
                             }
@@ -499,11 +490,7 @@ class ViewController: UIViewController {
                 if !cameFromLostMode  {
                     print("Did not come from lost mode screen")
                     JSSQueue.leave()
-<<<<<<< HEAD
-                    print("--- JSSQueue left line 471 ---")
-=======
-                    print("--- JSSQueue Leave via line 470---")
->>>>>>> develop
+                    print("--- JSSQueue left line 476 ---")
                     cameFromLostMode = false
                 }
                 else {
@@ -514,11 +501,7 @@ class ViewController: UIViewController {
             } // Close our successful result
             else {
                 JSSQueue.leave()
-<<<<<<< HEAD
-                print("--- JSSQueue left line 482 ---")
-=======
-                print("--- JSSQueue Leave via 480---")
->>>>>>> develop
+                print("--- JSSQueue left line 487 ---")
             }
         }
     }
@@ -542,11 +525,7 @@ class ViewController: UIViewController {
         notFoundDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(notFoundDialog, animated: true)
         JSSQueue.leave()
-<<<<<<< HEAD
-        print("--- JSSQueue left line 506 ---")
-=======
-        print("--- JSSQueue Leave via 504---")
->>>>>>> develop
+        print("--- JSSQueue left line 510 ---")
     }
     
     //// ------------------------------------
@@ -563,11 +542,7 @@ class ViewController: UIViewController {
     
     func dissmissKeyboard () {
         JSSQueue.enter()
-<<<<<<< HEAD
-        print("--- JSSQueue entered line 523 ---")
-=======
-        print("--- JSSQueue Entered via line 522 ---")
->>>>>>> develop
+        print("--- JSSQueue entered line 527 ---")
         view.endEditing(true)
     }
     
@@ -615,6 +590,7 @@ class ViewController: UIViewController {
         deviceIPLabel.text = workingData.deviceIPAddress
         deviceInventorylabel.text = workingData.lastInventoryEpocFormatted
         warrantyExpiresLabel.text = workingData.warrantyExpiresEpochFormatted
+        deviceModelLabel.text = workingData.deviceModel
         
         if (workingData.warrantyExpiresEpoch == 0.0) {
             warrantyExpiresLabel.text = "Not provided in JSS"

@@ -14,8 +14,10 @@ class multipleSelect: UITableViewController {
     var selectDeviceIDs = [Int]()
     var selectSerialNumbers = [String]()
     var selectAssetTags = [String]()
+    var selectModel = [String]()
     var returnedDevice = 0
     var selectIDAssetTags = [Int: String] ()
+    var selectindexModel = [Int: String] ()
     var selectParameterToCheck = ""
     
     override func viewDidLoad() {
@@ -90,10 +92,13 @@ class multipleSelect: UITableViewController {
             cell.textLabel?.adjustsFontSizeToFitWidth = true
             cell.textLabel?.minimumScaleFactor = 0.1
             cell.layer.borderWidth = 0.5
+            cell.textLabel?.numberOfLines = 2
             cell.layer.borderColor = UIColor.darkGray.cgColor
             if indexPath.row % 2 == 0 { cell.backgroundColor = UIColor(red:0.76, green:0.78, blue:0.81, alpha:0.5) }
             else { cell.backgroundColor = UIColor(red:0.46, green:0.53, blue:0.67, alpha:0.5) }
-            cell.textLabel?.text = "Asset Tag: \(selectIDAssetTags[selectDeviceIDs[indexPath.row]] ?? "Not Found")\t\tSN: \(selectSerialNumbers[indexPath.row]) "
+
+            
+            cell.textLabel?.text = "Asset Tag: \(selectIDAssetTags[selectDeviceIDs[indexPath.row]] ?? "Not Found")\t\tSN: \(selectSerialNumbers[indexPath.row])\nModel: \(selectindexModel[indexPath.row] ?? "TBD")"
             return cell
             
         }

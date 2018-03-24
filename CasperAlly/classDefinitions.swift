@@ -91,6 +91,7 @@ class JSSConfig {
     var freeSpaceKey: String
     var percentUsedKey: String
     var epochWarrantyExpiresKey: String
+    var deviceModelNameKey: String
     init() {
         jssURL = ""
         exclusinGID = ""
@@ -115,6 +116,7 @@ class JSSConfig {
         freeSpaceKey = "available_mb"
         percentUsedKey = "percentage_used"
         epochWarrantyExpiresKey = "warranty_expires_epoch"
+        deviceModelNameKey = "model"
     }
 }
 
@@ -137,6 +139,7 @@ class JSSData {
     var percentUsed: Int
     var warrantyExpiresEpoch: Double
     var warrantyExpiresEpochFormatted: String
+    var deviceModel: String
     
     init () {
         user = "defaultUser"
@@ -157,5 +160,6 @@ class JSSData {
         percentUsed = 0
         warrantyExpiresEpoch = 0.0
         warrantyExpiresEpochFormatted = "To Set"
+        deviceModel = "Model TBD"
     }
 }
