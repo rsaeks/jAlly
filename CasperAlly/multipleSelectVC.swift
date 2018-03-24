@@ -96,10 +96,38 @@ class multipleSelect: UITableViewController {
             cell.layer.borderColor = UIColor.darkGray.cgColor
             if indexPath.row % 2 == 0 { cell.backgroundColor = UIColor(red:0.76, green:0.78, blue:0.81, alpha:0.5) }
             else { cell.backgroundColor = UIColor(red:0.46, green:0.53, blue:0.67, alpha:0.5) }
-
             
-            cell.textLabel?.text = "Asset Tag: \(selectIDAssetTags[selectDeviceIDs[indexPath.row]] ?? "Not Found")\t\tSN: \(selectSerialNumbers[indexPath.row])\nModel: \(selectindexModel[indexPath.row] ?? "TBD")"
+            //Format for text displayed
+            let labelFormat = [ NSAttributedStringKey.font: UIFont(name: "Avenir-Heavy", size: 16)! ]
+            let textFormat = [ NSAttributedStringKey.font:UIFont(name: "Avenir", size: 16)]
+            
+            //Attributing style to our labels
+            let assetTagText = NSAttributedString(string: "Asset Tag: ", attributes: labelFormat)
+            let serialNumText = NSAttributedString(string: "\t\tSN: ", attributes: labelFormat)
+            let modelNameText = NSAttributedString(string: "\nModel: ", attributes: labelFormat)
+            
+            //Setting values and attributing style to our results
+            let assetTagResult = selectIDAssetTags[selectDeviceIDs[indexPath.row]] ?? "Not Found"
+            let serialNumberResult = selectSerialNumbers[indexPath.row]
+            let modelNameResult = selectindexModel[indexPath.row] ?? "Unknown"
+            let assetTagResultText = NSAttributedString(string: assetTagResult, attributes: textFormat)
+            let serialNUmberResultText = NSAttributedString(string: serialNumberResult, attributes: textFormat)
+            let modelNameResultText = NSAttributedString(string: modelNameResult, attributes: textFormat)
+            
+            //Concatenating our results into one Attributed String
+            let myString = NSMutableAttributedString()
+            myString.append(assetTagText)
+            myString.append(assetTagResultText)
+            myString.append(serialNumText)
+            myString.append(serialNUmberResultText)
+            myString.append(modelNameText)
+            myString.append(modelNameResultText)
+            
+            // Display our formatted results
+            cell.textLabel?.attributedText = myString
             return cell
+//            cell.textLabel?.text = "Asset Tag: \(selectIDAssetTags[selectDeviceIDs[indexPath.row]] ?? "Not Found")\t\tSN: \(selectSerialNumbers[indexPath.row])\nModel: \(selectindexModel[indexPath.row] ?? "TBD")"
+
             
         }
             
