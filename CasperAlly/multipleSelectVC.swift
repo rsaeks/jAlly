@@ -19,6 +19,7 @@ class multipleSelect: UITableViewController {
     var selectIDAssetTags = [Int: String] ()
     var selectindexModel = [Int: String] ()
     var selectParameterToCheck = ""
+    var selectDeviceName = [Int: String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +93,7 @@ class multipleSelect: UITableViewController {
             cell.textLabel?.adjustsFontSizeToFitWidth = true
             cell.textLabel?.minimumScaleFactor = 0.1
             cell.layer.borderWidth = 0.5
-            cell.textLabel?.numberOfLines = 2
+            cell.textLabel?.numberOfLines = 3
             cell.layer.borderColor = UIColor.darkGray.cgColor
             if indexPath.row % 2 == 0 { cell.backgroundColor = UIColor(red:0.76, green:0.78, blue:0.81, alpha:0.5) }
             else { cell.backgroundColor = UIColor(red:0.46, green:0.53, blue:0.67, alpha:0.5) }
@@ -105,14 +106,18 @@ class multipleSelect: UITableViewController {
             let assetTagText = NSAttributedString(string: "Asset Tag: ", attributes: labelFormat)
             let serialNumText = NSAttributedString(string: "\t\tSN: ", attributes: labelFormat)
             let modelNameText = NSAttributedString(string: "\nModel: ", attributes: labelFormat)
+            let deviceNameText = NSAttributedString(string: "\nDevice Name: ", attributes: labelFormat)
             
             //Setting values and attributing style to our results
             let assetTagResult = selectIDAssetTags[selectDeviceIDs[indexPath.row]] ?? "Not Found"
             let serialNumberResult = selectSerialNumbers[indexPath.row]
             let modelNameResult = selectindexModel[indexPath.row] ?? "Unknown"
+            let deviceNameResult = selectDeviceName[indexPath.row] ?? "Name TBD"
             let assetTagResultText = NSAttributedString(string: assetTagResult, attributes: textFormat)
             let serialNUmberResultText = NSAttributedString(string: serialNumberResult, attributes: textFormat)
             let modelNameResultText = NSAttributedString(string: modelNameResult, attributes: textFormat)
+            let deviceNameResultText = NSAttributedString(string: deviceNameResult, attributes: textFormat)
+            
             
             //Concatenating our results into one Attributed String
             let myString = NSMutableAttributedString()
@@ -120,9 +125,11 @@ class multipleSelect: UITableViewController {
             myString.append(assetTagResultText)
             myString.append(serialNumText)
             myString.append(serialNUmberResultText)
+            myString.append(deviceNameText)
+            myString.append(deviceNameResultText)
             myString.append(modelNameText)
             myString.append(modelNameResultText)
-            
+     
             // Display our formatted results
             cell.textLabel?.attributedText = myString
             return cell

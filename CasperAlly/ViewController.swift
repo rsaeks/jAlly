@@ -62,6 +62,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var lookupINVNumButton: scanButton!
     @IBOutlet weak var scanSNOCRButton: scanButton!
     @IBOutlet weak var deviceModelLabel: UILabel!
+    @IBOutlet weak var deviceNameLabel: UILabel!
     
     
 
@@ -318,6 +319,7 @@ class ViewController: UIViewController {
                                     var assetTags = [String]()
                                     var deviceModels = [String]()
                                     var indexModel = [Int: String] ()
+                                    var deviceNames = [Int: String]()
                                     //var testArray = [String]()
                                     lookupQueue.enter()
                                     print("--- LookupQueue Entered line 320 ---")
@@ -332,10 +334,13 @@ class ViewController: UIViewController {
                                                     if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> { // Begin mobile_device JSON dict
                                                         if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> { // Begin general JSON dict
                                                             if let model_name = generalData[workingjss.deviceModelNameKey] as? String {
-                                                                print("Got a value for model on device \(x)")
+//                                                                print("Got a value for model on device \(x)")
                                                                 indexModel[x] = model_name
                                                             }
-                                                            
+                                                            if let device_name = generalData[workingjss.deviceNameKey] as? String{
+                                                                print("Got device name \(device_name) for device number \(x)")
+                                                                deviceNames[x] = device_name
+                                                            }
                                                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                                                 if asset_tag == "" {
                                                                     //print("Asset Tag not found")
@@ -374,6 +379,7 @@ class ViewController: UIViewController {
                                         print("In lookupQueue notifier to handle multiple IDs")
                                         print(IDAssetTags)
                                         print(indexModel)
+                                        print(deviceNames)
                                         //print("In loookup queue")
                                         //print(testArray)
 //                                        for x in 0..<deviceIDs.count {
@@ -396,6 +402,7 @@ class ViewController: UIViewController {
                                         selectVC.selectParameterToCheck = parameterToCheck
                                         selectVC.selectModel = deviceModels
                                         selectVC.selectindexModel = indexModel
+                                        selectVC.selectDeviceName = deviceNames
                                         
                                         self.snToCheck.text = ""
                                         self.invNumToCheck.text = ""
@@ -434,6 +441,9 @@ class ViewController: UIViewController {
 //                                print("Found device Model: \(model_name)")
                                 workingData.deviceModel = model_name
                             }
+//                            if let device_name = generalData[workingjss.deviceNameKey] as? String {
+//                                workingData.deviceName = device_name
+//                            }
                             
                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                 (workingData.deviceInventoryNumber, self.invNumToCheck.text) = (asset_tag, asset_tag)
@@ -591,6 +601,7 @@ class ViewController: UIViewController {
         deviceInventorylabel.text = workingData.lastInventoryEpocFormatted
         warrantyExpiresLabel.text = workingData.warrantyExpiresEpochFormatted
         deviceModelLabel.text = workingData.deviceModel
+        deviceNameLabel.text = workingData.deviceName
         
         if (workingData.warrantyExpiresEpoch == 0.0) {
             warrantyExpiresLabel.text = "Not provided in JSS"
@@ -609,8 +620,16 @@ class ViewController: UIViewController {
     func enableButtons() {
         updateInventoryButton.isEnabled = true
         sendBlankPushButton.isEnabled = true
-        removeRestritionsButton.isEnabled = true
-        reapplyRestrictionsButton.isEnabled = true
+        if jssGIDLabel.text == "JSS GID HERE" || jssGIDLabel.text == "" {
+            removeRestritionsButton.isEnabled = false
+            reapplyRestrictionsButton.isEnabled = false
+        }
+        else {
+            removeRestritionsButton.isEnabled = true
+            reapplyRestrictionsButton.isEnabled = true
+        }
+//        removeRestritionsButton.isEnabled = true
+//        reapplyRestrictionsButton.isEnabled = true
         restartDeviceButton.isEnabled = true
         shutdownDeviceButton.isEnabled = true
         enableLostModeButton.isEnabled = true
@@ -691,6 +710,7 @@ class ViewController: UIViewController {
         warrantyExpiresLabel.text = "Warranty Expires"
         freeSpaceLabel.text = "Free Space"
         batteryLevelLabel.text = "Battery %"
+        deviceNameLabel.text = "Device Name"
         disableButtons()
         batteryLevelLabel.textColor = UIColor.black
         freeSpaceLabel.textColor = UIColor.black
