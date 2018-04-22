@@ -63,6 +63,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var scanSNOCRButton: scanButton!
     @IBOutlet weak var deviceModelLabel: UILabel!
     @IBOutlet weak var deviceNameLabel: UILabel!
+    @IBOutlet weak var openInJSSButton: UIButton!
     
     
 
@@ -602,6 +603,19 @@ class ViewController: UIViewController {
         warrantyExpiresLabel.text = workingData.warrantyExpiresEpochFormatted
         deviceModelLabel.text = workingData.deviceModel
         deviceNameLabel.text = workingData.deviceName
+        openInJSSButton.isHidden = false
+        
+//        let urlToDevice = NSMutableAttributedString(string:workingData.deviceName)
+//        urlToDevice.addAttribute(.link, value: "\(workingjss.jssURL)/mobileDevices.html?id=\(workingData.deviceID)&o=r", range: NSRange(location: 0, length: workingData.deviceName.count))
+//
+//
+//        print("Creating URL to the device")
+//        print("\(workingjss.jssURL)/mobileDevices.html?id=\(workingData.deviceID)&o=r")
+//
+        //deviceNameLabel.attributedText = urlToDevice
+        //deviceNameLabel.isUserInteractionEnabled = true
+
+        
         
         if (workingData.warrantyExpiresEpoch == 0.0) {
             warrantyExpiresLabel.text = "Not provided in JSS"
@@ -718,6 +732,7 @@ class ViewController: UIViewController {
         batteryStatusIcon.image = nil
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
+        openInJSSButton.isHidden = true
         workingData = JSSData()
         lookupButtonsReset()
     }
@@ -732,6 +747,17 @@ class ViewController: UIViewController {
         performSegue(withIdentifier: "lostModVCSeg", sender: self)
     }
 
+    
+    @IBAction func showDeviceInJSSTapped(_ sender: Any) {
+        print("Tapped Button to show in JSS")
+        self.view.endEditing(true)
+        if let deviceURL = URL(string: "\(workingjss.jssURL)/mobileDevices.html?id=\(workingData.deviceID)&o=r")
+        {
+            UIApplication.shared.open(deviceURL)
+        }
+    }
+    
+    
     @IBAction func disableLostModePressed(_ sender: UIButton) {
         print("Disable Lost mode pressed for device ID: \(workingData.deviceID)")
         sender.layer.borderColor = warnColor.cgColor
