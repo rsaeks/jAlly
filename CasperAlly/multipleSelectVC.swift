@@ -100,7 +100,7 @@ class multipleSelect: UITableViewController {
             
             //Format for text displayed
             let labelFormat = [ NSAttributedStringKey.font: UIFont(name: "Avenir-Heavy", size: 16)! ]
-            let textFormat = [ NSAttributedStringKey.font:UIFont(name: "Avenir", size: 16)]
+            let textFormat = [ NSAttributedStringKey.font:UIFont(name: "Avenir", size: 16)! ]
             
             //Attributing style to our labels
             let assetTagText = NSAttributedString(string: "Asset Tag: ", attributes: labelFormat)

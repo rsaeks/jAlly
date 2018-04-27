@@ -118,6 +118,13 @@ class ViewController: UIViewController {
         resetButtons()
     }
     
+    @IBAction func pressedJSSInfoButton(_ sender: UIButton) {
+        let jssIconHelp = UIAlertController(title: "JSS Info Help", message: "Tap Settings to add / edit your JSS connection information.", preferredStyle: UIAlertControllerStyle.alert)
+        jssIconHelp.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(jssIconHelp, animated: true)
+    }
+    
+    
     @IBAction func lookupInventoryNumber(_ sender: UIButton) {
         if !(invNumToCheck.text?.isEmpty)! {
             lookupButtonsReset()
@@ -317,8 +324,8 @@ class ViewController: UIViewController {
                                     var IDAssetTags = [Int: String] ()
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
-                                    var assetTags = [String]()
-                                    var deviceModels = [String]()
+                                    let assetTags = [String]()
+                                    let deviceModels = [String]()
                                     var indexModel = [Int: String] ()
                                     var deviceNames = [Int: String]()
                                     //var testArray = [String]()
@@ -408,6 +415,7 @@ class ViewController: UIViewController {
                                         self.snToCheck.text = ""
                                         self.invNumToCheck.text = ""
                                         self.present(selectVC, animated: true, completion: nil)
+
                                     } )
                                 }
                                 
