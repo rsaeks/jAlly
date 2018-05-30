@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0700"
+   LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '8FFE2CA02069356883D5BF57FAEBAC5F'
-               BlueprintName = 'SwiftOCR'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SwiftOCR.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8FFE2CA02069356883D5BF57FAEBAC5F"
+               BlueprintName = "SwiftOCR"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "SwiftOCR.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

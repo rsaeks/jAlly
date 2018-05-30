@@ -118,7 +118,6 @@
 				046F247F1E4CD5E3005013E5 /* Frameworks */,
 				046F24801E4CD5E3005013E5 /* Resources */,
 				A89876DD0577F8CD21C1C957 /* [CP] Embed Pods Frameworks */,
-				30F5486CC69359A331BBF3B6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -178,21 +177,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		30F5486CC69359A331BBF3B6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-jAlly/Pods-jAlly-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5E0D3970C768138F1F8CBB44 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
