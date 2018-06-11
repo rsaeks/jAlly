@@ -51,6 +51,21 @@ class Settings {
     var numbersOnlyIsOn: Bool! = false
 }
 
+class LostMode {
+    static var lostModeSettings = LostMode()
+    var lostModeMessage: String!
+    var lostModeNumber: String!
+    var lostModeFootNote: String!
+    var lostModeForced: Bool!
+    var lostModeSound: Bool!
+    init () {
+        lostModeMessage = "This device has been reported as lost"
+        lostModeNumber = "1234567890"
+        lostModeFootNote = "Lost device"
+        lostModeForced = false
+        lostModeSound = true
+    }
+}
 
 class JSSConfig {
     var jssURL: String
@@ -76,6 +91,7 @@ class JSSConfig {
     var freeSpaceKey: String
     var percentUsedKey: String
     var epochWarrantyExpiresKey: String
+    var deviceModelNameKey: String
     init() {
         jssURL = ""
         exclusinGID = ""
@@ -100,6 +116,7 @@ class JSSConfig {
         freeSpaceKey = "available_mb"
         percentUsedKey = "percentage_used"
         epochWarrantyExpiresKey = "warranty_expires_epoch"
+        deviceModelNameKey = "model"
     }
 }
 
@@ -122,6 +139,7 @@ class JSSData {
     var percentUsed: Int
     var warrantyExpiresEpoch: Double
     var warrantyExpiresEpochFormatted: String
+    var deviceModel: String
     
     init () {
         user = "defaultUser"
@@ -142,5 +160,6 @@ class JSSData {
         percentUsed = 0
         warrantyExpiresEpoch = 0.0
         warrantyExpiresEpochFormatted = "To Set"
+        deviceModel = "Model TBD"
     }
 }

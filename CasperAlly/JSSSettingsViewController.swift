@@ -94,6 +94,14 @@ class JSSSettingsViewController: UIViewController {
     }
     
     @IBAction func returnToMainPressed(_ sender: Any) {
+        defaults.set(JSSURL.text, forKey: "savedJSSURL")
+        defaults.set(jssExclusionGroupID.text, forKey: "savedExclusionGID")
+        defaults.set(jssUsername.text, forKey: "savedJSSUsername")
+        defaults.set(batteryWarnLevel.text, forKey: "batteryWarnLevel")
+        defaults.set(batteryCritLevel.text, forKey: "batteryCritLevel")
+        defaults.set(freespaceWarnLevel.text, forKey: "freespaceWarnLevel")
+        defaults.set(freespaceCritLevel.text, forKey: "freespaceCritLevel")
+        keychain.set(jssPassword.text!, forKey: "savedJSSPassword")
         dismiss(animated: true, completion: nil)
     }
     
@@ -101,9 +109,22 @@ class JSSSettingsViewController: UIViewController {
         let statusIconHelp = UIAlertController(title: "Status Icon Help", message: "You may change status icon notification thresholds to levels more suitable to your enviornment. Warning will trigger an orange dot, Critical will tigger a red dot. All options are expressed as a percentage.", preferredStyle: UIAlertControllerStyle.alert)
         statusIconHelp.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(statusIconHelp, animated: true)
-        
-        
     }
+    
+    @IBAction func exceptionGroupInfoPressed(_ sender: Any) {
+        let link = URL(string: "https://youtu.be/fkkyHXnh-KE")
+        let exceptionIconHelp = UIAlertController(title: "Exception Group ID Help", message: "The exception group ID number is the group ID of a static mobile device group scoped as an exclusion to config profiles a device should not receive when troubleshooting.", preferredStyle: UIAlertControllerStyle.alert)
+        exceptionIconHelp.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        exceptionIconHelp.addAction(UIAlertAction(title: "More Info",
+                                                  style: UIAlertActionStyle.default, handler: {
+                                                    (action:UIAlertAction!) -> Void in
+                                                    UIApplication.shared.open(link!)
+                                                        print("something here... button click or action logging")
+        }))
+        self.present(exceptionIconHelp, animated: true)
+    }
+    
+    
     func URLStatus (buttonColor: CGColor, hideMessage: Bool, message: String) {
         self.checkURLButton.layer.borderWidth = 2
         self.checkingConnection.stopAnimating()

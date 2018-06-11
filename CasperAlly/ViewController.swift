@@ -24,6 +24,8 @@ let controller = BarcodeScannerController()
 let scannedSN = SwiftOCR()
 let lookupQueue = DispatchGroup()
 
+var cameFromLostMode = false
+
 
 class ViewController: UIViewController {
 
@@ -47,6 +49,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var sendBlankPushButton: UIButton!
     @IBOutlet weak var removeRestritionsButton: UIButton!
     @IBOutlet weak var reapplyRestrictionsButton: UIButton!
+    @IBOutlet weak var enableLostModeButton: actionButton!
+    @IBOutlet weak var disableLostMode: actionButton!
     @IBOutlet weak var restartDeviceButton: UIButton!
     @IBOutlet weak var shutdownDeviceButton: UIButton!
     @IBOutlet weak var scanBarcodeButton: UIButton!
@@ -56,17 +60,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var lookupUserButton: scanButton!
     @IBOutlet weak var lookupSNButton: scanButton!
     @IBOutlet weak var lookupINVNumButton: scanButton!
+    @IBOutlet weak var scanSNOCRButton: scanButton!
+    @IBOutlet weak var deviceModelLabel: UILabel!
+    @IBOutlet weak var deviceNameLabel: UILabel!
+    @IBOutlet weak var openInJSSButton: UIButton!
     
     
 
     override func viewDidAppear(_ animated: Bool) {
         workingData.deviceID == 0 ? nil : self.getDetails()
         updateUI()
+        scanSNOCRButton.layer.borderWidth = 0
     }
     
-    @IBAction func clearDataPressed(_ sender: Any) {
-        resetUI()
-    }
+    @IBAction func clearDataPressed(_ sender: Any) { resetUI() }
     
     
     //// ------------------------------------
@@ -87,6 +94,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.user, passedItem: "username")
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
                 self.displayData(theButton: sender)
+                print("--- JSSQueue notify line 96 ---")
             } )
         }
         resetButtons()
@@ -104,10 +112,18 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.deviceSN, passedItem: "serialnumber")
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
                 self.displayData(theButton: sender)
+                print("--- JSSQueue notify line 114 ---")
             } )
         }
         resetButtons()
     }
+    
+    @IBAction func pressedJSSInfoButton(_ sender: UIButton) {
+        let jssIconHelp = UIAlertController(title: "JSS Info Help", message: "Tap Settings to add / edit your JSS connection information.", preferredStyle: UIAlertControllerStyle.alert)
+        jssIconHelp.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        self.present(jssIconHelp, animated: true)
+    }
+    
     
     @IBAction func lookupInventoryNumber(_ sender: UIButton) {
         if !(invNumToCheck.text?.isEmpty)! {
@@ -120,6 +136,7 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
                 self.displayData(theButton: sender)
+                print("--- JSSQueue notify line 131 ---")
             } )
         }
         resetButtons()
@@ -262,12 +279,12 @@ class ViewController: UIViewController {
     
 
     @IBAction func scanSNPressed(_ sender: Any) {
-            workingData = JSSData()
-            if let myImage = UIImage(named: "sample") {
-            scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-            scannedSN.recognize(myImage) { result in
-            }
-        }
+//            workingData = JSSData()
+//            if let myImage = UIImage(named: "sample") {
+//            scannedSN.characterWhiteList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+//            scannedSN.recognize(myImage) { result in
+//            }
+//        }
     }
     
     
@@ -287,6 +304,12 @@ class ViewController: UIViewController {
                             if mobileDevice.count > 0 {
                                 if mobileDevice.count == 1 {
                                     if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
+                                        print("One mobile device found")
+                                        // Added to (hopefully) prevent crash on unique barcode
+                                        //lookupQueue.enter()
+                                        //print("--- lookupQueue Enter via line 298 ---")
+                                        self.snToCheck.text = "looking up ..."
+                                        self.invNumToCheck.text = "looking up ..."
                                         workingData.deviceID = deviceID
                                         self.getDetails()
                                     }
@@ -297,24 +320,60 @@ class ViewController: UIViewController {
                                 }
                                     
                                 else if mobileDevice.count > 1 {
+                                    print("Multiple mobile devices found")
+                                    var IDAssetTags = [Int: String] ()
                                     var deviceIDs = [Int]()
                                     var serialNumbers = [String]()
-                                    var assetTags = [String]()
+                                    let assetTags = [String]()
+                                    let deviceModels = [String]()
+                                    var indexModel = [Int: String] ()
+                                    var deviceNames = [Int: String]()
+                                    //var testArray = [String]()
                                     lookupQueue.enter()
+                                    print("--- LookupQueue Entered line 320 ---")
                                     var counter = 0
                                     for x in 0..<mobileDevice.count {
                                         deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
                                         serialNumbers.append(mobileDevice[x][workingjss.serialNumberKey] as! String)
+                                        //print("Data for device \(x) is JSs ID number: \(mobileDevice[x][workingjss.idKey]) and serial number: \(mobileDevice[x][workingjss.serialNumberKey])")
                                         Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(deviceIDs[x]), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                                             if (response.result.isSuccess) {
                                                 if let outerDict = response.result.value as? Dictionary <String, AnyObject> { // Begin response JSON dict
                                                     if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> { // Begin mobile_device JSON dict
                                                         if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> { // Begin general JSON dict
+                                                            if let model_name = generalData[workingjss.deviceModelNameKey] as? String {
+//                                                                print("Got a value for model on device \(x)")
+                                                                indexModel[x] = model_name
+                                                            }
+                                                            if let device_name = generalData[workingjss.deviceNameKey] as? String{
+                                                                print("Got device name \(device_name) for device number \(x)")
+                                                                deviceNames[x] = device_name
+                                                            }
                                                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
-                                                                assetTags.append(asset_tag)
-                                                                counter = counter + 1
-                                                                if counter == (mobileDevice.count) {
-                                                                    lookupQueue.leave()
+                                                                if asset_tag == "" {
+                                                                    //print("Asset Tag not found")
+                                                                    //assetTags.append("Not Found")
+                                                                    IDAssetTags[deviceIDs[x]] = "Not Found"
+//                                                                    testArray.append(String(deviceIDs[x]))
+//                                                                    testArray.append("Not Found")
+                                                                    counter = counter + 1
+                                                                    if counter == (mobileDevice.count) {
+                                                                        lookupQueue.leave()
+                                                                        print("--- LookupQueue left line 341 ---")
+                                                                    }
+                                                                }
+                                                                else {
+                                                                    //print("Counter value is \(counter) and Asset tag is: \(asset_tag)")
+                                                                    //print("Asset tag returned for device ID: \(deviceIDs[x]) is: \(asset_tag)")
+                                                                    //assetTags.append(asset_tag)
+                                                                    IDAssetTags[deviceIDs[x]] = asset_tag
+//                                                                    testArray.append(String(deviceIDs[x]))
+//                                                                    testArray.append(asset_tag)
+                                                                    counter = counter + 1
+                                                                    if counter == (mobileDevice.count) {
+                                                                        lookupQueue.leave()
+                                                                        print("--- LookupQueue left line 354 ---")
+                                                                    }
                                                                 }
                                                             }
                                                         } // Close our general JSON dict
@@ -324,11 +383,39 @@ class ViewController: UIViewController {
                                         }
                                     }
                                     lookupQueue.notify(queue: DispatchQueue.main, execute: {
+                                        print("--- LookupQueue notified ---")
+                                        print("In lookupQueue notifier to handle multiple IDs")
+                                        print(IDAssetTags)
+                                        print(indexModel)
+                                        print(deviceNames)
+                                        //print("In loookup queue")
+                                        //print(testArray)
+//                                        for x in 0..<deviceIDs.count {
+//                                            //print("Looking at matches for ID array at index \(x)")
+//                                            for y in 0..<deviceIDs.count {
+//                                                //print("Looking for match in tempArray at index \(y)")
+//                                                if String(deviceIDs[x]) == testArray[y*2] {
+//                                                    //print("Found match at position: \(y)")
+//                                                    //print("Value is: \(testArray[(2*y) + 1])")
+//                                                    assetTags.append(testArray[(2*y) + 1])
+//                                                }
+//                                            }
+//                                        }
+                                        
                                         let selectVC: multipleSelect = multipleSelect()
                                         selectVC.selectDeviceIDs = deviceIDs
                                         selectVC.selectSerialNumbers = serialNumbers
                                         selectVC.selectAssetTags = assetTags
+                                        selectVC.selectIDAssetTags = IDAssetTags
+                                        selectVC.selectParameterToCheck = parameterToCheck
+                                        selectVC.selectModel = deviceModels
+                                        selectVC.selectindexModel = indexModel
+                                        selectVC.selectDeviceName = deviceNames
+                                        
+                                        self.snToCheck.text = ""
+                                        self.invNumToCheck.text = ""
                                         self.present(selectVC, animated: true, completion: nil)
+
                                     } )
                                 }
                                 
@@ -359,6 +446,14 @@ class ViewController: UIViewController {
                                 dateFormat.timeZone = TimeZone.current
                                 workingData.lastInventoryEpocFormatted = dateFormat.string(from: date)
                             }
+                            if let model_name = generalData[workingjss.deviceModelNameKey] as? String {
+//                                print("Found device Model: \(model_name)")
+                                workingData.deviceModel = model_name
+                            }
+//                            if let device_name = generalData[workingjss.deviceNameKey] as? String {
+//                                workingData.deviceName = device_name
+//                            }
+                            
                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                 (workingData.deviceInventoryNumber, self.invNumToCheck.text) = (asset_tag, asset_tag)
                             }
@@ -407,10 +502,25 @@ class ViewController: UIViewController {
                         } // Close our purchasing JSON
                     } // Close our mobile_device JSON dict
                 } // Close our response JSON
-                JSSQueue.leave()
+                ///
+                ///
+                ///
+                print("Finished Getting details ... now to test if we came from lost mode screen" )
+                if !cameFromLostMode  {
+                    print("Did not come from lost mode screen")
+                    JSSQueue.leave()
+                    print("--- JSSQueue left line 476 ---")
+                    cameFromLostMode = false
+                }
+                else {
+                    print("Came from lost mode VC")
+                    //print("Resetting to false")
+                    cameFromLostMode = false
+                }
             } // Close our successful result
             else {
                 JSSQueue.leave()
+                print("--- JSSQueue left line 487 ---")
             }
         }
     }
@@ -434,6 +544,7 @@ class ViewController: UIViewController {
         notFoundDialog.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(notFoundDialog, animated: true)
         JSSQueue.leave()
+        print("--- JSSQueue left line 510 ---")
     }
     
     //// ------------------------------------
@@ -450,10 +561,12 @@ class ViewController: UIViewController {
     
     func dissmissKeyboard () {
         JSSQueue.enter()
+        print("--- JSSQueue entered line 527 ---")
         view.endEditing(true)
     }
     
     func displayData(theButton: UIButton) {
+        print("Entering display data function on line 529")
         batteryStatusIcon.image = nil
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
@@ -496,6 +609,21 @@ class ViewController: UIViewController {
         deviceIPLabel.text = workingData.deviceIPAddress
         deviceInventorylabel.text = workingData.lastInventoryEpocFormatted
         warrantyExpiresLabel.text = workingData.warrantyExpiresEpochFormatted
+        deviceModelLabel.text = workingData.deviceModel
+        deviceNameLabel.text = workingData.deviceName
+        openInJSSButton.isHidden = false
+        
+//        let urlToDevice = NSMutableAttributedString(string:workingData.deviceName)
+//        urlToDevice.addAttribute(.link, value: "\(workingjss.jssURL)/mobileDevices.html?id=\(workingData.deviceID)&o=r", range: NSRange(location: 0, length: workingData.deviceName.count))
+//
+//
+//        print("Creating URL to the device")
+//        print("\(workingjss.jssURL)/mobileDevices.html?id=\(workingData.deviceID)&o=r")
+//
+        //deviceNameLabel.attributedText = urlToDevice
+        //deviceNameLabel.isUserInteractionEnabled = true
+
+        
         
         if (workingData.warrantyExpiresEpoch == 0.0) {
             warrantyExpiresLabel.text = "Not provided in JSS"
@@ -514,10 +642,20 @@ class ViewController: UIViewController {
     func enableButtons() {
         updateInventoryButton.isEnabled = true
         sendBlankPushButton.isEnabled = true
-        removeRestritionsButton.isEnabled = true
-        reapplyRestrictionsButton.isEnabled = true
+        if jssGIDLabel.text == "JSS GID HERE" || jssGIDLabel.text == "" {
+            removeRestritionsButton.isEnabled = false
+            reapplyRestrictionsButton.isEnabled = false
+        }
+        else {
+            removeRestritionsButton.isEnabled = true
+            reapplyRestrictionsButton.isEnabled = true
+        }
+//        removeRestritionsButton.isEnabled = true
+//        reapplyRestrictionsButton.isEnabled = true
         restartDeviceButton.isEnabled = true
         shutdownDeviceButton.isEnabled = true
+        enableLostModeButton.isEnabled = true
+        disableLostMode.isEnabled = true
         setupButtons(buttonWidth: 2)
     }
     
@@ -528,6 +666,8 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.isEnabled = false
         restartDeviceButton.isEnabled = false
         shutdownDeviceButton.isEnabled = false
+        enableLostModeButton.isEnabled = false
+        disableLostMode.isEnabled = false
         setupButtons(buttonWidth: 0)
     }
     
@@ -538,6 +678,8 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.layer.borderColor = UIColor.lightGray.cgColor
         restartDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
         shutdownDeviceButton.layer.borderColor = UIColor.lightGray.cgColor
+        enableLostModeButton.layer.borderColor = UIColor.lightGray.cgColor
+        disableLostMode.layer.borderColor = UIColor.lightGray.cgColor
     }
     
     func setupButtons(buttonWidth: Int) {
@@ -547,6 +689,8 @@ class ViewController: UIViewController {
         reapplyRestrictionsButton.layer.borderWidth = CGFloat(buttonWidth)
         restartDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
         shutdownDeviceButton.layer.borderWidth = CGFloat(buttonWidth)
+        enableLostModeButton.layer.borderWidth = CGFloat(buttonWidth)
+        disableLostMode.layer.borderWidth = CGFloat(buttonWidth)
     }
     
     func updateUI() {
@@ -588,6 +732,7 @@ class ViewController: UIViewController {
         warrantyExpiresLabel.text = "Warranty Expires"
         freeSpaceLabel.text = "Free Space"
         batteryLevelLabel.text = "Battery %"
+        deviceNameLabel.text = "Device Name"
         disableButtons()
         batteryLevelLabel.textColor = UIColor.black
         freeSpaceLabel.textColor = UIColor.black
@@ -595,6 +740,7 @@ class ViewController: UIViewController {
         batteryStatusIcon.image = nil
         freeSpaceStatusIcon.image = nil
         warrantyExpiresIcon.image = nil
+        openInJSSButton.isHidden = true
         workingData = JSSData()
         lookupButtonsReset()
     }
@@ -605,15 +751,63 @@ class ViewController: UIViewController {
         lookupINVNumButton.layer.borderColor = UIColor.lightGray.cgColor
     }
     
+    @IBAction func enableLostModePressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "lostModVCSeg", sender: self)
+    }
 
+    
+    @IBAction func showDeviceInJSSTapped(_ sender: Any) {
+        print("Tapped Button to show in JSS")
+        self.view.endEditing(true)
+        if let deviceURL = URL(string: "\(workingjss.jssURL)/mobileDevices.html?id=\(workingData.deviceID)&o=r")
+        {
+            UIApplication.shared.open(deviceURL)
+        }
+    }
+    
+    
+    @IBAction func disableLostModePressed(_ sender: UIButton) {
+        print("Disable Lost mode pressed for device ID: \(workingData.deviceID)")
+        sender.layer.borderColor = warnColor.cgColor
+        let headers = [ "Content-Type":"application/xml" ]
+        // Custom Body Encoding
+        struct RawDataEncoding: ParameterEncoding {
+            public static var `default`: RawDataEncoding { return RawDataEncoding() }
+            public func encode(_ urlRequest: URLRequestConvertible, with parameters: Parameters?) throws -> URLRequest {
+                var request = try urlRequest.asURLRequest()
+                request.httpBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><mobile_device_command><general><command>DisableLostMode</command></general><mobile_devices><mobile_device><id>\(workingData.deviceID)</id></mobile_device></mobile_devices></mobile_device_command>".data(using: String.Encoding.utf8, allowLossyConversion: false)
+                return request
+            }
+        }
+        // Fetch Request
+        Alamofire.request(workingjss.jssURL + devLostModePath, method: .post, encoding: RawDataEncoding.default, headers: headers)
+            .authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword)
+            .validate(statusCode: 200..<300)
+            .responseString { response in
+                if (response.result.error == nil) {
+                    sender.layer.borderColor = successColor.cgColor
+                    print("Successful Command")
+                    //debugPrint("HTTP Response Body: \(response.data)")
+                }
+                else {
+                    sender.layer.borderColor = failColor.cgColor
+                    print("Failed Command")
+                    //debugPrint("HTTP Request failed: \(response.result.error)")
+                }
+        }
+    }
+}
+
+
+
+    
     
     //// ------------------------------------
     //
     // --- UI RELATED FUNCTIONS END
     //
     //// ------------------------------------
-    
-}
+
 ////
 //
 // Barcode Scanning extensions
@@ -624,13 +818,16 @@ extension ViewController: BarcodeScannerCodeDelegate {
     func barcodeScanner(_ controller: BarcodeScannerController, didCaptureCode code: String, type: String) {
         workingData.deviceInventoryNumber = code
         self.invNumToCheck.text = workingData.deviceInventoryNumber
-        userToCheck.text = "looking up ..."
-        snToCheck.text = "looking up ..."
+        //userToCheck.text = "looking up ..."
+        //snToCheck.text = "looking up ..."
         controller.dismiss(animated: true, completion: nil)
         resetButtons()
-        lookupINVNumButton.layer.borderColor = warnColor.cgColor
-        lookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
-        JSSQueue.notify(queue: DispatchQueue.main, execute: { self.displayData(theButton: self.lookupINVNumButton)} )
+        //lookupINVNumButton.layer.borderColor = warnColor.cgColor
+        //ookupData(parameterToCheck: workingData.deviceInventoryNumber, passedItem: "assettag")
+        JSSQueue.notify(queue: DispatchQueue.main, execute: {
+            //self.displayData(theButton: self.lookupINVNumButton)
+            print("--- JSSQueue notified line 750 ---")
+        } )
     }
 }
 

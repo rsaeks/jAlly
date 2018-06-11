@@ -69,7 +69,6 @@ func localizedString(_ key: String) -> String {
   return key
 }
 
-
 /**
  `AVCaptureMetadataOutput` metadata object types.
  */
@@ -91,5 +90,5 @@ public var metadata = [
 ]
 
 extension AVMetadataObject.ObjectType {
-    public static let upca: AVMetadataObject.ObjectType = AVMetadataObject.ObjectType(rawValue: "org.gs1.UPC-A")
+    public static let upca: AVMetadataObject.ObjectType = .init(rawValue: "org.gs1.UPC-A")
 }

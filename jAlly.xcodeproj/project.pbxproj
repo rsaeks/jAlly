@@ -16,6 +16,7 @@
 		D504DEA81E73788D0016F6E7 /* classDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D504DEA71E73788D0016F6E7 /* classDefinitions.swift */; };
 		D55A45D41FB8A516008AF74B /* multipleSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D55A45D31FB8A516008AF74B /* multipleSelectVC.swift */; };
 		D5AB74B71E8E17CD008EE547 /* CameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AB74B61E8E17CD008EE547 /* CameraVC.swift */; };
+		D5D52D731FE42467009FF9BF /* LostModeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D52D721FE42467009FF9BF /* LostModeVC.swift */; };
 		D5D616651E55ED470051A818 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D616641E55ED470051A818 /* Constants.swift */; };
 		E4B97974D14AB92F036F6B95 /* Pods_jAlly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F799F01240F5C0CE884EDCF2 /* Pods_jAlly.framework */; };
 /* End PBXBuildFile section */
@@ -33,6 +34,7 @@
 		D504DEA71E73788D0016F6E7 /* classDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = classDefinitions.swift; sourceTree = "<group>"; };
 		D55A45D31FB8A516008AF74B /* multipleSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = multipleSelectVC.swift; sourceTree = "<group>"; };
 		D5AB74B61E8E17CD008EE547 /* CameraVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraVC.swift; sourceTree = "<group>"; };
+		D5D52D721FE42467009FF9BF /* LostModeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LostModeVC.swift; sourceTree = "<group>"; };
 		D5D616641E55ED470051A818 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F1BE7E6E7C2352B58E1BFA15 /* Pods-jAlly.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-jAlly.debug.xcconfig"; path = "Pods/Target Support Files/Pods-jAlly/Pods-jAlly.debug.xcconfig"; sourceTree = "<group>"; };
 		F799F01240F5C0CE884EDCF2 /* Pods_jAlly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_jAlly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +84,7 @@
 				D504DEA71E73788D0016F6E7 /* classDefinitions.swift */,
 				D5AB74B61E8E17CD008EE547 /* CameraVC.swift */,
 				D55A45D31FB8A516008AF74B /* multipleSelectVC.swift */,
+				D5D52D721FE42467009FF9BF /* LostModeVC.swift */,
 			);
 			path = CasperAlly;
 			sourceTree = "<group>";
@@ -115,7 +118,6 @@
 				046F247F1E4CD5E3005013E5 /* Frameworks */,
 				046F24801E4CD5E3005013E5 /* Resources */,
 				A89876DD0577F8CD21C1C957 /* [CP] Embed Pods Frameworks */,
-				30F5486CC69359A331BBF3B6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -175,21 +177,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		30F5486CC69359A331BBF3B6 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-jAlly/Pods-jAlly-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5E0D3970C768138F1F8CBB44 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -244,6 +231,7 @@
 				046F24881E4CD5E3005013E5 /* ViewController.swift in Sources */,
 				D5AB74B71E8E17CD008EE547 /* CameraVC.swift in Sources */,
 				D504DEA81E73788D0016F6E7 /* classDefinitions.swift in Sources */,
+				D5D52D731FE42467009FF9BF /* LostModeVC.swift in Sources */,
 				046F24861E4CD5E3005013E5 /* AppDelegate.swift in Sources */,
 				04CC36631E4CFA71006E0989 /* JSSSettingsViewController.swift in Sources */,
 				D5D616651E55ED470051A818 /* Constants.swift in Sources */,
