@@ -13,7 +13,7 @@ DEPENDENCIES:
   - SwiftOCR
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Alamofire
     - BarcodeScanner
     - GPUImage
@@ -29,4 +29,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 46d7b97da3fc2e2df00b96d7cda89eb6ddb2670f
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

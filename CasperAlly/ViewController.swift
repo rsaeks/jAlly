@@ -94,7 +94,6 @@ class ViewController: UIViewController {
             lookupData(parameterToCheck: workingData.user, passedItem: "username")
             JSSQueue.notify(queue: DispatchQueue.main, execute: {
                 self.displayData(theButton: sender)
-                print("--- JSSQueue notify line 96 ---")
             } )
         }
         resetButtons()
@@ -304,10 +303,6 @@ class ViewController: UIViewController {
                             if mobileDevice.count > 0 {
                                 if mobileDevice.count == 1 {
                                     if let deviceID = mobileDevice[0][workingjss.idKey] as? Int {
-                                        print("One mobile device found")
-                                        // Added to (hopefully) prevent crash on unique barcode
-                                        //lookupQueue.enter()
-                                        //print("--- lookupQueue Enter via line 298 ---")
                                         self.snToCheck.text = "looking up ..."
                                         self.invNumToCheck.text = "looking up ..."
                                         workingData.deviceID = deviceID
@@ -335,44 +330,30 @@ class ViewController: UIViewController {
                                     for x in 0..<mobileDevice.count {
                                         deviceIDs.append(mobileDevice[x][workingjss.idKey] as! Int)
                                         serialNumbers.append(mobileDevice[x][workingjss.serialNumberKey] as! String)
-                                        //print("Data for device \(x) is JSs ID number: \(mobileDevice[x][workingjss.idKey]) and serial number: \(mobileDevice[x][workingjss.serialNumberKey])")
                                         Alamofire.request(workingjss.jssURL + devAPIMatchPathID + String(deviceIDs[x]), method: .get, headers: headers).authenticate(user: workingjss.jssUsername, password: workingjss.jssPassword).responseJSON { response in
                                             if (response.result.isSuccess) {
                                                 if let outerDict = response.result.value as? Dictionary <String, AnyObject> { // Begin response JSON dict
                                                     if let mobileDeviceData = outerDict[workingjss.mobileDeviceKey] as? Dictionary <String,AnyObject> { // Begin mobile_device JSON dict
                                                         if let generalData = mobileDeviceData[workingjss.generalKey] as? Dictionary <String, AnyObject> { // Begin general JSON dict
                                                             if let model_name = generalData[workingjss.deviceModelNameKey] as? String {
-//                                                                print("Got a value for model on device \(x)")
                                                                 indexModel[x] = model_name
                                                             }
                                                             if let device_name = generalData[workingjss.deviceNameKey] as? String{
-                                                                print("Got device name \(device_name) for device number \(x)")
                                                                 deviceNames[x] = device_name
                                                             }
                                                             if let asset_tag = generalData[workingjss.inventoryKey] as? String {
                                                                 if asset_tag == "" {
-                                                                    //print("Asset Tag not found")
-                                                                    //assetTags.append("Not Found")
                                                                     IDAssetTags[deviceIDs[x]] = "Not Found"
-//                                                                    testArray.append(String(deviceIDs[x]))
-//                                                                    testArray.append("Not Found")
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
-                                                                        print("--- LookupQueue left line 341 ---")
                                                                     }
                                                                 }
                                                                 else {
-                                                                    //print("Counter value is \(counter) and Asset tag is: \(asset_tag)")
-                                                                    //print("Asset tag returned for device ID: \(deviceIDs[x]) is: \(asset_tag)")
-                                                                    //assetTags.append(asset_tag)
                                                                     IDAssetTags[deviceIDs[x]] = asset_tag
-//                                                                    testArray.append(String(deviceIDs[x]))
-//                                                                    testArray.append(asset_tag)
                                                                     counter = counter + 1
                                                                     if counter == (mobileDevice.count) {
                                                                         lookupQueue.leave()
-                                                                        print("--- LookupQueue left line 354 ---")
                                                                     }
                                                                 }
                                                             }
@@ -600,7 +581,8 @@ class ViewController: UIViewController {
         }
         
         // Display free space as either GB or MB
-        if (workingData.freeSpace % 1024 > 1) { freeSpaceLabel.text = String.localizedStringWithFormat("%.2f %@", Float(workingData.freeSpace) / Float(1024), " GB") }
+        if (workingData.freeSpace % 1024 > 1) { freeSpaceLabel.text =
+            String.localizedStringWithFormat("%.2f %@", Float(workingData.freeSpace) / Float(1024), " GB") }
         else { freeSpaceLabel.text = "\(workingData.freeSpace) MB" }
         
         fullNameLabel.text = workingData.realName
